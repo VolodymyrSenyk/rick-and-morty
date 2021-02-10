@@ -1,0 +1,132 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'kotlin-parcelize'
+
+android {
+    compileSdkVersion versions.application.targetSdk
+    buildToolsVersion versions.application.buildTools
+
+    defaultConfig {
+        applicationId "com.senyk.rickandmorty"
+        minSdkVersion versions.application.minSdk
+        targetSdkVersion versions.application.targetSdk
+        versionName "$versions.application.versionName (${getVersion()})"
+        versionCode versions.application.versionCode
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('../keystore/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
+        release {
+            storeFile file(getKeystoreProperty('RELEASE_STORE_FILE'))
+            storePassword getKeystoreProperty('RELEASE_STORE_PASSWORD')
+            keyAlias getKeystoreProperty('RELEASE_KEY_ALIAS')
+            keyPassword getKeystoreProperty('RELEASE_KEY_PASSWORD')
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    applicationVariants.all { variant ->
+        variant.resValue "string", "versionName", "Version " + variant.versionName
+    }
+}
+
+String getKeystoreProperty(String propertyName) {
+    def keystorePropertiesFile = rootProject.file("keystore/key.properties")
+    def keystoreProperties = new Properties()
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    }
+    if (keystoreProperties.containsKey(propertyName)) {
+        return keystoreProperties[propertyName]
+    } else if (System.getenv(propertyName) != null) {
+        return System.getenv(propertyName)
+    } else {
+        throw new IllegalStateException("Keystore property not found: $propertyName")
+    }
+}
+
+dependencies {
+    // modules
+    implementation project(":data")
+    implementation project(":domain")
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin.language"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin.language"
+
+    // androidx
+    implementation "androidx.core:core-ktx:$versions.kotlin.ktx"
+    implementation "androidx.appcompat:appcompat:$versions.view.appcompat"
+    implementation "androidx.fragment:fragment-ktx:$versions.view.ktx_fragment"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.view.constraint"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.view.swiperefreshlayout"
+
+    // view
+    implementation "com.google.android.material:material:$versions.view.material"
+    implementation "com.hannesdorfmann:adapterdelegates4:$versions.frameworks.adapterdelegates"
+    implementation "com.intuit.sdp:sdp-android:$versions.frameworks.sdp"
+
+    // DI
+    implementation "com.google.dagger:dagger:$versions.di.dagger"
+    implementation "com.google.dagger:dagger-android-support:$versions.di.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.di.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$versions.di.dagger"
+
+    // lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+    kapt "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rx.android"
+    implementation "io.reactivex.rxjava2:rxkotlin:$versions.rx.kotlin"
+
+    // networking
+    implementation "com.squareup.okhttp3:okhttp:$versions.networking.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.networking.okhttp"
+    implementation "com.squareup.retrofit2:retrofit:$versions.networking.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.networking.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.networking.retrofit_rxjava"
+    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$versions.networking.adapter"
+
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation.arch_component"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.navigation.arch_component"
+}

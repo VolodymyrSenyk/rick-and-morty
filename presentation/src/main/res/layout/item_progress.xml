@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="androidx.lifecycle.LiveData" />
+
+        <variable
+            name="showProgress"
+            type="LiveData&lt;Boolean>" />
+
+        <variable
+            name="blockScreen"
+            type="Boolean" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="@{blockScreen}"
+        android:elevation="10dp"
+        android:focusable="@{blockScreen}"
+        android:visibility="@{showProgress ? View.VISIBLE : View.GONE}"
+        tools:ignore="UnusedAttribute">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="12dp" />
+
+    </FrameLayout>
+
+</layout>
