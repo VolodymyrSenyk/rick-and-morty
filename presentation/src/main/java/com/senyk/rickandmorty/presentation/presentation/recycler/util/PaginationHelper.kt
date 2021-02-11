@@ -21,6 +21,11 @@ class PaginationHelper(
         return currentOffset
     }
 
+    fun getPageForNewDataSet(): Int {
+        loadingInProgress = true
+        return currentOffset / dataSetSize
+    }
+
     fun onDataSetLoaded(newDataPortionSize: Int) {
         loadingInProgress = false
         if (newDataPortionSize < dataSetSize) {

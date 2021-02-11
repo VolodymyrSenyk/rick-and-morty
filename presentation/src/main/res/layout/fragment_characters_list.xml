@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".presentation.feature.main.MainActivity">
@@ -29,9 +28,9 @@
                 android:clipToPadding="false"
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:paddingVertical="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:listitem="@layout/list_item_character" />
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/list_item_character"
+                tools:spanCount="2" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

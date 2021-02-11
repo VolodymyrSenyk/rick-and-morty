@@ -34,6 +34,8 @@ class BaseDataBindingDelegationAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    fun getItem(position: Int): ListItem? = items.getOrNull(position)
+
     private class ListDiffCallback<T : ListItem> : DiffUtil.ItemCallback<T>() {
         override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
             oldItem.listId == newItem.listId
