@@ -14,6 +14,13 @@
     <string name="gender_unknown">Unknown</string>
 
     <!-- output -->
+    <string name="character_name">Name:</string>
+    <string name="character_status">Status:</string>
+    <string name="character_species">Species:</string>
+    <string name="character_type">Type:</string>
+    <string name="character_gender">Gender:</string>
+    <string name="character_origin">Origin:</string>
+    <string name="character_location">Location:</string>
 
     <!-- messages -->
     <string name="message_characters_empty_list">No characters found</string>

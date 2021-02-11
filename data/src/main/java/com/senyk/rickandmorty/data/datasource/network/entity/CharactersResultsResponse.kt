@@ -41,6 +41,6 @@ class CharactersResultsResponseMapper @Inject constructor() {
 		},
 		origin = response.origin?.name ?: "",
 		location = response.location?.name ?: "",
-		imageUrl = response.url ?: ""
+		imageUrl = response.image ?: ""
 	)
 }

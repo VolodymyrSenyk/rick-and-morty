@@ -27,9 +27,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingHorizontal="@dimen/_30sdp"
-                android:paddingVertical="@dimen/_4sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
                 tools:listitem="@layout/list_item_character" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

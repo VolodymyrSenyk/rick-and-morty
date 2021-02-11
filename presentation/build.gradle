@@ -68,7 +68,7 @@ android {
 }
 
 String getKeystoreProperty(String propertyName) {
-    def keystorePropertiesFile = rootProject.file("keystore/key.properties")
+    def keystorePropertiesFile = rootProject.file("keystore/keystore.properties")
     def keystoreProperties = new Properties()
     if (keystorePropertiesFile.exists()) {
         keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
@@ -102,6 +102,7 @@ dependencies {
     implementation "com.google.android.material:material:$versions.view.material"
     implementation "com.hannesdorfmann:adapterdelegates4:$versions.frameworks.adapterdelegates"
     implementation "com.intuit.sdp:sdp-android:$versions.frameworks.sdp"
+    implementation "com.github.bumptech.glide:glide:$versions.frameworks.glide"
 
     // DI
     implementation "com.google.dagger:dagger:$versions.di.dagger"
