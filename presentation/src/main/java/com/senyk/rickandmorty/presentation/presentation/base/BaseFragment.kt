@@ -49,6 +49,7 @@ abstract class BaseFragment<B : ViewDataBinding> : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBaseObservers(viewModel)
+        setHasOptionsMenu(menuRes != null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

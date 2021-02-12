@@ -2,6 +2,9 @@
 
     <string name="app_name" translatable="false">Rick &amp; Morty</string>
 
+    <!-- menu -->
+    <string name="menu_sort">Sort</string>
+
     <!-- character status-->
     <string name="state_alive">Alive</string>
     <string name="state_dead">Dead</string>

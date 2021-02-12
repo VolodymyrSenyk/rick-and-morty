@@ -2,7 +2,7 @@ package com.senyk.rickandmorty.presentation.presentation.recycler.util
 
 class PaginationHelper(
     private val dataSetSize: Int = DEFAULT_DATA_SET_SIZE,
-    private val loadMoreTriggerDataSetSize: Int = DEFAULT_DATA_SET_SIZE,
+    private val loadMoreTriggerDataSetSize: Int = DEFAULT_DATA_SET_SIZE / 2,
     private var currentOffset: Int = 0,
     private var loadingInProgress: Boolean = false,
     private var noDataLeft: Boolean = false

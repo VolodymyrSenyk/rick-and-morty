@@ -37,6 +37,8 @@ class CharactersListViewModel @Inject constructor(
     val scrollToTop: LiveData<Boolean>
         get() = _scrollToTop
 
+    private var sortType = AlphaSortType.NOT_SORTED
+
     init {
         loadCharacters(withProgress = true)
     }
@@ -59,6 +61,26 @@ class CharactersListViewModel @Inject constructor(
             directions.actionCharactersListFragmentToCharacterDetailsFragment(character = character)
         )
         _navigationEvent.value = HandledEvent(event)
+    }
+
+    fun onSortClick() {
+        val characters = charactersList.value?.toMutableList() ?: return
+        characters.remove(progressListItem)
+        _charactersList.value = null
+        _showProgress.setValue(true)
+        _charactersList.value = when (sortType) {
+
+            AlphaSortType.NOT_SORTED, AlphaSortType.DESCENDING -> {
+                sortType = AlphaSortType.ASCENDING
+                characters.sortedBy { (it as? CharacterUi)?.name }
+            }
+
+            AlphaSortType.ASCENDING -> {
+                sortType = AlphaSortType.DESCENDING
+                characters.sortedByDescending { (it as? CharacterUi)?.name }
+            }
+        }
+        _showProgress.setValue(false)
     }
 
     private fun loadCharacters(withProgress: Boolean) {

@@ -1,6 +1,7 @@
 package com.senyk.rickandmorty.presentation.presentation.feature.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -18,6 +19,7 @@ import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate
 class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     override val layoutRes = R.layout.fragment_characters_list
+    override val menuRes = R.menu.menu_main
     override val viewModel by viewModels<CharactersListViewModel>(factoryProducer = { viewModelFactory })
 
     private lateinit var adapter: BaseDataBindingDelegationAdapter
@@ -34,6 +36,16 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         setUpToolbar()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
+
+            R.id.action_sort -> {
+                viewModel.onSortClick(); true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+
     private fun setUpToolbar() {
         (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
             getString(R.string.app_name)
@@ -48,7 +60,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         })
         viewModel.scrollToTop.observe(viewLifecycleOwner, { scroll ->
             if (scroll) {
-                (binding.charactersList.layoutManager as? GridLayoutManager)?.scrollToPosition(0)
+                binding.charactersList.layoutManager?.scrollToPosition(0)
             }
         })
     }
