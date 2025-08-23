@@ -1,0 +1,111 @@
+plugins {
+    id("com.android.application")
+    kotlin("android")
+    id("org.jetbrains.kotlin.kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
+}
+
+android {
+    namespace = Config.Android.applicationId + ".presentation"
+
+    defaultConfig {
+        applicationId = Config.Android.applicationId
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(Secret.SignIn.debugKeyStoreFile)
+            storePassword = Secret.SignIn.debugKeyStorePassword
+            keyAlias = Secret.SignIn.debugKeyAlias
+            keyPassword = Secret.SignIn.debugKeyPassword
+        }
+
+        create("release") {
+            storeFile = file(Secret.SignIn.releaseKeyStoreFile)
+            storePassword = Secret.SignIn.releaseKeyStorePassword
+            keyAlias = Secret.SignIn.releaseKeyAlias
+            keyPassword = Secret.SignIn.releaseKeyPassword
+        }
+    }
+
+    buildTypes {
+
+        getByName("debug") {
+            versionNameSuffix = "-debug"
+            signingConfig = signingConfigs.getByName("debug")
+        }
+
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    flavorDimensions.add("env")
+    productFlavors {
+
+        create("dev") {
+            dimension = "env"
+            versionNameSuffix = "-dev"
+            applicationIdSuffix = ".dev"
+        }
+
+        create("prod") {
+            dimension = "env"
+        }
+    }
+
+    lint {
+        abortOnError = false
+    }
+
+    buildFeatures.apply {
+        dataBinding = true
+    }
+}
+
+dependencies {
+    implementation(project(":data"))
+
+    // UI
+    implementation(Config.Libs.ktx)
+    implementation(Config.Libs.material)
+    implementation(Config.Libs.appcompat)
+    implementation(Config.Libs.fragmentKtx)
+    implementation(Config.Libs.constraintLayout)
+    implementation(Config.Libs.swipeRefreshLayout)
+    implementation(Config.Libs.adapterDelegates)
+    implementation(Config.Libs.sdp)
+    implementation(Config.Libs.glide)
+
+    // DI
+    implementation(Config.Libs.dagger)
+    implementation(Config.Libs.daggerAndroid)
+    kapt(Config.Libs.daggerCompiler)
+    kapt(Config.Libs.daggerProcessor)
+
+    // Lifecycle
+    implementation(Config.Libs.lifecycle)
+
+    // RxJava
+    implementation(Config.Libs.rxAndroid)
+    implementation(Config.Libs.rxKotlin)
+
+    // Networking
+    implementation(Config.Libs.okhttp)
+    implementation(Config.Libs.okhttpLogging)
+    implementation(Config.Libs.retrofit)
+    implementation(Config.Libs.retrofitGson)
+    implementation(Config.Libs.retrofitRxJava)
+    implementation(Config.Libs.retrofitRxJavaAdapter)
+
+    // Navigation
+    implementation(Config.Libs.navigationFragment)
+    implementation(Config.Libs.navigationUi)
+}

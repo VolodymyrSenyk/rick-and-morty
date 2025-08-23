@@ -5,8 +5,8 @@
 -repackageclasses
 
 #####################
-### Gson
+### Safe args arguments
 #####################
-# Classes that interact with Gson
--keep class com.senyk.rickandmorty.presentation.presentation.entity.** { *; }
--keepclassmembers enum * { *; }
+-keepnames class * extends android.os.Parcelable
+-keep class kotlinx.serialization.** { *; }
+-keep enum * { *; }

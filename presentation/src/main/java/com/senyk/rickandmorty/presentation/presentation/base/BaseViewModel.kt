@@ -16,7 +16,7 @@ import javax.inject.Inject
 abstract class BaseViewModel : ViewModel() {
 
     @Inject
-    protected lateinit var resourcesProvider: ResourcesProvider
+    lateinit var resourcesProvider: ResourcesProvider
 
     protected val tag: String = this.javaClass.simpleName
 
