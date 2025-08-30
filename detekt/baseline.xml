@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+    <ManuallySuppressedIssues>
+        <ID>MagicNumber:Config.kt$Config$1000_000</ID>
+        <ID>MagicNumber:Config.kt$Config$1000</ID>
+    </ManuallySuppressedIssues>
+</SmellBaseline>

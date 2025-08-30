@@ -68,6 +68,7 @@ object Config {
         const val kermit = "2.0.4"
         const val leakCanary = "2.14"
         const val detekt = "1.23.8"
+        const val gradleDoctor = "0.12.0"
         const val versionsPlugin = "0.52.0"
         const val sonarqube = "6.2.0.5505"
 

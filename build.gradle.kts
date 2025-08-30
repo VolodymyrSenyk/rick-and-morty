@@ -3,6 +3,7 @@ import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
@@ -10,7 +11,13 @@ apply(from = rootProject.file("repositories.gradle.kts"))
 
 plugins {
     id("com.google.devtools.ksp") version Config.Versions.ksp apply false
+    id("io.gitlab.arturbosch.detekt") version Config.Versions.detekt
+    id("com.osacky.doctor") version Config.Versions.gradleDoctor
     id("com.github.ben-manes.versions") version Config.Versions.versionsPlugin
+}
+
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Config.Versions.detekt}")
 }
 
 buildscript {
@@ -108,6 +115,33 @@ tasks.register<Delete>("clean") {
     delete(layout.buildDirectory)
     subprojects.forEach { subproject ->
         delete(subproject.layout.buildDirectory)
+    }
+}
+
+tasks.register<Detekt>("detektAll") {
+    group = "verification"
+    description = "Run project level detekt analysis."
+
+    buildUponDefaultConfig = true
+    allRules = false
+    parallel = true
+    ignoreFailures = false
+    config.setFrom("$projectDir/detekt/detekt.yml")
+    baseline = file("$projectDir/detekt/baseline.xml")
+
+    setSource(files(projectDir))
+    include("**/*.kt", "**/*.kts")
+    exclude("**/resources/**", "**/build/**", "**/test/**", "**/androidTest/**")
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(false)
+        md.required.set(false)
+
+        html.outputLocation = file("$projectDir/build/reports/detekt/detekt.html")
+        xml.outputLocation = file("$projectDir/build/reports/detekt/detekt.xml")
+        txt.outputLocation = file("$projectDir/build/reports/detekt/detekt.txt")
     }
 }
 

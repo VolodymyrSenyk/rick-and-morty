@@ -108,4 +108,7 @@ dependencies {
     // Navigation
     implementation(Config.Libs.navigationFragment)
     implementation(Config.Libs.navigationUi)
+
+    // Development
+    debugImplementation(Config.Libs.leakCanary)
 }
