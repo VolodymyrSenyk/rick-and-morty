@@ -7,4 +7,5 @@ internal data class CharactersListViewState(
     val charactersList: List<ListItem> = emptyList(),
     val isRefreshing: Boolean = false,
     val showProgress: Boolean = true,
+    val loadingNextDataSet: Boolean = false,
 ) : ViewState

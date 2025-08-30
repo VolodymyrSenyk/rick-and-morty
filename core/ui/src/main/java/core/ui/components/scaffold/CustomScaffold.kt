@@ -20,7 +20,7 @@ import core.ui.components.toolbar.TopAppBarShadow
 import core.ui.components.toolbar.SimpleTopAppBarTitle
 import core.ui.components.toolbar.SimpleTopAppBar
 import core.ui.preview.ThemePreviewParameterProvider
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.ThemeMode
 
 @Composable
@@ -43,7 +43,7 @@ fun CustomScaffold(
 @Preview
 @Composable
 private fun CustomScaffoldPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) themeMode: ThemeMode) {
-    BlokNotTheme(themeMode) {
+    RickAndMortyTheme(themeMode) {
         CustomScaffold(
             topAppBar = {
                 SimpleTopAppBar(

@@ -3,18 +3,14 @@ package com.senyk.rickandmorty.presentation.presentation.feature.main
 import arch.android.BaseSimpleMviViewModel
 import com.senyk.rickandmorty.domain.entity.CharacterDto
 import com.senyk.rickandmorty.domain.usecase.orders.GetCharactersUseCase
-import com.senyk.rickandmorty.presentation.R
 import com.senyk.rickandmorty.presentation.presentation.entity.AlphaSortType
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUiMapper
-import com.senyk.rickandmorty.presentation.presentation.entity.EmptyStateListItem
-import com.senyk.rickandmorty.presentation.presentation.entity.ProgressListItem
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListIntent
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListNavEvent
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListSideEffect
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListViewState
 import com.senyk.rickandmorty.presentation.presentation.recycler.util.PaginationHelper
-import com.senyk.rickandmorty.presentation.presentation.util.provider.ResourcesProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,17 +18,11 @@ import javax.inject.Inject
 internal class CharactersListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val characterUiMapper: CharacterUiMapper,
-    resourcesProvider: ResourcesProvider,
 ) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
     initialState = CharactersListViewState(),
 ) {
 
     private val paginationHelper = PaginationHelper()
-
-    private val progressListItem = ProgressListItem()
-    private val emptyStateListItem = EmptyStateListItem(
-        message = resourcesProvider.getString(R.string.message_characters_empty_list)
-    )
 
     private var sortType = AlphaSortType.NOT_SORTED
 
@@ -52,7 +42,9 @@ internal class CharactersListViewModel @Inject constructor(
     }
 
     private suspend fun onScrolled(lastVisibleItemPosition: Int) {
-        if (paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)) {
+        val isNextDataSetNeeded = paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)
+        val isLoading = currentState.isRefreshing || currentState.showProgress
+        if (isNextDataSetNeeded && !isLoading) {
             loadCharacters()
         }
     }
@@ -71,9 +63,8 @@ internal class CharactersListViewModel @Inject constructor(
         sendNavEvent(CharactersListNavEvent.NavigateToCharacterDetails(character = character))
     }
 
-    private fun onSortClicked() {
-        val characters = currentState.charactersList.toMutableList()
-        characters.remove(progressListItem)
+    private suspend fun onSortClicked() {
+        val characters = currentState.charactersList.toMutableList().filterIsInstance<CharacterUi>()
 
         updateUiState { oldState ->
             oldState.copy(showProgress = true)
@@ -83,12 +74,12 @@ internal class CharactersListViewModel @Inject constructor(
 
             AlphaSortType.NOT_SORTED, AlphaSortType.DESCENDING -> {
                 sortType = AlphaSortType.ASCENDING
-                characters.sortedBy { (it as? CharacterUi)?.name }
+                characters.sortedBy { it.name }
             }
 
             AlphaSortType.ASCENDING -> {
                 sortType = AlphaSortType.DESCENDING
-                characters.sortedByDescending { (it as? CharacterUi)?.name }
+                characters.sortedByDescending { it.name }
             }
         }
 
@@ -98,6 +89,7 @@ internal class CharactersListViewModel @Inject constructor(
                 showProgress = false,
             )
         }
+        sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
     private suspend fun onBackButtonClicked() {
@@ -128,15 +120,9 @@ internal class CharactersListViewModel @Inject constructor(
             currentDataSet.toMutableList().run { filter { it is CharacterUi } }.toMutableList()
         }
 
-        if (data.isEmpty()) {
-            dataList.add(emptyStateListItem)
-        } else {
+        if (data.isNotEmpty()) {
             dataList.addAll(data.map { characterUiMapper(it) })
-        }
-
-        paginationHelper.apply {
-            onDataSetLoaded(data.size)
-            if (hasMoreData()) dataList.add(progressListItem)
+            paginationHelper.onDataSetLoaded(data.size)
         }
 
         updateUiState { oldState ->
@@ -144,6 +130,7 @@ internal class CharactersListViewModel @Inject constructor(
                 charactersList = dataList,
                 isRefreshing = false,
                 showProgress = false,
+                loadingNextDataSet = paginationHelper.hasMoreData(),
             )
         }
     }

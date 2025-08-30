@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsUi
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
 
 @Composable
@@ -49,7 +49,7 @@ internal fun CharacterDetailsItem(
 @Preview
 @Composable
 private fun CharacterDetailsItemPreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         CharacterDetailsItem(item = CharacterDetailsUi(label = "Name:", data = "Rick Sanchez"))
     }
 }

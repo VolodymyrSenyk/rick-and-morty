@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
 
 @Composable
@@ -36,7 +36,7 @@ fun TopAppBarShadow(
 @Preview
 @Composable
 private fun TopAppBarShadowPreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         Column(modifier = Modifier.background(color = Color.White)) {
             SimpleTopAppBar(
                 title = {

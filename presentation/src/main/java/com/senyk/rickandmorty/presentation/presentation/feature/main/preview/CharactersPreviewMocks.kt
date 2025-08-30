@@ -19,7 +19,7 @@ internal object CharactersPreviewMocks {
         imageUrl = avatarConstructor(),
     )
 
-    val charactersList: List<CharacterUi> = List(12) { character }.mapIndexed { index, model ->
+    val charactersList: List<CharacterUi> = List(5) { character }.mapIndexed { index, model ->
         model.copy(id = index, imageUrl = avatarConstructor(index))
     }
 }

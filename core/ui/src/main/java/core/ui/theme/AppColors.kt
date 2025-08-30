@@ -13,6 +13,7 @@ internal object AppColors {
     val Grey600 = Color(0xFF393939)
     val Grey500 = Color(0xFF333333)
     val Grey100 = Color(0xFFC9C9C9)
+    val Grey075 = Color(0xFFDDDEDD)
     val Grey050 = Color(0xFFF1F3F1)
 
     val Red600 = Color(0xFFBF0000)

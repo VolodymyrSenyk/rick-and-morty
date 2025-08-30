@@ -12,6 +12,11 @@ internal class CharactersListViewStatePreviewParameterProvider : PreviewParamete
             isRefreshing = false,
         ),
         CharactersListViewState(
+            charactersList = emptyList(),
+            showProgress = false,
+            isRefreshing = false,
+        ),
+        CharactersListViewState(
             charactersList = CharactersPreviewMocks.charactersList,
             showProgress = false,
             isRefreshing = false,
@@ -19,7 +24,8 @@ internal class CharactersListViewStatePreviewParameterProvider : PreviewParamete
         CharactersListViewState(
             charactersList = CharactersPreviewMocks.charactersList,
             showProgress = false,
-            isRefreshing = true,
+            isRefreshing = false,
+            loadingNextDataSet = true,
         ),
     )
 }

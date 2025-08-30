@@ -16,7 +16,7 @@ import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.Cha
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.components.toolbar.SimpleTopAppBar
 import core.ui.preview.ThemePreviewParameterProvider
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.ThemeMode
 
 @Composable
@@ -37,7 +37,7 @@ internal fun CharacterDetailsScreen(
 @Preview
 @Composable
 private fun CharacterDetailsScreenPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) theme: ThemeMode) {
-    BlokNotTheme(themeMode = theme) {
+    RickAndMortyTheme(themeMode = theme) {
         CustomScaffold(topAppBar = { SimpleTopAppBar(titleText = CharactersPreviewMocks.character.name) }) {
             val viewState = CharacterDetailsViewStatePreviewMock.provideCharacterDetailsViewState(LocalContext.current)
             CharacterDetailsScreenContent(viewState = viewState)

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.senyk.rickandmorty.presentation.presentation.feature.main.details.CharacterDetailsScreen
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +24,7 @@ class CharacterDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = ComposeView(context = requireContext()).apply {
         setContent {
-            BlokNotTheme {
+            RickAndMortyTheme {
                 CharacterDetailsScreen(
                     viewModel = viewModel,
                     args = args,

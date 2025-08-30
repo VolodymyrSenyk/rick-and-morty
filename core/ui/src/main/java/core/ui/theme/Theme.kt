@@ -15,7 +15,7 @@ enum class ThemeMode {
 }
 
 @Composable
-fun BlokNotTheme(
+fun RickAndMortyTheme(
     themeMode: ThemeMode = ThemeMode.LIGHT, // Default value for Compose previews
     content: @Composable () -> Unit,
 ) {

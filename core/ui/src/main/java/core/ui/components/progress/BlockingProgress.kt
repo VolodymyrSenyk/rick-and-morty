@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun BlockingProgress(
@@ -44,7 +44,7 @@ fun BlockingProgress(
 @Preview
 @Composable
 private fun BlockingProgressPreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         BlockingProgress(visible = true)
     }
 }

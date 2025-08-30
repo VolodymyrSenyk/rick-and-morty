@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
 
 @Composable
@@ -45,7 +45,7 @@ fun SimpleTopAppBarTitle(
 @Preview
 @Composable
 private fun SimpleTopAppBarTitlePreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         SimpleTopAppBarTitle(
             icon = Icons.Default.AccountBox,
             titleText = "Some Screen",

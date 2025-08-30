@@ -13,7 +13,7 @@ import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsU
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsUiMapper
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharactersPreviewMocks
 import com.senyk.rickandmorty.presentation.presentation.util.provider.ResourcesProvider
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
 
 @Composable
@@ -38,7 +38,7 @@ internal fun CharacterDetailsList(
 @Preview
 @Composable
 private fun RulesListPreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         val context = LocalContext.current
         val resourcesProvider = ResourcesProvider(context)
         val mapper = CharacterDetailsUiMapper(resourcesProvider)

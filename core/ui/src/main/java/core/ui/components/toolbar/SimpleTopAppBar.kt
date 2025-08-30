@@ -11,7 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import core.ui.theme.BlokNotTheme
+import core.ui.theme.RickAndMortyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +39,7 @@ fun SimpleTopAppBar(
 @Preview
 @Composable
 private fun SimpleTopAppBarPreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         SimpleTopAppBar(
             title = {
                 SimpleTopAppBarTitle(
@@ -54,7 +54,7 @@ private fun SimpleTopAppBarPreview() {
 @Preview
 @Composable
 private fun SimplestTopAppBarPreview() {
-    BlokNotTheme {
+    RickAndMortyTheme {
         SimpleTopAppBar(title = { SimpleTopAppBarTitle(titleText = "Some Screen") })
     }
 }
