@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.CharacterAdapterDelegate" />
+
         <variable
             name="viewModel"
             type="com.senyk.rickandmorty.presentation.presentation.feature.main.CharactersListViewModel" />
@@ -20,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_4sdp"
         android:layout_marginVertical="@dimen/_6sdp"
-        android:onClick="@{v -> viewModel.onCharacterClick(model)}"
+        android:onClick="@{v -> viewModel.onIntent(CharacterAdapterDelegate.onCharacterClicked(model))}"
         app:cardCornerRadius="8dp"
         app:cardElevation="6dp">
 

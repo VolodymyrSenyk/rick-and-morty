@@ -3,14 +3,19 @@ package com.senyk.rickandmorty.presentation.presentation.feature.main
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.senyk.rickandmorty.presentation.R
 import com.senyk.rickandmorty.presentation.databinding.FragmentCharactersListBinding
 import com.senyk.rickandmorty.presentation.presentation.base.BaseFragment
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListIntent
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListNavEvent
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListSideEffect
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapter.BaseDataBindingDelegationAdapter
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.CharacterAdapterDelegate
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.EmptyStateAdapterDelegate
@@ -22,7 +27,10 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     override val layoutRes = R.layout.fragment_characters_list
     override val menuRes = R.menu.menu_main
-    override val viewModel: CharactersListViewModel by viewModels()
+
+    private val directions = CharactersListFragmentDirections
+
+    private val viewModel: CharactersListViewModel by viewModels()
 
     private lateinit var adapter: BaseDataBindingDelegationAdapter
 
@@ -31,6 +39,11 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         binding.viewModel = viewModel
         setUpList()
         setObservers()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onIntent(CharactersListIntent.OnViewStarted)
     }
 
     override fun onResume() {
@@ -42,7 +55,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         when (item.itemId) {
 
             R.id.action_sort -> {
-                viewModel.onSortClick(); true
+                viewModel.onIntent(CharactersListIntent.OnSortClicked); true
             }
 
             else -> super.onOptionsItemSelected(item)
@@ -54,17 +67,37 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     }
 
     private fun setObservers() {
-        viewModel.charactersList.observe(viewLifecycleOwner, { list ->
-            adapter.items = list
-            if (binding.swipeRefreshCharacters.isRefreshing) {
-                binding.swipeRefreshCharacters.isRefreshing = false
-            }
-        })
-        viewModel.scrollToTop.observe(viewLifecycleOwner, { scroll ->
-            if (scroll) {
+        viewModel.uiState.subscribeWithLifecycle { uiState ->
+            adapter.items = uiState.charactersList
+            binding.swipeRefreshCharacters.isRefreshing = uiState.isRefreshing
+            if (uiState.scrollToTop) {
                 binding.charactersList.layoutManager?.scrollToPosition(0)
             }
-        })
+        }
+        viewModel.sideEffect.subscribeWithLifecycle { mviSideEffect ->
+            when (mviSideEffect) {
+                is CharactersListSideEffect.ShowErrorMessage -> {
+                    val message = requireContext().getString(R.string.error_unknown)
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                }
+
+                null -> {}
+            }
+            viewModel.onSideEffectHandled(mviSideEffect)
+        }
+        viewModel.navEvent.subscribeWithLifecycle { mviNavEvent ->
+            when (mviNavEvent) {
+                is CharactersListNavEvent.NavigateToCharacterDetails -> {
+                    val direction = directions.actionCharactersListFragmentToCharacterDetailsFragment(character = mviNavEvent.character)
+                    findNavController().navigate(direction)
+                }
+
+                is CharactersListNavEvent.NavigateBack -> findNavController().popBackStack()
+
+                null -> {}
+            }
+            viewModel.onNavEventHandled(mviNavEvent)
+        }
     }
 
     private fun setUpList() {
@@ -84,7 +117,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         }
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                layoutManager.findLastVisibleItemPosition().let { viewModel.onScroll(it) }
+                layoutManager.findLastVisibleItemPosition().let { viewModel.onIntent(CharactersListIntent.OnScrolled(it)) }
                 super.onScrolled(recyclerView, dx, dy)
             }
         }
@@ -93,6 +126,6 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
             this.layoutManager = layoutManager
             addOnScrollListener(scrollListener)
         }
-        binding.swipeRefreshCharacters.setOnRefreshListener { viewModel.onRefresh() }
+        binding.swipeRefreshCharacters.setOnRefreshListener { viewModel.onIntent(CharactersListIntent.OnRefreshed) }
     }
 }

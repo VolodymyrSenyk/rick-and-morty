@@ -8,9 +8,10 @@ import com.senyk.rickandmorty.presentation.databinding.ListItemCharacterBinding
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
 import com.senyk.rickandmorty.presentation.presentation.entity.ListItem
 import com.senyk.rickandmorty.presentation.presentation.feature.main.CharactersListViewModel
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListIntent
 import com.senyk.rickandmorty.presentation.presentation.recycler.viewholder.BaseDataBindingViewHolder
 
-class CharacterAdapterDelegate(
+internal class CharacterAdapterDelegate(
     private val viewModel: CharactersListViewModel
 ) : AdapterDelegate<List<ListItem>>() {
 
@@ -36,5 +37,12 @@ class CharacterAdapterDelegate(
             this.model = model
             this.viewModel = this@CharacterAdapterDelegate.viewModel
         }
+    }
+
+    companion object {
+
+        @JvmStatic
+        fun onCharacterClicked(character: CharacterUi): CharactersListIntent =
+            CharactersListIntent.OnCharacterClicked(character)
     }
 }

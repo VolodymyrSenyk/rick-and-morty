@@ -123,7 +123,7 @@ abstract class BaseSimpleMviViewModel<S : ViewState, I : MviIntent, E : MviSideE
      * Applies state transformations using the provided [transform] function.
      * Emits the updated state and logs the changes.
      */
-    protected fun updateUiState(transform: (S) -> S) {
+    protected fun updateUiState(transform: (oldState: S) -> S) {
         val newState = transform(uiState.value)
         Kermit.tag(tag).i("ViewState changed: from ${uiState.value} to $newState")
         _uiState.update { newState }

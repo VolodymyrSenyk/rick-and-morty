@@ -10,7 +10,7 @@
 
         <variable
             name="showProgress"
-            type="LiveData&lt;Boolean>" />
+            type="Boolean" />
 
         <variable
             name="blockScreen"

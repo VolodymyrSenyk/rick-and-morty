@@ -16,7 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class CharacterDetailsFragment : BaseFragment<FragmentCharacterDetailsBinding>() {
 
     override val layoutRes = R.layout.fragment_character_details
-    override val viewModel: CharacterDetailsViewModel by viewModels()
+
+    private val viewModel: CharacterDetailsViewModel by viewModels()
     private val args: CharacterDetailsFragmentArgs by navArgs()
     private lateinit var adapter: BaseDataBindingDelegationAdapter
 

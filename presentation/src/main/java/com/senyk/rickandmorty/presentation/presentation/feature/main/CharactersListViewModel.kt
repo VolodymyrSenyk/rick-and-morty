@@ -1,33 +1,31 @@
 package com.senyk.rickandmorty.presentation.presentation.feature.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import arch.android.BaseSimpleMviViewModel
 import com.senyk.rickandmorty.domain.entity.CharacterDto
 import com.senyk.rickandmorty.domain.usecase.orders.GetCharactersUseCase
 import com.senyk.rickandmorty.presentation.R
-import com.senyk.rickandmorty.presentation.presentation.base.BaseCoroutinesViewModel
 import com.senyk.rickandmorty.presentation.presentation.entity.AlphaSortType
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUiMapper
 import com.senyk.rickandmorty.presentation.presentation.entity.EmptyStateListItem
-import com.senyk.rickandmorty.presentation.presentation.entity.ListItem
 import com.senyk.rickandmorty.presentation.presentation.entity.ProgressListItem
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListIntent
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListNavEvent
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListSideEffect
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListViewState
 import com.senyk.rickandmorty.presentation.presentation.recycler.util.PaginationHelper
-import com.senyk.rickandmorty.presentation.presentation.util.livedata.SingleEventLiveData
-import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.HandledEvent
-import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigateToFragmentEvent
 import com.senyk.rickandmorty.presentation.presentation.util.provider.ResourcesProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CharactersListViewModel @Inject constructor(
+internal class CharactersListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val characterUiMapper: CharacterUiMapper,
-    resourcesProvider: ResourcesProvider
-) : BaseCoroutinesViewModel() {
-
-    private val directions = CharactersListFragmentDirections
+    resourcesProvider: ResourcesProvider,
+) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
+    initialState = CharactersListViewState(),
+) {
 
     private val paginationHelper = PaginationHelper()
 
@@ -36,46 +34,51 @@ class CharactersListViewModel @Inject constructor(
         message = resourcesProvider.getString(R.string.message_characters_empty_list)
     )
 
-    private val _charactersList: MutableLiveData<List<ListItem>> = MutableLiveData()
-    val charactersList: LiveData<List<ListItem>>
-        get() = _charactersList
-
-    private val _scrollToTop = SingleEventLiveData<Boolean>()
-    val scrollToTop: LiveData<Boolean>
-        get() = _scrollToTop
-
     private var sortType = AlphaSortType.NOT_SORTED
 
-    init {
-        loadCharacters(withProgress = true)
+    override val tag: String = this.javaClass.simpleName
+
+    override suspend fun executeIntent(mviIntent: CharactersListIntent) = when (mviIntent) {
+        is CharactersListIntent.OnViewStarted -> onViewStarted()
+        is CharactersListIntent.OnScrolled -> onScrolled(lastVisibleItemPosition = mviIntent.lastVisibleItemPosition)
+        is CharactersListIntent.OnRefreshed -> onRefreshed()
+        is CharactersListIntent.OnCharacterClicked -> onCharacterClicked(character = mviIntent.character)
+        is CharactersListIntent.OnSortClicked -> onSortClicked()
+        is CharactersListIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
-    fun onScroll(lastVisibleItemPosition: Int) {
+    private suspend fun onViewStarted() {
+        loadCharacters()
+    }
+
+    private suspend fun onScrolled(lastVisibleItemPosition: Int) {
         if (paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)) {
-            loadCharacters(withProgress = false)
+            loadCharacters()
         }
     }
 
-    fun onRefresh() = launch {
+    private suspend fun onRefreshed() {
+        updateUiState { oldState ->
+            oldState.copy(isRefreshing = true)
+        }
         paginationHelper.resetPagination()
         val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
-        setData(characters)
-        _scrollToTop.setValue(true)
+        setData(data = characters, scrollToTop = true)
     }
 
-    fun onCharacterClick(character: CharacterUi) {
-        val event = NavigateToFragmentEvent(
-            directions.actionCharactersListFragmentToCharacterDetailsFragment(character = character)
-        )
-        _navigationEvent.value = HandledEvent(event)
+    private suspend fun onCharacterClicked(character: CharacterUi) {
+        sendNavEvent(CharactersListNavEvent.NavigateToCharacterDetails(character = character))
     }
 
-    fun onSortClick() {
-        val characters = charactersList.value?.toMutableList() ?: return
+    private fun onSortClicked() {
+        val characters = currentState.charactersList.toMutableList()
         characters.remove(progressListItem)
-        _charactersList.value = null
-        _showProgress.setValue(true)
-        _charactersList.value = when (sortType) {
+
+        updateUiState { oldState ->
+            oldState.copy(showProgress = true)
+        }
+
+        val sortedCharacters = when (sortType) {
 
             AlphaSortType.NOT_SORTED, AlphaSortType.DESCENDING -> {
                 sortType = AlphaSortType.ASCENDING
@@ -87,21 +90,40 @@ class CharactersListViewModel @Inject constructor(
                 characters.sortedByDescending { (it as? CharacterUi)?.name }
             }
         }
-        _showProgress.setValue(false)
+
+        updateUiState { oldState ->
+            oldState.copy(
+                charactersList = sortedCharacters,
+                showProgress = false,
+            )
+        }
     }
 
-    private fun loadCharacters(withProgress: Boolean) = launch {
-        if (withProgress) _showProgress.setValue(true)
+    private suspend fun onBackButtonClicked() {
+        sendNavEvent(CharactersListNavEvent.NavigateBack)
+    }
+
+    override suspend fun onError(throwable: Throwable) {
+        updateUiState { oldState ->
+            oldState.copy(
+                isRefreshing = false,
+                showProgress = false,
+            )
+        }
+        sendSideEffect(CharactersListSideEffect.ShowErrorMessage)
+        super.onError(throwable)
+    }
+
+    private suspend fun loadCharacters() {
         val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
-        setData(characters)
-        _showProgress.setValue(false)
+        setData(data = characters)
     }
 
-    private fun setData(data: List<CharacterDto>) {
+    private fun setData(data: List<CharacterDto>, scrollToTop: Boolean = false) {
         val dataList = if (paginationHelper.isCurrentDataSetEmpty()) {
             mutableListOf()
         } else {
-            val currentDataSet = _charactersList.value ?: listOf()
+            val currentDataSet = currentState.charactersList
             currentDataSet.toMutableList().run { filter { it is CharacterUi } }.toMutableList()
         }
 
@@ -116,6 +138,13 @@ class CharactersListViewModel @Inject constructor(
             if (hasMoreData()) dataList.add(progressListItem)
         }
 
-        _charactersList.value = dataList
+        updateUiState { oldState ->
+            oldState.copy(
+                charactersList = dataList,
+                isRefreshing = false,
+                showProgress = false,
+                scrollToTop = scrollToTop,
+            )
+        }
     }
 }

@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             bind:blockScreen="@{true}"
-            bind:showProgress="@{viewModel.showProgress}"
+            bind:showProgress="@{viewModel.uiState.showProgress}"
             tools:visibility="gone" />
 
     </FrameLayout>
