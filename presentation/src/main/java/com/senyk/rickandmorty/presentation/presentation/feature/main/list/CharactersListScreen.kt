@@ -20,6 +20,7 @@ import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.Charact
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListViewState
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharactersPreviewMocks
 import com.senyk.rickandmorty.presentation.presentation.feature.navigation.CharacterDetailsDestination
+import com.senyk.rickandmorty.presentation.presentation.feature.navigation.toNavArg
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
@@ -75,7 +76,11 @@ private fun CharactersListSideEffectHandler(viewModel: CharactersListViewModel, 
 private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, router: Router) {
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
-            is CharactersListNavEvent.NavigateToCharacterDetails -> router.navigateTo(CharacterDetailsDestination(mviNavEvent.character))
+            is CharactersListNavEvent.NavigateToCharacterDetails -> {
+                val destination = mviNavEvent.character.toNavArg()
+                router.navigateTo(CharacterDetailsDestination(destination))
+            }
+
             is CharactersListNavEvent.NavigateBack -> router.back()
         }
     }

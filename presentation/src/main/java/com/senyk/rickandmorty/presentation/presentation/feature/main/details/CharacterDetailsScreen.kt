@@ -13,6 +13,7 @@ import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.Charact
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharacterDetailsViewStatePreviewMock
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharactersPreviewMocks
 import com.senyk.rickandmorty.presentation.presentation.feature.navigation.CharacterDetailsDestination
+import com.senyk.rickandmorty.presentation.presentation.feature.navigation.toModel
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.components.toolbar.SimpleTopAppBar
 import core.ui.preview.ThemePreviewParameterProvider
@@ -25,7 +26,7 @@ internal fun CharacterDetailsScreen(
     args: CharacterDetailsDestination,
 ) {
     LaunchedEffect(args) {
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(character = args.character))
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(character = args.character.toModel()))
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()

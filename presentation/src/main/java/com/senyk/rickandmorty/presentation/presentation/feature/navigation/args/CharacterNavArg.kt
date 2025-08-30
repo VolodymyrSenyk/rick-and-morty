@@ -3,25 +3,41 @@ package com.senyk.rickandmorty.presentation.presentation.feature.navigation.args
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.navigation.NavType
-import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-val CharacterNavArgType = object : NavType<CharacterUi>(isNullableAllowed = false) {
-    override fun put(bundle: Bundle, key: String, value: CharacterUi) {
+@Parcelize
+@Serializable
+data class CharacterNavArg(
+    val id: Int,
+    val name: String,
+    val status: String,
+    val species: String,
+    val type: String,
+    val gender: String,
+    val origin: String,
+    val location: String,
+    val imageUrl: String,
+) : Parcelable
+
+val CharacterNavArgType = object : NavType<CharacterNavArg>(isNullableAllowed = false) {
+    override fun put(bundle: Bundle, key: String, value: CharacterNavArg) {
         bundle.putParcelable(key, value)
     }
 
-    override fun get(bundle: Bundle, key: String): CharacterUi? {
+    override fun get(bundle: Bundle, key: String): CharacterNavArg? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            bundle.getParcelable(key, CharacterUi::class.java)
+            bundle.getParcelable(key, CharacterNavArg::class.java)
         } else {
             @Suppress("DEPRECATION")
             bundle.getParcelable(key)
         }
     }
 
-    override fun serializeAsValue(value: CharacterUi): String = Uri.encode(Json.encodeToString(value))
+    override fun serializeAsValue(value: CharacterNavArg): String = Uri.encode(Json.encodeToString(value))
 
-    override fun parseValue(value: String): CharacterUi = Json.decodeFromString<CharacterUi>(value)
+    override fun parseValue(value: String): CharacterNavArg = Json.decodeFromString<CharacterNavArg>(value)
 }
