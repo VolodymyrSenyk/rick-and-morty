@@ -8,9 +8,11 @@ import com.senyk.rickandmorty.presentation.R
 import com.senyk.rickandmorty.presentation.presentation.util.provider.ResourcesProvider
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import javax.inject.Inject
 
 @Parcelize
+@Serializable
 data class CharacterUi(
     val id: Int,
     val name: String,

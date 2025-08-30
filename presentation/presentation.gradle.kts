@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.compose")
+    kotlin("plugin.serialization") version Config.Versions.kotlinLanguage
 }
 
 android {
@@ -85,6 +86,7 @@ android {
 dependencies {
     implementation(project(":core:arch-android"))
     implementation(project(":core:ui"))
+    implementation(project(":core:navigation-compose"))
     implementation(project(":data"))
 
     // UI
@@ -105,6 +107,8 @@ dependencies {
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
 
+    implementation(Config.Libs.serialization)
+    implementation(Config.Libs.splashscreen)
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
 

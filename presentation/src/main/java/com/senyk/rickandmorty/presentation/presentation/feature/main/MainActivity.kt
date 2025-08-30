@@ -1,11 +1,96 @@
 package com.senyk.rickandmorty.presentation.presentation.feature.main
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.os.Build
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.colorResource
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
+import androidx.navigation.compose.rememberNavController
 import com.senyk.rickandmorty.presentation.R
-import com.senyk.rickandmorty.presentation.presentation.base.BaseActivity
+import com.senyk.rickandmorty.presentation.presentation.feature.navigation.RickAndMortyNavHost
+import core.ui.theme.RickAndMortyTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+
+private const val SPLASH_SCREEN_DELAY_IN_MILLIS = 3000L
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContent {
+            MainActivityScreen(splashScreen)
+        }
+    }
+}
 
-    override val layoutRes = R.layout.activity_main
+@Composable
+private fun MainActivityScreen(splashScreen: SplashScreen) {
+    var isSplashVisible by remember { mutableStateOf(true) }
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+        splashScreen.setKeepOnScreenCondition { isSplashVisible }
+    } else if (isSplashVisible) {
+        SplashScreen()
+    }
+
+    LaunchedEffect(Unit) {
+        delay(SPLASH_SCREEN_DELAY_IN_MILLIS)
+        isSplashVisible = false
+    }
+
+    RickAndMortyTheme {
+        val statusBarColor = if (isSplashVisible) colorResource(R.color.colorSplashScreen) else MaterialTheme.colorScheme.primary
+        val navigationBarColor = if (isSplashVisible) colorResource(R.color.colorSplashScreen) else Color.Black
+        setSystemBarsColors(statusBarColor = statusBarColor, navBarColor = navigationBarColor, isLight = isSplashVisible)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(statusBarColor)
+                .navigationBarsPadding()
+        ) {
+            RickAndMortyNavHost(rootNavController = rememberNavController())
+        }
+    }
+}
+
+@SuppressLint("ComposableNaming")
+@Suppress("DEPRECATION")
+@Composable
+internal fun setSystemBarsColors(
+    statusBarColor: Color,
+    navBarColor: Color,
+    isLight: Boolean,
+) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        (LocalView.current.context as? Activity)?.window?.let { window ->
+            window.statusBarColor = statusBarColor.toArgb()
+            window.navigationBarColor = navBarColor.toArgb()
+            WindowCompat.getInsetsController(window, LocalView.current).apply {
+                isAppearanceLightStatusBars = isLight
+                isAppearanceLightNavigationBars = isLight
+            }
+        }
+    }
 }

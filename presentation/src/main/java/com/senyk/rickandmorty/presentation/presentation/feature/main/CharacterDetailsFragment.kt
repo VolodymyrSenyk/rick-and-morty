@@ -8,8 +8,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.senyk.rickandmorty.presentation.presentation.feature.main.details.CharacterDetailsScreen
-import core.ui.theme.RickAndMortyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,14 +20,5 @@ class CharacterDetailsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = ComposeView(context = requireContext()).apply {
-        setContent {
-            RickAndMortyTheme {
-                CharacterDetailsScreen(
-                    viewModel = viewModel,
-                    args = args,
-                )
-            }
-        }
-    }
+    ): View = ComposeView(context = requireContext())
 }

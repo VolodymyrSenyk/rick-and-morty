@@ -11,7 +11,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senyk.rickandmorty.presentation.R
-import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
 import com.senyk.rickandmorty.presentation.presentation.feature.main.CharactersListViewModel
 import com.senyk.rickandmorty.presentation.presentation.feature.main.list.components.CharactersListScreenContent
 import com.senyk.rickandmorty.presentation.presentation.feature.main.list.components.appbar.CharactersListTopAppBar
@@ -20,28 +19,22 @@ import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.Charact
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListSideEffect
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharactersListViewState
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharactersPreviewMocks
+import com.senyk.rickandmorty.presentation.presentation.feature.navigation.CharacterDetailsDestination
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.ThemeMode
 import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
+import navigation.compose.router.Router
 
 @Composable
-internal fun CharactersListScreen(
-    viewModel: CharactersListViewModel,
-    navigateToCharacterDetails: (CharacterUi) -> Unit,
-    navigateBack: () -> Unit,
-) {
+internal fun CharactersListScreen(viewModel: CharactersListViewModel, router: Router) {
     val gridState = rememberLazyGridState()
 
     CharactersListSideEffectHandler(viewModel = viewModel, gridState = gridState)
 
-    CharactersListNavEventHandler(
-        viewModel = viewModel,
-        navigateToCharacterDetails = navigateToCharacterDetails,
-        navigateBack = navigateBack,
-    )
+    CharactersListNavEventHandler(viewModel = viewModel, router = router)
 
     LaunchedEffect(viewModel) {
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
@@ -64,10 +57,7 @@ internal fun CharactersListScreen(
 }
 
 @Composable
-private fun CharactersListSideEffectHandler(
-    viewModel: CharactersListViewModel,
-    gridState: LazyGridState,
-) {
+private fun CharactersListSideEffectHandler(viewModel: CharactersListViewModel, gridState: LazyGridState) {
     val context = LocalContext.current
     SideEffectHandler(viewModel) { mviEffect ->
         when (mviEffect) {
@@ -82,15 +72,11 @@ private fun CharactersListSideEffectHandler(
 }
 
 @Composable
-private fun CharactersListNavEventHandler(
-    viewModel: CharactersListViewModel,
-    navigateToCharacterDetails: (CharacterUi) -> Unit,
-    navigateBack: () -> Unit,
-) {
+private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, router: Router) {
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
-            is CharactersListNavEvent.NavigateToCharacterDetails -> navigateToCharacterDetails(mviNavEvent.character)
-            is CharactersListNavEvent.NavigateBack -> navigateBack()
+            is CharactersListNavEvent.NavigateToCharacterDetails -> router.navigateTo(CharacterDetailsDestination(mviNavEvent.character))
+            is CharactersListNavEvent.NavigateBack -> router.back()
         }
     }
 }

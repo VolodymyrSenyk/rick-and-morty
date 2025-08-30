@@ -7,12 +7,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.senyk.rickandmorty.presentation.presentation.feature.main.CharacterDetailsFragmentArgs
 import com.senyk.rickandmorty.presentation.presentation.feature.main.CharacterDetailsViewModel
 import com.senyk.rickandmorty.presentation.presentation.feature.main.details.components.CharacterDetailsScreenContent
 import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharacterDetailsIntent
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharacterDetailsViewStatePreviewMock
 import com.senyk.rickandmorty.presentation.presentation.feature.main.preview.CharactersPreviewMocks
+import com.senyk.rickandmorty.presentation.presentation.feature.navigation.CharacterDetailsDestination
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.components.toolbar.SimpleTopAppBar
 import core.ui.preview.ThemePreviewParameterProvider
@@ -22,7 +22,7 @@ import core.ui.theme.ThemeMode
 @Composable
 internal fun CharacterDetailsScreen(
     viewModel: CharacterDetailsViewModel,
-    args: CharacterDetailsFragmentArgs,
+    args: CharacterDetailsDestination,
 ) {
     LaunchedEffect(args) {
         viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(character = args.character))
