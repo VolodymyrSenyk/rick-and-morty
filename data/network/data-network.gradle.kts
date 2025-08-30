@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-    api(project(":domain"))
+    api(project(":domain:characters"))
     implementation(Config.Libs.inject)
     implementation(Config.Libs.gson)
     implementation(Config.Libs.retrofit)

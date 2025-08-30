@@ -1,8 +1,8 @@
 package feature.characters.model
 
-import com.senyk.rickandmorty.domain.entity.CharacterDto
-import com.senyk.rickandmorty.domain.entity.GenderType
-import com.senyk.rickandmorty.domain.entity.StatusType
+import domain.characters.model.CharacterDto
+import domain.characters.model.GenderType
+import domain.characters.model.StatusType
 import feature.characters.R
 import feature.characters.util.provider.ResourcesProvider
 import javax.inject.Inject

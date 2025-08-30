@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.domain.entity
+package domain.characters.model
 
 data class CharacterDto(
     val id: Int,

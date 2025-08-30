@@ -2,9 +2,9 @@ package feature.characters.screen.list
 
 import arch.android.BaseSimpleMviViewModel
 import arch.util.PaginationHelper
-import com.senyk.rickandmorty.domain.entity.CharacterDto
-import com.senyk.rickandmorty.domain.usecase.orders.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import domain.characters.model.CharacterDto
+import domain.characters.usecase.GetCharactersUseCase
 import feature.characters.model.AlphaSortType
 import feature.characters.model.CharacterUi
 import feature.characters.model.CharacterUiMapper

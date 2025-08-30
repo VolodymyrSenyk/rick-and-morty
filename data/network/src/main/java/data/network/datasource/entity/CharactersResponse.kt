@@ -1,7 +1,7 @@
 package data.network.datasource.entity
 
 import com.google.gson.annotations.SerializedName
-import com.senyk.rickandmorty.domain.entity.CharacterDto
+import domain.characters.model.CharacterDto
 import javax.inject.Inject
 
 data class CharactersResponse(

@@ -1,9 +1,9 @@
 package data.network.datasource.entity
 
 import com.google.gson.annotations.SerializedName
-import com.senyk.rickandmorty.domain.entity.CharacterDto
-import com.senyk.rickandmorty.domain.entity.GenderType
-import com.senyk.rickandmorty.domain.entity.StatusType
+import domain.characters.model.CharacterDto
+import domain.characters.model.GenderType
+import domain.characters.model.StatusType
 import javax.inject.Inject
 
 data class CharactersResultsResponse(

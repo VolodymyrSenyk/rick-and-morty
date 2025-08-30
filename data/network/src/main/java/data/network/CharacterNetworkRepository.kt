@@ -1,9 +1,9 @@
 package data.network
 
-import com.senyk.rickandmorty.domain.entity.CharacterDto
-import com.senyk.rickandmorty.domain.repository.CharacterRepository
 import data.network.datasource.api.CharactersApi
 import data.network.datasource.entity.CharactersResponseMapper
+import domain.characters.CharacterRepository
+import domain.characters.model.CharacterDto
 import javax.inject.Inject
 
 class CharacterNetworkRepository @Inject constructor(

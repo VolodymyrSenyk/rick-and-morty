@@ -8,7 +8,7 @@ include(":core:arch-android")
 include(":core:ui")
 include(":core:navigation-compose")
 
-include(":domain")
+include(":domain:characters")
 
 include(":data:network")
 

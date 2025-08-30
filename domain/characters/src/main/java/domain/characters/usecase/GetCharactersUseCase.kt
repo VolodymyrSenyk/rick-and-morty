@@ -1,7 +1,7 @@
-package com.senyk.rickandmorty.domain.usecase.orders
+package domain.characters.usecase
 
-import com.senyk.rickandmorty.domain.entity.CharacterDto
-import com.senyk.rickandmorty.domain.repository.CharacterRepository
+import domain.characters.CharacterRepository
+import domain.characters.model.CharacterDto
 import javax.inject.Inject
 
 class GetCharactersUseCase @Inject constructor(

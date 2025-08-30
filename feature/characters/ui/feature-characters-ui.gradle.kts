@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":core:arch-android"))
     implementation(project(":core:ui"))
 
-    implementation(project(":domain"))
+    implementation(project(":domain:characters"))
 
     implementation(project(":feature:characters:navigation"))
 
