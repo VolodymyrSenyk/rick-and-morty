@@ -47,7 +47,6 @@ private fun SortMenuItem(
     }
 }
 
-
 @Preview
 @Composable
 private fun CharactersListTopAppBarPreview() {

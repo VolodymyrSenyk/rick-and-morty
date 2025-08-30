@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun SimpleTopAppBarTitle(

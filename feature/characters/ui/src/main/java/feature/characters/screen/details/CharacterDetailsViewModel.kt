@@ -3,11 +3,11 @@ package feature.characters.screen.details
 import arch.android.BaseSimpleMviViewModel
 import arch.mvi.MviNavEvent
 import arch.mvi.MviSideEffect
+import dagger.hilt.android.lifecycle.HiltViewModel
 import feature.characters.model.CharacterDetailsUiMapper
 import feature.characters.model.CharacterUi
 import feature.characters.screen.details.mvi.CharacterDetailsIntent
 import feature.characters.screen.details.mvi.CharacterDetailsViewState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel

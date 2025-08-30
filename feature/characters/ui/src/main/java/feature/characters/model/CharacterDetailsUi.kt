@@ -18,7 +18,6 @@ class CharacterDetailsUiMapper @Inject constructor(private val resourcesProvider
 
     operator fun invoke(model: CharacterUi): List<CharacterDetailsUi> =
         mutableListOf<CharacterDetailsUi>().apply {
-
             if (model.name.isNotEmpty()) {
                 add(
                     CharacterDetailsUi(

@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import feature.characters.model.CharacterDetailsUi
-import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
+import feature.characters.model.CharacterDetailsUi
 
 @Composable
 internal fun CharacterDetailsItem(

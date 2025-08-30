@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
+import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
 import feature.characters.model.CharacterDetailsUiMapper
+import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.screen.details.components.list.CharacterDetailsList
 import feature.characters.screen.details.mvi.CharacterDetailsViewState
-import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.util.provider.ResourcesProvider
-import core.ui.theme.RickAndMortyTheme
-import core.ui.theme.Dimens
 
 @Composable
 internal fun CharacterDetailsScreenContent(

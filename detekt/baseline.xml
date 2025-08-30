@@ -3,5 +3,8 @@
     <ManuallySuppressedIssues>
         <ID>MagicNumber:Config.kt$Config$1000_000</ID>
         <ID>MagicNumber:Config.kt$Config$1000</ID>
+        <ID>TooGenericExceptionCaught:BaseSimpleMviViewModel.kt$BaseSimpleMviViewModel$throwable: Throwable</ID>
+        <ID>ThrowingExceptionsWithoutMessageOrCause:Kermit.kt$Kermit$Throwable()</ID>
+        <ID>CyclomaticComplexMethod:CharactersResultsResponse.kt$CharactersResultsResponseMapper$operator fun invoke(response: CharactersResultsResponse): CharacterDto</ID>
     </ManuallySuppressedIssues>
 </SmellBaseline>

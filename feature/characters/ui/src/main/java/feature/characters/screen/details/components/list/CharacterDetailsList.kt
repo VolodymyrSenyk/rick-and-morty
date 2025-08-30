@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
 import feature.characters.model.CharacterDetailsUi
 import feature.characters.model.CharacterDetailsUiMapper
 import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.util.provider.ResourcesProvider
-import core.ui.theme.RickAndMortyTheme
-import core.ui.theme.Dimens
 
 @Composable
 internal fun CharacterDetailsList(

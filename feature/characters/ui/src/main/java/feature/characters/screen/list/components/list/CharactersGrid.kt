@@ -17,10 +17,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import feature.characters.model.CharacterUi
-import feature.characters.preview.CharactersPreviewMocks
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
+import feature.characters.model.CharacterUi
+import feature.characters.preview.CharactersPreviewMocks
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 

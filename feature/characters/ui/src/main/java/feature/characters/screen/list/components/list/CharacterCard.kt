@@ -17,10 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
+import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
 import feature.characters.model.CharacterUi
 import feature.characters.preview.CharactersPreviewMocks
-import core.ui.theme.RickAndMortyTheme
-import core.ui.theme.Dimens
 
 @Composable
 internal fun CharacterCard(

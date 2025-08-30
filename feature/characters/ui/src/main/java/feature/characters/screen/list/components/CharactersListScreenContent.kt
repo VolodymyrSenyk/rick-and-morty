@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import core.ui.components.progress.BlockingProgress
+import core.ui.theme.RickAndMortyTheme
 import feature.characters.model.CharacterUi
+import feature.characters.preview.CharactersListViewStatePreviewParameterProvider
 import feature.characters.screen.list.components.list.CharactersGrid
 import feature.characters.screen.list.components.list.CharactersListEmptyState
 import feature.characters.screen.list.mvi.CharactersListViewState
-import feature.characters.preview.CharactersListViewStatePreviewParameterProvider
-import core.ui.components.progress.BlockingProgress
-import core.ui.theme.RickAndMortyTheme
 
 @Composable
 internal fun CharactersListScreenContent(
@@ -69,7 +69,9 @@ internal fun CharactersListScreenContent(
 
 @Preview
 @Composable
-private fun CharactersListScreenContentPreview(@PreviewParameter(CharactersListViewStatePreviewParameterProvider::class) viewState: CharactersListViewState) {
+private fun CharactersListScreenContentPreview(
+    @PreviewParameter(CharactersListViewStatePreviewParameterProvider::class) viewState: CharactersListViewState
+) {
     RickAndMortyTheme {
         CharactersListScreenContent(
             viewState = viewState,

@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
-import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun TopAppBarShadow(

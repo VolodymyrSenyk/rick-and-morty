@@ -6,12 +6,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import feature.characters.model.CharacterUi
-import feature.characters.screen.details.CharacterDetailsViewModel
-import feature.characters.screen.list.CharactersListViewModel
-import feature.characters.screen.details.CharacterDetailsScreen
-import feature.characters.screen.list.CharactersListScreen
 import feature.characters.navigation.args.CharacterNavArg
 import feature.characters.navigation.args.CharacterNavArgType
+import feature.characters.screen.details.CharacterDetailsScreen
+import feature.characters.screen.details.CharacterDetailsViewModel
+import feature.characters.screen.list.CharactersListScreen
+import feature.characters.screen.list.CharactersListViewModel
 import navigation.compose.router.JetpackRouter
 import kotlin.reflect.typeOf
 

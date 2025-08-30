@@ -71,7 +71,6 @@ internal class CharactersListViewModel @Inject constructor(
         }
 
         val sortedCharacters = when (sortType) {
-
             AlphaSortType.NOT_SORTED, AlphaSortType.DESCENDING -> {
                 sortType = AlphaSortType.ASCENDING
                 characters.sortedBy { it.name }
