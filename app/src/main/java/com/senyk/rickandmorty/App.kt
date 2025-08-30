@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.presentation
+package com.senyk.rickandmorty
 
 import android.app.Application
 import android.os.StrictMode

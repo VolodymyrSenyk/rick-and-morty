@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.presentation.presentation.feature.main
+package com.senyk.rickandmorty
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -26,8 +26,7 @@ import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.senyk.rickandmorty.presentation.R
-import com.senyk.rickandmorty.presentation.presentation.feature.navigation.RickAndMortyNavHost
+import com.senyk.rickandmorty.navigation.RickAndMortyNavHost
 import core.ui.theme.RickAndMortyTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -52,7 +51,7 @@ private fun MainActivityScreen(splashScreen: SplashScreen) {
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
         splashScreen.setKeepOnScreenCondition { isSplashVisible }
     } else if (isSplashVisible) {
-        SplashScreen()
+        com.senyk.rickandmorty.components.SplashScreen()
     }
 
     LaunchedEffect(Unit) {

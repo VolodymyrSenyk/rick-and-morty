@@ -1,17 +1,13 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("org.jetbrains.kotlin.kapt")
-    id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.compose")
-    kotlin("plugin.serialization") version Config.Versions.kotlinLanguage
 }
 
 android {
-    namespace = Config.Android.applicationId + ".presentation"
+    namespace = Config.Android.applicationId
 
     defaultConfig {
         applicationId = Config.Android.applicationId
@@ -74,7 +70,6 @@ android {
     }
 
     buildFeatures.apply {
-        dataBinding = true
         compose = true
     }
 
@@ -93,42 +88,19 @@ dependencies {
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:ui"))
 
-    // UI
-    implementation(Config.Libs.ktx)
     implementation(Config.Libs.material)
-    implementation(Config.Libs.appcompat)
-    implementation(Config.Libs.fragmentKtx)
-    implementation(Config.Libs.constraintLayout)
-    implementation(Config.Libs.swipeRefreshLayout)
-    implementation(Config.Libs.adapterDelegates)
-    implementation(Config.Libs.sdp)
-    implementation(Config.Libs.glide)
+    implementation(Config.Libs.splashscreen)
 
-    implementation(Config.Libs.coil)
-    implementation(Config.Libs.coilNetwork)
-
-    // DI
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
 
-    implementation(Config.Libs.serialization)
-    implementation(Config.Libs.splashscreen)
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
 
-    // Lifecycle
-    implementation(Config.Libs.lifecycle)
-
-    // Networking
     implementation(Config.Libs.okhttp)
     implementation(Config.Libs.okhttpLogging)
     implementation(Config.Libs.retrofit)
     implementation(Config.Libs.retrofitGson)
 
-    // Navigation
-    implementation(Config.Libs.navigationFragment)
-    implementation(Config.Libs.navigationUi)
-
-    // Development
     debugImplementation(Config.Libs.leakCanary)
 }

@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.presentation.presentation.feature.main
+package com.senyk.rickandmorty.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
-import com.senyk.rickandmorty.presentation.R
+import com.senyk.rickandmorty.R
+import com.senyk.rickandmorty.setSystemBarsColors
 import core.ui.utils.heightWithCoef
 
 private const val FOREGROUND_IMAGE_HEIGHT_COEF = 0.4f

@@ -1,7 +1,7 @@
-package com.senyk.rickandmorty.presentation.di.module
+package com.senyk.rickandmorty.di.module
 
 import com.senyk.rickandmorty.data.datasource.network.api.CharactersApi
-import com.senyk.rickandmorty.presentation.BuildConfig
+import com.senyk.rickandmorty.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

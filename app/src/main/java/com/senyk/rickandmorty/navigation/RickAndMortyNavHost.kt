@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.presentation.presentation.feature.navigation
+package com.senyk.rickandmorty.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

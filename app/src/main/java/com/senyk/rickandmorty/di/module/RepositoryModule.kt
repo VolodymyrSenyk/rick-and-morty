@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.presentation.di.module
+package com.senyk.rickandmorty.di.module
 
 import com.senyk.rickandmorty.data.repository.CharacterNetworkRepository
 import com.senyk.rickandmorty.domain.repository.CharacterRepository
