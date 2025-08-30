@@ -1,56 +1,35 @@
 package com.senyk.rickandmorty.presentation.presentation.feature.main
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.senyk.rickandmorty.presentation.R
-import com.senyk.rickandmorty.presentation.databinding.FragmentCharacterDetailsBinding
-import com.senyk.rickandmorty.presentation.presentation.base.BaseFragment
-import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharacterDetailsIntent
-import com.senyk.rickandmorty.presentation.presentation.recycler.adapter.BaseDataBindingDelegationAdapter
-import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.CharacterDetailsAdapterDelegate
+import com.senyk.rickandmorty.presentation.presentation.feature.main.details.CharacterDetailsScreen
+import core.ui.theme.BlokNotTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CharacterDetailsFragment : BaseFragment<FragmentCharacterDetailsBinding>() {
-
-    override val layoutRes = R.layout.fragment_character_details
+class CharacterDetailsFragment : Fragment() {
 
     private val viewModel: CharacterDetailsViewModel by viewModels()
     private val args: CharacterDetailsFragmentArgs by navArgs()
-    private lateinit var adapter: BaseDataBindingDelegationAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpList()
-        setObservers()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(args.character))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setUpToolbar()
-    }
-
-    private fun setUpToolbar() {
-        (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = args.character.name
-    }
-
-    private fun setObservers() {
-        viewModel.uiState.subscribeWithLifecycle { uiState ->
-            uiState.characterAvatarUrl?.let { binding.characterAvatarUrl = it }
-            adapter.items = uiState.characterData
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(context = requireContext()).apply {
+        setContent {
+            BlokNotTheme {
+                CharacterDetailsScreen(
+                    viewModel = viewModel,
+                    args = args,
+                )
+            }
         }
-    }
-
-    private fun setUpList() {
-        adapter = BaseDataBindingDelegationAdapter(listOf(CharacterDetailsAdapterDelegate()))
-        binding.characterDetailsList.adapter = adapter
     }
 }

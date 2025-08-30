@@ -17,7 +17,8 @@ import core.ui.theme.BlokNotTheme
 @Composable
 fun SimpleTopAppBar(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    titleText: String = "",
+    title: @Composable () -> Unit = { SimpleTopAppBarTitle(titleText = titleText) },
     navigationIcon: @Composable (() -> Unit)? = null,
     menu: @Composable RowScope.() -> Unit = {},
 ) {
@@ -47,5 +48,13 @@ private fun SimpleTopAppBarPreview() {
                 )
             }
         )
+    }
+}
+
+@Preview
+@Composable
+private fun SimplestTopAppBarPreview() {
+    BlokNotTheme {
+        SimpleTopAppBar(title = { SimpleTopAppBarTitle(titleText = "Some Screen") })
     }
 }

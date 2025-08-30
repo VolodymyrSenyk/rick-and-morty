@@ -98,9 +98,15 @@ dependencies {
     implementation(Config.Libs.sdp)
     implementation(Config.Libs.glide)
 
+    implementation(Config.Libs.coil)
+    implementation(Config.Libs.coilNetwork)
+
     // DI
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
+
+    implementation(Config.Libs.composeTooling)
+    debugImplementation(Config.Libs.composePreview)
 
     // Lifecycle
     implementation(Config.Libs.lifecycle)

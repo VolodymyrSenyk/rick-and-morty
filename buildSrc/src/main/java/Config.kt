@@ -59,6 +59,7 @@ object Config {
         const val gson = "2.13.1"
         const val glide = "4.16.0"
         const val sdp = "1.1.1"
+        const val coil = "3.3.0"
 
         // Development
         const val kermit = "2.0.4"
@@ -141,6 +142,8 @@ object Config {
         const val gson = "com.google.code.gson:gson:${Versions.gson}"
         const val sdp = "com.intuit.sdp:sdp-android:${Versions.sdp}"
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+        const val coil = "io.coil-kt.coil3:coil-compose:${Versions.coil}"
+        const val coilNetwork = "io.coil-kt.coil3:coil-network-okhttp:${Versions.coil}"
 
         // Development
         const val kermit = "co.touchlab:kermit:${Versions.kermit}"

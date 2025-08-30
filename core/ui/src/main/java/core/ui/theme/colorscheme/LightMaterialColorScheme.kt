@@ -7,10 +7,10 @@ internal val LightMaterialColorScheme = lightColorScheme(
     primary = AppColors.Blue500,
     onPrimary = AppColors.Grey050,
 
-    background = AppColors.Grey150,
+    background = AppColors.Grey050,
     onBackground = AppColors.Black900,
 
-    surface = AppColors.Grey100,
+    surface = AppColors.Grey050,
     onSurface = AppColors.Black900,
 
     error = AppColors.Red500,

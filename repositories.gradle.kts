@@ -24,6 +24,7 @@ repositories {
             includeGroupByRegex("org.jetbrains.*")
             includeGroupByRegex("org.junit.*")
             includeGroup("co.touchlab")
+            includeGroup("io.coil-kt.coil3")
             includeGroup("com.airbnb.android")
             includeGroup("com.beust")
             includeGroup("com.github.javaparser")

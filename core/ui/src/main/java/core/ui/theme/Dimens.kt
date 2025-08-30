@@ -28,8 +28,8 @@ object Dimens {
     }
 
     object Elevation {
-        val AppBar: Dp = 8.dp
-        val Medium: Dp = 4.dp
-        val Small: Dp = 2.dp
+        val AppBar: Dp = 4.dp
+        val Medium: Dp = 2.dp
+        val Small: Dp = 1.dp
     }
 }
