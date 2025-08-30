@@ -15,17 +15,16 @@ object Config {
     object Versions {
 
         // Build
-        const val gradlePlugin = "8.12.1"
-        const val composeGradlePlugin = "2.2.0"
-        const val kotlinLanguage = "2.2.0"
+        const val gradlePlugin = "8.12.2"
+        const val kotlinLanguage = "2.2.10"
         const val kotlinComposeCompilerExtension = "1.5.15"
         const val serialization = "1.9.0"
         const val annotation = "1.9.1"
-        const val ktx = "1.16.0"
-        const val ksp = "2.2.0-2.0.2"
+        const val ktx = "1.17.0"
+        const val ksp = "2.2.10-2.0.2"
 
         // Arch components
-        const val lifecycle = "2.9.2"
+        const val lifecycle = "2.9.3"
         const val navigation = "2.9.3"
         const val composeNavigationHilt = "1.2.0"
 
@@ -35,9 +34,9 @@ object Config {
         const val splashscreen = "1.0.1"
         const val composeConstraintlayout = "1.1.1"
         const val composeBom = "2025.07.00"
-        const val appcompat = "1.7.0"
-        const val fragmentKtx = "1.8.2"
-        const val swipeRefreshLayout = "1.2.0-alpha01"
+        const val appcompat = "1.7.1"
+        const val fragmentKtx = "1.8.9"
+        const val swipeRefreshLayout = "1.1.0"
 
         // Dependency injection
         const val inject = "1"
@@ -48,22 +47,22 @@ object Config {
         const val datastore = "1.1.7"
 
         // Networking
-        const val okhttp = "4.12.0"
-        const val retrofit = "2.11.0"
-        const val retrofitRxJava = "2.11.0"
+        const val okhttp = "5.1.0"
+        const val retrofit = "3.0.0"
+        const val retrofitRxJava = "3.0.0"
         const val retrofitRxJavaAdapter = "1.0.0"
 
         // Multithreading
         const val coroutines = "1.10.2"
         const val rxAndroid = "2.1.1"
-        const val rxJava = "2.2.9"
+        const val rxJava = "2.2.21"
         const val rxKotlin = "2.4.0"
 
         // Utils
         const val adapterDelegates = "4.3.2"
         const val gson = "2.13.1"
         const val glide = "4.16.0"
-        const val sdp = "1.1.0"
+        const val sdp = "1.1.1"
 
         // Development
         const val kermit = "2.0.4"

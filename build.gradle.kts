@@ -2,6 +2,7 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
@@ -9,6 +10,7 @@ apply(from = rootProject.file("repositories.gradle.kts"))
 
 plugins {
     id("com.google.devtools.ksp") version Config.Versions.ksp apply false
+    id("com.github.ben-manes.versions") version Config.Versions.versionsPlugin
 }
 
 buildscript {
@@ -107,4 +109,17 @@ tasks.register<Delete>("clean") {
     subprojects.forEach { subproject ->
         delete(subproject.layout.buildDirectory)
     }
+}
+
+tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
+    rejectVersionIf {
+        isNonStable(candidate.version)
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA")
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword.any { version.uppercase().contains(it) } || regex.matches(version)
+    return !isStable
 }
