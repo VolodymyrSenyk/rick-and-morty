@@ -1,24 +1,34 @@
 package com.senyk.rickandmorty.presentation.presentation.feature.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.senyk.rickandmorty.presentation.presentation.base.BaseViewModel
-import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsUi
+import arch.android.BaseSimpleMviViewModel
+import arch.mvi.MviNavEvent
+import arch.mvi.MviSideEffect
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsUiMapper
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharacterDetailsIntent
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharacterDetailsViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterDetailsViewModel @Inject constructor(
+internal class CharacterDetailsViewModel @Inject constructor(
     private val characterDetailsUiMapper: CharacterDetailsUiMapper
-) : BaseViewModel() {
+) : BaseSimpleMviViewModel<CharacterDetailsViewState, CharacterDetailsIntent, MviSideEffect, MviNavEvent>(
+    initialState = CharacterDetailsViewState()
+) {
 
-    private val _characterDetails: MutableLiveData<List<CharacterDetailsUi>> = MutableLiveData()
-    val characterDetails: LiveData<List<CharacterDetailsUi>>
-        get() = _characterDetails
+    override val tag: String = this.javaClass.simpleName
 
-    fun setCharacter(character: CharacterUi) {
-        _characterDetails.value = characterDetailsUiMapper(character)
+    override suspend fun executeIntent(mviIntent: CharacterDetailsIntent) = when (mviIntent) {
+        is CharacterDetailsIntent.OnViewStarted -> onViewStarted(character = mviIntent.character)
+    }
+
+    private fun onViewStarted(character: CharacterUi) {
+        updateUiState { oldState ->
+            oldState.copy(
+                characterAvatarUrl = character.imageUrl,
+                characterData = characterDetailsUiMapper(character),
+            )
+        }
     }
 }

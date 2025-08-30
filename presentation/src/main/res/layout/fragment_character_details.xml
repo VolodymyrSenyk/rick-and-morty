@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="model"
-            type="com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi" />
+            name="characterAvatarUrl"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_160sdp"
             android:layout_margin="@dimen/_8sdp"
-            bind:imageUrl="@{model.imageUrl}"
+            bind:imageUrl="@{characterAvatarUrl}"
             tools:ignore="ContentDescription"
             tools:src="@drawable/rick" />
 

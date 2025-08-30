@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.senyk.rickandmorty.presentation.R
 import com.senyk.rickandmorty.presentation.databinding.FragmentCharacterDetailsBinding
 import com.senyk.rickandmorty.presentation.presentation.base.BaseFragment
+import com.senyk.rickandmorty.presentation.presentation.feature.main.mvi.CharacterDetailsIntent
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapter.BaseDataBindingDelegationAdapter
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.CharacterDetailsAdapterDelegate
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,11 +24,13 @@ class CharacterDetailsFragment : BaseFragment<FragmentCharacterDetailsBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.model = args.character
-        binding.model = args.character
-        viewModel.setCharacter(args.character)
         setUpList()
         setObservers()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(args.character))
     }
 
     override fun onResume() {
@@ -40,9 +43,10 @@ class CharacterDetailsFragment : BaseFragment<FragmentCharacterDetailsBinding>()
     }
 
     private fun setObservers() {
-        viewModel.characterDetails.observe(viewLifecycleOwner, { list ->
-            adapter.items = list
-        })
+        viewModel.uiState.subscribeWithLifecycle { uiState ->
+            uiState.characterAvatarUrl?.let { binding.characterAvatarUrl = it }
+            adapter.items = uiState.characterData
+        }
     }
 
     private fun setUpList() {
