@@ -12,5 +12,4 @@ dependencies {
     implementation(Config.Libs.inject)
     implementation(Config.Libs.gson)
     implementation(Config.Libs.retrofit)
-    implementation(Config.Libs.retrofitRxJava)
 }

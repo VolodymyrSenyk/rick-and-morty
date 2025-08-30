@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.senyk.rickandmorty.domain.entity.CharacterDto
 import com.senyk.rickandmorty.domain.usecase.orders.GetCharactersUseCase
 import com.senyk.rickandmorty.presentation.R
-import com.senyk.rickandmorty.presentation.presentation.base.BaseRxViewModel
+import com.senyk.rickandmorty.presentation.presentation.base.BaseCoroutinesViewModel
 import com.senyk.rickandmorty.presentation.presentation.entity.AlphaSortType
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUiMapper
@@ -25,7 +25,7 @@ class CharactersListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val characterUiMapper: CharacterUiMapper,
     resourcesProvider: ResourcesProvider
-) : BaseRxViewModel() {
+) : BaseCoroutinesViewModel() {
 
     private val directions = CharactersListFragmentDirections
 
@@ -56,11 +56,11 @@ class CharactersListViewModel @Inject constructor(
         }
     }
 
-    fun onRefresh() {
+    fun onRefresh() = launch {
         paginationHelper.resetPagination()
-        subscribe(
-            upstream = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet()),
-            onSuccess = { setData(it); _scrollToTop.setValue(true) })
+        val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
+        setData(characters)
+        _scrollToTop.setValue(true)
     }
 
     fun onCharacterClick(character: CharacterUi) {
@@ -90,18 +90,11 @@ class CharactersListViewModel @Inject constructor(
         _showProgress.setValue(false)
     }
 
-    private fun loadCharacters(withProgress: Boolean) {
-        if (withProgress) {
-            subscribeWithProgress(
-                upstream = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet()),
-                onSuccess = { setData(it) }
-            )
-        } else {
-            subscribe(
-                upstream = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet()),
-                onSuccess = { setData(it) }
-            )
-        }
+    private fun loadCharacters(withProgress: Boolean) = launch {
+        if (withProgress) _showProgress.setValue(true)
+        val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
+        setData(characters)
+        _showProgress.setValue(false)
     }
 
     private fun setData(data: List<CharacterDto>) {

@@ -97,17 +97,11 @@ dependencies {
     // Lifecycle
     implementation(Config.Libs.lifecycle)
 
-    // RxJava
-    implementation(Config.Libs.rxAndroid)
-    implementation(Config.Libs.rxKotlin)
-
     // Networking
     implementation(Config.Libs.okhttp)
     implementation(Config.Libs.okhttpLogging)
     implementation(Config.Libs.retrofit)
     implementation(Config.Libs.retrofitGson)
-    implementation(Config.Libs.retrofitRxJava)
-    implementation(Config.Libs.retrofitRxJavaAdapter)
 
     // Navigation
     implementation(Config.Libs.navigationFragment)

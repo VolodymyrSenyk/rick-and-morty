@@ -1,4 +1,5 @@
 @file:Suppress("ConstPropertyName")
+
 object Config {
 
     object Android {
@@ -49,14 +50,9 @@ object Config {
         // Networking
         const val okhttp = "5.1.0"
         const val retrofit = "3.0.0"
-        const val retrofitRxJava = "3.0.0"
-        const val retrofitRxJavaAdapter = "1.0.0"
 
         // Multithreading
         const val coroutines = "1.10.2"
-        const val rxAndroid = "2.1.1"
-        const val rxJava = "2.2.21"
-        const val rxKotlin = "2.4.0"
 
         // Utils
         const val adapterDelegates = "4.3.2"
@@ -135,15 +131,10 @@ object Config {
         const val okhttpLogging = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
         const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
         const val retrofitGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-        const val retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofitRxJava}"
-        const val retrofitRxJavaAdapter = "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${Versions.retrofitRxJavaAdapter}"
 
         // Multithreading
         const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
         const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-        const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-        const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
-        const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
 
         // Utils
         const val adapterDelegates = "com.hannesdorfmann:adapterdelegates4:${Versions.adapterDelegates}"
