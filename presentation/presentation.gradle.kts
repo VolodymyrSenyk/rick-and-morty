@@ -77,6 +77,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:arch-android"))
     implementation(project(":data"))
 
     // UI
