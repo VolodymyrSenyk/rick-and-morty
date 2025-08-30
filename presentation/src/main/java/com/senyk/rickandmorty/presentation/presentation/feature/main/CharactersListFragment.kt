@@ -70,15 +70,16 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         viewModel.uiState.subscribeWithLifecycle { uiState ->
             adapter.items = uiState.charactersList
             binding.swipeRefreshCharacters.isRefreshing = uiState.isRefreshing
-            if (uiState.scrollToTop) {
-                binding.charactersList.layoutManager?.scrollToPosition(0)
-            }
         }
         viewModel.sideEffect.subscribeWithLifecycle { mviSideEffect ->
             when (mviSideEffect) {
                 is CharactersListSideEffect.ShowErrorMessage -> {
                     val message = requireContext().getString(R.string.error_unknown)
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                }
+
+                is CharactersListSideEffect.ScrollToTop -> {
+                    binding.charactersList.layoutManager?.scrollToPosition(0)
                 }
 
                 null -> {}

@@ -63,7 +63,8 @@ internal class CharactersListViewModel @Inject constructor(
         }
         paginationHelper.resetPagination()
         val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
-        setData(data = characters, scrollToTop = true)
+        setData(data = characters)
+        sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
     private suspend fun onCharacterClicked(character: CharacterUi) {
@@ -119,7 +120,7 @@ internal class CharactersListViewModel @Inject constructor(
         setData(data = characters)
     }
 
-    private fun setData(data: List<CharacterDto>, scrollToTop: Boolean = false) {
+    private fun setData(data: List<CharacterDto>) {
         val dataList = if (paginationHelper.isCurrentDataSetEmpty()) {
             mutableListOf()
         } else {
@@ -143,7 +144,6 @@ internal class CharactersListViewModel @Inject constructor(
                 charactersList = dataList,
                 isRefreshing = false,
                 showProgress = false,
-                scrollToTop = scrollToTop,
             )
         }
     }
