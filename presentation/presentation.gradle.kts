@@ -87,7 +87,11 @@ dependencies {
     implementation(project(":core:arch-android"))
     implementation(project(":core:ui"))
     implementation(project(":core:navigation-compose"))
+
     implementation(project(":data"))
+
+    implementation(project(":feature:characters:navigation"))
+    implementation(project(":feature:characters:ui"))
 
     // UI
     implementation(Config.Libs.ktx)

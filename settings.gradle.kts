@@ -10,6 +10,9 @@ include(":domain")
 include(":data")
 include(":presentation")
 
+include(":feature:characters:navigation")
+include(":feature:characters:ui")
+
 // Add ability to use a module name as part of a build script name
 fun ProjectDescriptor.applyCustomBuildFileNames(prefix: String = "") {
     val fileName = if (prefix.isEmpty()) name else "$prefix-$name"
