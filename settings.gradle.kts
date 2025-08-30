@@ -4,6 +4,7 @@ rootProject.name = "rick-and-morty"
 include(":core:arch")
 include(":core:arch-android")
 include(":core:ui")
+include(":core:navigation-compose")
 
 include(":domain")
 include(":data")
