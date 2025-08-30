@@ -6,8 +6,10 @@ import com.senyk.rickandmorty.presentation.presentation.base.BaseRxViewModel
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsUi
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterDetailsUiMapper
 import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
     private val characterDetailsUiMapper: CharacterDetailsUiMapper
 ) : BaseRxViewModel() {

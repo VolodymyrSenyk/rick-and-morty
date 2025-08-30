@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -61,6 +63,10 @@ android {
         }
     }
 
+    hilt {
+        enableAggregatingTask = true
+    }
+
     lint {
         abortOnError = false
     }
@@ -85,10 +91,8 @@ dependencies {
     implementation(Config.Libs.glide)
 
     // DI
-    implementation(Config.Libs.dagger)
-    implementation(Config.Libs.daggerAndroid)
-    kapt(Config.Libs.daggerCompiler)
-    kapt(Config.Libs.daggerProcessor)
+    implementation(Config.Libs.hilt)
+    ksp(Config.Libs.hiltCompiler)
 
     // Lifecycle
     implementation(Config.Libs.lifecycle)

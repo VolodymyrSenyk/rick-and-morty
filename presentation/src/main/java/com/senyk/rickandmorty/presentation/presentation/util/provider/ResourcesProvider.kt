@@ -3,9 +3,10 @@ package com.senyk.rickandmorty.presentation.presentation.util.provider
 import android.content.Context
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class ResourcesProvider @Inject constructor(context: Context) {
+class ResourcesProvider @Inject constructor(@ApplicationContext context: Context) {
 
     private val resources: Resources = context.resources
 

@@ -2,9 +2,9 @@ package com.senyk.rickandmorty.presentation.presentation.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
-import dagger.android.support.DaggerAppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
-abstract class BaseActivity : DaggerAppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     @get:LayoutRes
     protected abstract val layoutRes: Int

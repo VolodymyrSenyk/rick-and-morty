@@ -15,12 +15,14 @@ import com.senyk.rickandmorty.presentation.presentation.recycler.adapter.BaseDat
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.CharacterAdapterDelegate
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.EmptyStateAdapterDelegate
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.ProgressAdapterDelegate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     override val layoutRes = R.layout.fragment_characters_list
     override val menuRes = R.menu.menu_main
-    override val viewModel by viewModels<CharactersListViewModel>(factoryProducer = { viewModelFactory })
+    override val viewModel: CharactersListViewModel by viewModels()
 
     private lateinit var adapter: BaseDataBindingDelegationAdapter
 

@@ -5,8 +5,11 @@ import android.os.Bundle
 import com.senyk.rickandmorty.presentation.R
 import com.senyk.rickandmorty.presentation.presentation.base.BaseActivity
 import com.senyk.rickandmorty.presentation.presentation.feature.main.MainActivity
-import java.util.*
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.Timer
+import java.util.TimerTask
 
+@AndroidEntryPoint
 class SplashActivity : BaseActivity() {
 
     override val layoutRes = R.layout.activity_splash

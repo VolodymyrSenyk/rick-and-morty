@@ -2,27 +2,34 @@ package com.senyk.rickandmorty.presentation.presentation.base
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.senyk.rickandmorty.presentation.presentation.entity.MessageWithAction
 import com.senyk.rickandmorty.presentation.presentation.util.extensions.hideKeyboard
-import com.senyk.rickandmorty.presentation.presentation.util.factory.ViewModelFactory
-import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.*
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigateBackEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigateBackToFragmentEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigateToActivityEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigateToFragmentEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigationEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.RequestPermissionsEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.StartActivityEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.StartActivityForResultEvent
+import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.StartServiceEvent
 
-abstract class BaseFragment<B : ViewDataBinding> : DaggerFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     @get:LayoutRes
     protected abstract val layoutRes: Int

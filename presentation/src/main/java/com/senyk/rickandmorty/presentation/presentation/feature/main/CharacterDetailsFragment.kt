@@ -10,16 +10,19 @@ import com.senyk.rickandmorty.presentation.databinding.FragmentCharacterDetailsB
 import com.senyk.rickandmorty.presentation.presentation.base.BaseFragment
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapter.BaseDataBindingDelegationAdapter
 import com.senyk.rickandmorty.presentation.presentation.recycler.adapterdelegate.CharacterDetailsAdapterDelegate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterDetailsFragment : BaseFragment<FragmentCharacterDetailsBinding>() {
 
     override val layoutRes = R.layout.fragment_character_details
-    override val viewModel by viewModels<CharacterDetailsViewModel>(factoryProducer = { viewModelFactory })
+    override val viewModel: CharacterDetailsViewModel by viewModels()
     private val args: CharacterDetailsFragmentArgs by navArgs()
     private lateinit var adapter: BaseDataBindingDelegationAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.model = args.character
         binding.model = args.character
         viewModel.setCharacter(args.character)
         setUpList()

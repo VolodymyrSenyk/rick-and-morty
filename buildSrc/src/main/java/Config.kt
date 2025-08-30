@@ -40,7 +40,7 @@ object Config {
 
         // Dependency injection
         const val inject = "1"
-        const val dagger = "2.57.1"
+        const val hilt = "2.57.1"
 
         // Persistence
         const val room = "2.7.2"
@@ -121,12 +121,8 @@ object Config {
 
         // DI
         const val inject = "javax.inject:javax.inject:${Versions.inject}"
-        const val hilt = "com.google.dagger:hilt-android:${Versions.dagger}"
-        const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.dagger}"
-        const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
-        const val daggerAndroid = "com.google.dagger:dagger-android-support:${Versions.dagger}"
-        const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
-        const val daggerProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
+        const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
+        const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 
         // Persistence
         const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"

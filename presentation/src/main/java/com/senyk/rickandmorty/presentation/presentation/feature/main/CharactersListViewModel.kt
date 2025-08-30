@@ -6,14 +6,21 @@ import com.senyk.rickandmorty.domain.entity.CharacterDto
 import com.senyk.rickandmorty.domain.usecase.orders.GetCharactersUseCase
 import com.senyk.rickandmorty.presentation.R
 import com.senyk.rickandmorty.presentation.presentation.base.BaseRxViewModel
-import com.senyk.rickandmorty.presentation.presentation.entity.*
+import com.senyk.rickandmorty.presentation.presentation.entity.AlphaSortType
+import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUi
+import com.senyk.rickandmorty.presentation.presentation.entity.CharacterUiMapper
+import com.senyk.rickandmorty.presentation.presentation.entity.EmptyStateListItem
+import com.senyk.rickandmorty.presentation.presentation.entity.ListItem
+import com.senyk.rickandmorty.presentation.presentation.entity.ProgressListItem
 import com.senyk.rickandmorty.presentation.presentation.recycler.util.PaginationHelper
 import com.senyk.rickandmorty.presentation.presentation.util.livedata.SingleEventLiveData
 import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.HandledEvent
 import com.senyk.rickandmorty.presentation.presentation.util.livedata.event.navigation.NavigateToFragmentEvent
 import com.senyk.rickandmorty.presentation.presentation.util.provider.ResourcesProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class CharactersListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val characterUiMapper: CharacterUiMapper,
