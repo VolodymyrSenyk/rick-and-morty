@@ -6,6 +6,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -73,11 +74,17 @@ android {
 
     buildFeatures.apply {
         dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Config.Versions.kotlinComposeCompilerExtension
     }
 }
 
 dependencies {
     implementation(project(":core:arch-android"))
+    implementation(project(":core:ui"))
     implementation(project(":data"))
 
     // UI

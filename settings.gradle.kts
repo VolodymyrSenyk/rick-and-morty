@@ -3,6 +3,7 @@ rootProject.name = "rick-and-morty"
 // Add project modules
 include(":core:arch")
 include(":core:arch-android")
+include(":core:ui")
 
 include(":domain")
 include(":data")

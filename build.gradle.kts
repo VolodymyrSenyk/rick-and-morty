@@ -37,6 +37,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:${Config.Versions.gradlePlugin}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Config.Versions.kotlinLanguage}")
+        classpath("org.jetbrains.kotlin:compose-compiler-gradle-plugin:${Config.Versions.kotlinLanguage}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Config.Versions.hilt}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Config.Versions.navigation}")
         classpath(kotlin("gradle-plugin", Config.Versions.kotlinLanguage))
