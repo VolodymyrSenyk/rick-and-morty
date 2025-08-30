@@ -1,6 +1,6 @@
 package com.senyk.rickandmorty.di.module
 
-import com.senyk.rickandmorty.data.datasource.network.api.CharactersApi
+import data.network.datasource.api.CharactersApi
 import com.senyk.rickandmorty.BuildConfig
 import dagger.Module
 import dagger.Provides

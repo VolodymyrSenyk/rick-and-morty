@@ -1,14 +1,16 @@
 rootProject.name = "rick-and-morty"
 
 // Add project modules
+include(":app")
+
 include(":core:arch")
 include(":core:arch-android")
 include(":core:ui")
 include(":core:navigation-compose")
 
 include(":domain")
-include(":data")
-include(":app")
+
+include(":data:network")
 
 include(":feature:characters:navigation")
 include(":feature:characters:ui")

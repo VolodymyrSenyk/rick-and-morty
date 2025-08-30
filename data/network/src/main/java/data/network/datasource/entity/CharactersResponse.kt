@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.data.datasource.network.entity
+package data.network.datasource.entity
 
 import com.google.gson.annotations.SerializedName
 import com.senyk.rickandmorty.domain.entity.CharacterDto
