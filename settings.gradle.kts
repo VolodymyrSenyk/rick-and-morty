@@ -8,7 +8,7 @@ include(":core:navigation-compose")
 
 include(":domain")
 include(":data")
-include(":presentation")
+include(":app")
 
 include(":feature:characters:navigation")
 include(":feature:characters:ui")
