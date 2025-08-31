@@ -11,6 +11,9 @@ android {
 
     defaultConfig {
         applicationId = Config.Android.applicationId
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
+        testBuildType = "uitest"
     }
 
     signingConfigs {
@@ -30,6 +33,13 @@ android {
     }
 
     buildTypes {
+
+        create("uitest") {
+            applicationIdSuffix = ".uitest"
+            versionNameSuffix = "-uitest"
+            matchingFallbacks += listOf("debug")
+            signingConfig = signingConfigs.getByName("debug")
+        }
 
         getByName("debug") {
             versionNameSuffix = "-debug"
@@ -68,6 +78,11 @@ android {
     lint {
         abortOnError = false
     }
+
+    testOptions {
+        animationsDisabled = true
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+    }
 }
 
 dependencies {
@@ -95,4 +110,11 @@ dependencies {
     implementation(Config.Libs.retrofitGson)
 
     debugImplementation(Config.Libs.leakCanary)
+
+    androidTestImplementation(Config.Libs.uiautomator)
+    androidTestImplementation(platform(Config.Libs.composeBom))
+    androidTestImplementation(Config.Libs.composeUiTest)
+    androidTestImplementation(Config.Libs.composeUiTestJUnit)
+    debugImplementation(Config.Libs.composeUiTestManifest)
+    androidTestUtil(Config.Libs.testOrchestrator)
 }

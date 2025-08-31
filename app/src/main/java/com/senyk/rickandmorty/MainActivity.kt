@@ -20,14 +20,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import com.senyk.rickandmorty.components.SplashScreen
 import com.senyk.rickandmorty.navigation.RickAndMortyNavHost
 import core.ui.theme.RickAndMortyTheme
+import core.ui.utils.isUiTestRunning
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -47,11 +50,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun MainActivityScreen(splashScreen: SplashScreen) {
-    var isSplashVisible by remember { mutableStateOf(true) }
+    val context = LocalContext.current
+    var isSplashVisible by remember { mutableStateOf(!context.isUiTestRunning()) }
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
         splashScreen.setKeepOnScreenCondition { isSplashVisible }
     } else if (isSplashVisible) {
-        com.senyk.rickandmorty.components.SplashScreen()
+        SplashScreen()
     }
 
     LaunchedEffect(Unit) {

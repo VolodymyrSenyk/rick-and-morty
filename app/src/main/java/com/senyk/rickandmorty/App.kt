@@ -6,6 +6,7 @@ import arch.log.Kermit
 import co.touchlab.kermit.Severity
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
+import core.ui.utils.isUiTestRunning
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -35,7 +36,7 @@ class App : Application() {
     private fun setUpLoggingTool() {
         Kermit.setUp(
             config = StaticConfig(
-                minSeverity = if (BuildConfig.DEBUG) Severity.Verbose else Severity.Warn,
+                minSeverity = if (BuildConfig.DEBUG || isUiTestRunning()) Severity.Verbose else Severity.Warn,
                 logWriterList = listOf(platformLogWriter())
             ),
         )
