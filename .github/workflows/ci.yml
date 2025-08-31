@@ -1,0 +1,80 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Decode keystore file
+        run: |
+          mkdir -p keystore
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > keystore/releasekey.jks
+
+      - name: Decode Secret file
+        run: echo "${{ secrets.SECRET_FILE }}" | base64 --decode > buildSrc/src/main/java/Secret.kt
+
+      - name: Run Detekt
+        run: ./gradlew detektAll --no-daemon
+
+  upload:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    needs: [ check, test ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Decode keystore file
+        run: |
+          mkdir -p keystore
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > keystore/releasekey.jks
+
+      - name: Decode Secret file
+        run: echo "${{ secrets.SECRET_FILE }}" | base64 --decode > buildSrc/src/main/java/Secret.kt
+
+      - name: Build signed release APK
+        run: bash ./gradlew assembleRelease --no-daemon
+
+      - name: Generate file name environment variable
+        run: |
+          VERSION=$(grep -oP 'versionName = "\K[^"]+' buildSrc/src/main/java/Config.kt)
+          DATE=$(date +'%d.%m.%Y_%H-%M')
+          BRANCH=${GITHUB_REF##*/}
+          FILE_NAME="RickAndMorty-v${VERSION}_${BRANCH}-${DATE}"
+          echo "RELEASE_FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
+
+      - name: Rename APK
+        run:
+          mv "./app/build/outputs/apk/prod/release/app-prod-release.apk" "./app/build/outputs/apk/prod/release/${{ env.RELEASE_FILE_NAME }}.apk"
+
+      - name: Upload APK to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.RELEASE_FILE_NAME }}
+          path: app/build/outputs/apk/prod/release/${{ env.RELEASE_FILE_NAME }}.apk
