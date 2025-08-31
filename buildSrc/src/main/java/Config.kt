@@ -35,6 +35,7 @@ object Config {
         const val splashscreen = "1.0.1"
         const val composeConstraintlayout = "1.1.1"
         const val composeBom = "2025.07.00"
+        const val accompanist = "0.36.0"
         const val appcompat = "1.7.1"
         const val fragmentKtx = "1.8.9"
         const val swipeRefreshLayout = "1.1.0"
@@ -115,6 +116,7 @@ object Config {
         const val composeExtendedIcons = "androidx.compose.material:material-icons-extended"
         const val composeNavigation = "androidx.navigation:navigation-compose:${Versions.navigation}"
         const val composeNavigationHilt = "androidx.hilt:hilt-navigation-compose:${Versions.composeNavigationHilt}"
+        const val accompanistNavigationAnimation = "com.google.accompanist:accompanist-navigation-animation:${Versions.accompanist}"
 
         // DI
         const val inject = "javax.inject:javax.inject:${Versions.inject}"

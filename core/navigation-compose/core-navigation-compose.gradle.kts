@@ -13,5 +13,6 @@ dependencies {
     implementation(project(":core:arch"))
     api(Config.Libs.composeNavigation)
     api(Config.Libs.composeNavigationHilt)
+    api(Config.Libs.accompanistNavigationAnimation)
     implementation(Config.Libs.coroutinesCore)
 }
