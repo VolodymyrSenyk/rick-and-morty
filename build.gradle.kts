@@ -8,12 +8,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 apply(from = rootProject.file("repositories.gradle.kts"))
+apply(from = rootProject.file("jacoco.gradle.kts"))
 
 plugins {
     id("com.google.devtools.ksp") version Config.Versions.ksp apply false
     id("io.gitlab.arturbosch.detekt") version Config.Versions.detekt
     id("com.osacky.doctor") version Config.Versions.gradleDoctor
     id("com.github.ben-manes.versions") version Config.Versions.versionsPlugin
+    jacoco
 }
 
 dependencies {
@@ -44,6 +46,7 @@ buildscript {
 
 subprojects {
     project.plugins.configure(project)
+    apply(plugin = "jacoco")
 
     buildscript {
         apply(from = rootProject.file("repositories.gradle.kts"))
@@ -59,6 +62,10 @@ subprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
         jvmArgs = listOf("-XX:+EnableDynamicAgentLoading")
+        configure<JacocoTaskExtension> {
+            isIncludeNoLocationClasses = false
+            excludes = listOf("jdk.internal.*")
+        }
     }
 }
 
