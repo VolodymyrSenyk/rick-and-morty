@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import core.ui.components.toolbar.SimpleTopAppBar
+import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.theme.RickAndMortyTheme
 import feature.characters.R
 import core.ui.R as CoreR

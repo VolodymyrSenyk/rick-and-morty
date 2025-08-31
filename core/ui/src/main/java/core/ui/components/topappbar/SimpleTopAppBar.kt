@@ -1,4 +1,4 @@
-package core.ui.components.toolbar
+package core.ui.components.topappbar
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +19,19 @@ fun SimpleTopAppBar(
     modifier: Modifier = Modifier,
     titleText: String = "",
     title: @Composable () -> Unit = { SimpleTopAppBarTitle(titleText = titleText) },
-    navigationIcon: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable () -> Unit = {},
+    onNavigateBackClicked: (() -> Unit)? = null,
     menu: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
-        navigationIcon = navigationIcon ?: {},
+        navigationIcon = {
+            if (onNavigateBackClicked == null) {
+                navigationIcon()
+            } else {
+                SimpleTopAppBarNavIcon(onClicked = onNavigateBackClicked)
+            }
+        },
         title = title,
         actions = menu,
         colors = TopAppBarDefaults.topAppBarColors(

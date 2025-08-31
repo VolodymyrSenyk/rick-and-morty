@@ -1,4 +1,4 @@
-package core.ui.components.toolbar
+package core.ui.components.topappbar
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

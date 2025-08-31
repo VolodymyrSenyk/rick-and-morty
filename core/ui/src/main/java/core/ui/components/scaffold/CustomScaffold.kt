@@ -16,9 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import core.ui.components.toolbar.SimpleTopAppBar
-import core.ui.components.toolbar.SimpleTopAppBarTitle
-import core.ui.components.toolbar.TopAppBarShadow
+import core.ui.components.topappbar.SimpleTopAppBar
+import core.ui.components.topappbar.SimpleTopAppBarTitle
+import core.ui.components.topappbar.TopAppBarShadow
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.ThemeMode

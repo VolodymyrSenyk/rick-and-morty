@@ -6,4 +6,6 @@ import feature.characters.model.CharacterUi
 internal sealed class CharacterDetailsIntent : MviIntent {
 
     data class OnViewStarted(val character: CharacterUi) : CharacterDetailsIntent()
+
+    data object OnBackButtonClicked : CharacterDetailsIntent()
 }

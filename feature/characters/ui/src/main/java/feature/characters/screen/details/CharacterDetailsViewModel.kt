@@ -1,19 +1,19 @@
 package feature.characters.screen.details
 
 import arch.android.BaseSimpleMviViewModel
-import arch.mvi.MviNavEvent
 import arch.mvi.MviSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import feature.characters.model.CharacterDetailsUiMapper
 import feature.characters.model.CharacterUi
 import feature.characters.screen.details.mvi.CharacterDetailsIntent
+import feature.characters.screen.details.mvi.CharacterDetailsNavEvent
 import feature.characters.screen.details.mvi.CharacterDetailsViewState
 import javax.inject.Inject
 
 @HiltViewModel
 internal class CharacterDetailsViewModel @Inject constructor(
-    private val characterDetailsUiMapper: CharacterDetailsUiMapper
-) : BaseSimpleMviViewModel<CharacterDetailsViewState, CharacterDetailsIntent, MviSideEffect, MviNavEvent>(
+    private val characterDetailsUiMapper: CharacterDetailsUiMapper,
+) : BaseSimpleMviViewModel<CharacterDetailsViewState, CharacterDetailsIntent, MviSideEffect, CharacterDetailsNavEvent>(
     initialState = CharacterDetailsViewState()
 ) {
 
@@ -21,6 +21,7 @@ internal class CharacterDetailsViewModel @Inject constructor(
 
     override suspend fun executeIntent(mviIntent: CharacterDetailsIntent) = when (mviIntent) {
         is CharacterDetailsIntent.OnViewStarted -> onViewStarted(character = mviIntent.character)
+        is CharacterDetailsIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
     private fun onViewStarted(character: CharacterUi) {
@@ -30,5 +31,9 @@ internal class CharacterDetailsViewModel @Inject constructor(
                 characterData = characterDetailsUiMapper(character),
             )
         }
+    }
+
+    private suspend fun onBackButtonClicked() {
+        sendNavEvent(CharacterDetailsNavEvent.NavigateBack)
     }
 }

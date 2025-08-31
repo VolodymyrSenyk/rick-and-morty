@@ -35,7 +35,7 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
     ) { entry ->
         val args = entry.toRoute<CharacterDetailsDestination>()
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
-        CharacterDetailsScreen(viewModel = viewModel, args = args)
+        CharacterDetailsScreen(viewModel = viewModel, router = router, args = args)
     }
 }
 
