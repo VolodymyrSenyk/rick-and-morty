@@ -16,7 +16,7 @@ import com.senyk.rickandmorty.R
 import com.senyk.rickandmorty.setSystemBarsColors
 import core.ui.utils.heightWithCoef
 
-private const val FOREGROUND_IMAGE_HEIGHT_COEF = 0.4f
+private const val FOREGROUND_IMAGE_HEIGHT_COEF = 0.6f
 
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier) {
@@ -30,7 +30,7 @@ fun SplashScreen(modifier: Modifier = Modifier) {
             .zIndex(1f)
     ) {
         Image(
-            painter = painterResource(R.drawable.rick),
+            painter = painterResource(R.mipmap.ic_launcher_foreground),
             contentDescription = null,
             modifier = Modifier.size(heightWithCoef(FOREGROUND_IMAGE_HEIGHT_COEF))
         )
