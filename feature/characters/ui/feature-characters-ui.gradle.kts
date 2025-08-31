@@ -25,4 +25,6 @@ dependencies {
 
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
+
+    testImplementation(project(":core:test-util"))
 }

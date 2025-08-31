@@ -33,9 +33,12 @@ jobs:
       - name: Run Detekt
         run: ./gradlew detektAll --no-daemon
 
+      - name: Run tests
+        run: ./gradlew test --no-daemon
+
   upload:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
-    needs: [ check, test ]
+    needs: [ check ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

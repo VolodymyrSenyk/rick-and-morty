@@ -36,10 +36,8 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:${Config.Versions.gradlePlugin}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Config.Versions.kotlinLanguage}")
         classpath("org.jetbrains.kotlin:compose-compiler-gradle-plugin:${Config.Versions.kotlinLanguage}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Config.Versions.hilt}")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Config.Versions.navigation}")
         classpath(kotlin("gradle-plugin", Config.Versions.kotlinLanguage))
     }
 }
@@ -56,6 +54,11 @@ subprojects {
             jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
         }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+        jvmArgs = listOf("-XX:+EnableDynamicAgentLoading")
     }
 }
 
@@ -85,6 +88,11 @@ fun AppExtension.applyCommons() {
 
     buildFeatures.apply {
         buildConfig = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Config.Versions.kotlinComposeCompilerExtension
     }
 }
 

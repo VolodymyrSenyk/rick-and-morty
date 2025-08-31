@@ -68,14 +68,6 @@ android {
     lint {
         abortOnError = false
     }
-
-    buildFeatures.apply {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Config.Versions.kotlinComposeCompilerExtension
-    }
 }
 
 dependencies {
