@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "feature.settings.viewmodel"
+    namespace = "feature.settings.presentation"
 }
 
 dependencies {
@@ -14,4 +14,6 @@ dependencies {
 
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
+
+    testImplementation(project(":core:test-util"))
 }

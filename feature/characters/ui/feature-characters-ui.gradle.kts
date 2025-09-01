@@ -14,9 +14,8 @@ dependencies {
 
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:presentation"))
-
-    implementation(project(":feature:settings:viewmodel"))
-    implementation(project(":feature:splash:viewmodel"))
+    implementation(project(":feature:settings:presentation"))
+    implementation(project(":feature:splash:presentation"))
 
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)

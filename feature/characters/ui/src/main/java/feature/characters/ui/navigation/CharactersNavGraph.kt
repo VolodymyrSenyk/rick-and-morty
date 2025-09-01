@@ -13,8 +13,8 @@ import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.ui.screen.CharacterDetailsScreen
 import feature.characters.ui.screen.CharactersListScreen
-import feature.settings.viewmodel.SettingsViewModel
-import feature.splash.viewmodel.SplashViewModel
+import feature.settings.presentation.viewmodel.SettingsViewModel
+import feature.splash.presentation.viewmodel.SplashViewModel
 import navigation.compose.router.JetpackRouter
 import navigation.compose.utils.hiltActivityViewModel
 

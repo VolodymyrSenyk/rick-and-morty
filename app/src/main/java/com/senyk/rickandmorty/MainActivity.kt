@@ -33,8 +33,8 @@ import com.senyk.rickandmorty.navigation.RickAndMortyNavHost
 import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.isUiTestRunning
 import dagger.hilt.android.AndroidEntryPoint
-import feature.settings.viewmodel.SettingsViewModel
-import feature.splash.viewmodel.SplashViewModel
+import feature.settings.presentation.viewmodel.SettingsViewModel
+import feature.splash.presentation.viewmodel.SplashViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

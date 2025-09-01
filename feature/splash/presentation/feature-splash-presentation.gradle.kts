@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "feature.splash.viewmodel"
+    namespace = "feature.splash.presentation"
 }
 
 dependencies {
@@ -13,4 +13,6 @@ dependencies {
 
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
+
+    testImplementation(project(":core:test-util"))
 }

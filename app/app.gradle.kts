@@ -92,9 +92,8 @@ dependencies {
 
     implementation(project(":data:datastore"))
     implementation(project(":data:network"))
-
-    implementation(project(":feature:settings:viewmodel"))
-    implementation(project(":feature:splash:viewmodel"))
+    implementation(project(":feature:settings:presentation"))
+    implementation(project(":feature:splash:presentation"))
 
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:ui"))

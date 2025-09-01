@@ -26,8 +26,8 @@ import feature.characters.ui.R
 import feature.characters.ui.screen.components.list.CharactersListScreenContent
 import feature.characters.ui.screen.components.list.CharactersListTopAppBar
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
-import feature.settings.viewmodel.SettingsViewModel
-import feature.splash.viewmodel.SplashViewModel
+import feature.settings.presentation.viewmodel.SettingsViewModel
+import feature.splash.presentation.viewmodel.SplashViewModel
 import navigation.compose.router.Router
 
 @Composable

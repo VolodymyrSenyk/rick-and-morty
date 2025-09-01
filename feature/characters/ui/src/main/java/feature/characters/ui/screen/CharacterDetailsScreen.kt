@@ -21,7 +21,7 @@ import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsVie
 import feature.characters.ui.screen.components.details.CharacterDetailsScreenContent
 import feature.characters.ui.screen.components.details.CharacterDetailsTopAppBar
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
-import feature.settings.viewmodel.SettingsViewModel
+import feature.settings.presentation.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
 @Composable

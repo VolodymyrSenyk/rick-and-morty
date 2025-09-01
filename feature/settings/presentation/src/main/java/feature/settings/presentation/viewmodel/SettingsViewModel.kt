@@ -1,4 +1,4 @@
-package feature.settings.viewmodel
+package feature.settings.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import arch.android.BaseCoroutinesViewModel
