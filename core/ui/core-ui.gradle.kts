@@ -18,6 +18,7 @@ dependencies {
     implementation(Config.Libs.composeActivity)
     implementation(Config.Libs.composeConstraintlayout)
     implementation(Config.Libs.composeExtendedIcons)
+    implementation(Config.Libs.composeMaterialWindowSize)
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
 }

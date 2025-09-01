@@ -52,7 +52,7 @@ internal fun CharactersGrid(
     ) {
         LazyVerticalGrid(
             state = gridState,
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Adaptive(minSize = Dimens.CardSize.Medium),
             verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
             overscrollEffect = null,

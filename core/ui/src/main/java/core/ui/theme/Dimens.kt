@@ -18,6 +18,10 @@ object Dimens {
         val Border: Dp = 1.dp
     }
 
+    object CardSize {
+        val Medium: Dp = 120.dp
+    }
+
     object ImageSize {
         val Big: Dp = 160.dp
         val Medium: Dp = 100.dp

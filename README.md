@@ -28,6 +28,7 @@ code quality with static analysis, testing and **CI** tools. Feel free to explor
 - Material Design 3
 - Day/Night theme
 - Android 12+ SplashScreen
+- Portrait/Landscape orientation
 - Jetpack Compose
 - Single-activity architecture + Jetpack Compose Navigation
 - [Coil](https://github.com/coil-kt/coil)

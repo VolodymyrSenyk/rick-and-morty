@@ -1,7 +1,6 @@
 package feature.characters.ui.screen.components.details.list
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -12,53 +11,46 @@ import feature.characters.ui.R
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
 @Composable
-internal fun ColumnScope.CharacterDetailsList(
+internal fun CharacterDetailsList(
     modifier: Modifier = Modifier,
     character: CharacterDetailsUi,
 ) {
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_name),
-        data = character.name,
-        modifier = modifier,
-    )
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_status),
-        data = character.status,
-        modifier = modifier,
-    )
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_species),
-        data = character.species,
-        modifier = modifier,
-    )
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_type),
-        data = character.type,
-        modifier = modifier,
-    )
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_gender),
-        data = character.gender,
-        modifier = modifier,
-    )
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_origin),
-        data = character.origin,
-        modifier = modifier,
-    )
-    CharacterDetailsItem(
-        label = stringResource(R.string.character_location),
-        data = character.location,
-        modifier = modifier,
-    )
+    Column(modifier = modifier) {
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_name),
+            data = character.name,
+        )
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_status),
+            data = character.status,
+        )
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_species),
+            data = character.species,
+        )
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_type),
+            data = character.type,
+        )
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_gender),
+            data = character.gender,
+        )
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_origin),
+            data = character.origin,
+        )
+        CharacterDetailsItem(
+            label = stringResource(R.string.character_location),
+            data = character.location,
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun CharacterDetailsListPreview() {
     RickAndMortyTheme {
-        Column {
-            CharacterDetailsList(character = CharactersPreviewMocks.characterDetails)
-        }
+        CharacterDetailsList(character = CharactersPreviewMocks.characterDetails)
     }
 }
