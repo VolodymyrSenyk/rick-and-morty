@@ -8,7 +8,7 @@ internal object CharactersPreviewMocks {
         "https://rickandmortyapi.com/api/character/avatar/${index + 1}.jpeg"
 
     val character = CharacterUi(
-        id = 1,
+        id = "1",
         name = "Rick Sanchez",
         status = "Alive",
         species = "Human",
@@ -20,6 +20,6 @@ internal object CharactersPreviewMocks {
     )
 
     val charactersList: List<CharacterUi> = List(5) { character }.mapIndexed { index, model ->
-        model.copy(id = index, imageUrl = avatarConstructor(index))
+        model.copy(id = index.toString(), imageUrl = avatarConstructor(index))
     }
 }

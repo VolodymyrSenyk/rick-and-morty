@@ -58,10 +58,7 @@ internal fun CharactersGrid(
             contentPadding = PaddingValues(horizontal = Dimens.Padding.Medium, vertical = Dimens.Padding.Medium),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(
-                items = items,
-                key = { item -> item.listId },
-            ) { listItem ->
+            items(items = items, key = { item -> item.id }) { listItem ->
                 CharacterCard(
                     item = listItem,
                     onItemClicked = onItemClicked,

@@ -12,9 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 import feature.characters.model.CharacterDetailsUi
-import feature.characters.model.CharacterDetailsUiMapper
+import feature.characters.model.toCharacterDetailsUiList
 import feature.characters.preview.CharactersPreviewMocks
-import feature.characters.util.provider.ResourcesProvider
 
 @Composable
 internal fun CharacterDetailsList(
@@ -39,10 +38,6 @@ internal fun CharacterDetailsList(
 @Composable
 private fun RulesListPreview() {
     RickAndMortyTheme {
-        val context = LocalContext.current
-        val resourcesProvider = ResourcesProvider(context)
-        val mapper = CharacterDetailsUiMapper(resourcesProvider)
-        val characterDetails = mapper(CharactersPreviewMocks.character)
-        CharacterDetailsList(items = characterDetails)
+        CharacterDetailsList(items = CharactersPreviewMocks.character.toCharacterDetailsUiList(LocalContext.current))
     }
 }

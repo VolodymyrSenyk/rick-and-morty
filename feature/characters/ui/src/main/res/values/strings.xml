@@ -3,17 +3,6 @@
     <!-- menu -->
     <string name="menu_sort">Sort</string>
 
-    <!-- character status-->
-    <string name="state_alive">Alive</string>
-    <string name="state_dead">Dead</string>
-    <string name="state_unknown">Unknown</string>
-
-    <!-- character gender -->
-    <string name="gender_female">Female</string>
-    <string name="gender_male">Male</string>
-    <string name="gender_genderless">Genderless</string>
-    <string name="gender_unknown">Unknown</string>
-
     <!-- output -->
     <string name="character_name">Name:</string>
     <string name="character_status">Status:</string>

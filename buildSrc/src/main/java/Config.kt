@@ -31,14 +31,10 @@ object Config {
 
         // UI
         const val material = "1.12.0"
-        const val constraintLayout = "2.2.1"
         const val splashscreen = "1.0.1"
         const val composeConstraintlayout = "1.1.1"
         const val composeBom = "2025.07.00"
         const val accompanist = "0.36.0"
-        const val appcompat = "1.7.1"
-        const val fragmentKtx = "1.8.9"
-        const val swipeRefreshLayout = "1.1.0"
 
         // Dependency injection
         const val inject = "1"
@@ -56,10 +52,7 @@ object Config {
         const val coroutines = "1.10.2"
 
         // Utils
-        const val adapterDelegates = "4.3.2"
         const val gson = "2.13.1"
-        const val glide = "4.16.0"
-        const val sdp = "1.1.1"
         const val coil = "3.3.0"
 
         // Development
@@ -77,34 +70,21 @@ object Config {
         const val turbine = "1.2.1"
 
         // UI testing
-        const val jUnitKtx = "1.2.1"
-        const val testRunner = "1.6.2"
         const val testOrchestrator = "1.6.1"
         const val uiautomator = "2.3.0"
     }
 
     object Libs {
 
-        // Build
         const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinLanguage}"
         const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
         const val annotation = "androidx.annotation:annotation:${Versions.annotation}"
         const val ktx = "androidx.core:core-ktx:${Versions.ktx}"
-
-        // Arch components
         const val lifecycle = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
-        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
-        const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
 
         // UI
-        const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
-        const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
         const val material = "com.google.android.material:material:${Versions.material}"
         const val splashscreen = "androidx.core:core-splashscreen:${Versions.splashscreen}"
-
-        // Jetpack Compose
         const val composeBom = "androidx.compose:compose-bom:${Versions.composeBom}"
         const val composeUi = "androidx.compose.ui:ui"
         const val composeActivity = "androidx.activity:activity-compose"
@@ -140,10 +120,7 @@ object Config {
         const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 
         // Utils
-        const val adapterDelegates = "com.hannesdorfmann:adapterdelegates4:${Versions.adapterDelegates}"
         const val gson = "com.google.code.gson:gson:${Versions.gson}"
-        const val sdp = "com.intuit.sdp:sdp-android:${Versions.sdp}"
-        const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
         const val coil = "io.coil-kt.coil3:coil-compose:${Versions.coil}"
         const val coilNetwork = "io.coil-kt.coil3:coil-network-okhttp:${Versions.coil}"
 
@@ -162,8 +139,6 @@ object Config {
         const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
 
         // UI testing
-        const val jUnitKtx = "androidx.test.ext:junit-ktx:${Versions.jUnitKtx}"
-        const val testRunner = "androidx.test:runner:${Versions.testRunner}"
         const val testOrchestrator = "androidx.test:orchestrator:${Versions.testOrchestrator}"
         const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.uiautomator}"
         const val composeUiTest = "androidx.compose.ui:ui-test"

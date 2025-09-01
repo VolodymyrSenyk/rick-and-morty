@@ -7,7 +7,7 @@ import domain.characters.model.CharacterDto
 import domain.characters.usecase.GetCharactersUseCase
 import feature.characters.model.AlphaSortType
 import feature.characters.model.CharacterUi
-import feature.characters.model.CharacterUiMapper
+import feature.characters.model.toCharacterUi
 import feature.characters.screen.list.mvi.CharactersListIntent
 import feature.characters.screen.list.mvi.CharactersListNavEvent
 import feature.characters.screen.list.mvi.CharactersListSideEffect
@@ -17,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 internal class CharactersListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
-    private val characterUiMapper: CharacterUiMapper,
 ) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
     initialState = CharactersListViewState(),
 ) {
@@ -64,7 +63,7 @@ internal class CharactersListViewModel @Inject constructor(
     }
 
     private suspend fun onSortClicked() {
-        val characters = currentState.charactersList.toMutableList().filterIsInstance<CharacterUi>()
+        val characters = currentState.charactersList
 
         updateUiState { oldState ->
             oldState.copy(showProgress = true)
@@ -115,12 +114,11 @@ internal class CharactersListViewModel @Inject constructor(
         val dataList = if (paginationHelper.isCurrentDataSetEmpty()) {
             mutableListOf()
         } else {
-            val currentDataSet = currentState.charactersList
-            currentDataSet.toMutableList().run { filter { it is CharacterUi } }.toMutableList()
+            currentState.charactersList.toMutableList()
         }
 
         if (data.isNotEmpty()) {
-            dataList.addAll(data.map { characterUiMapper(it) })
+            dataList.addAll(data.map { it.toCharacterUi() })
             paginationHelper.onDataSetLoaded(data.size)
         }
 

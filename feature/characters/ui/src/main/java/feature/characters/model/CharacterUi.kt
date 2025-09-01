@@ -1,14 +1,9 @@
 package feature.characters.model
 
 import domain.characters.model.CharacterDto
-import domain.characters.model.GenderType
-import domain.characters.model.StatusType
-import feature.characters.R
-import feature.characters.util.provider.ResourcesProvider
-import javax.inject.Inject
 
 data class CharacterUi(
-    val id: Int,
+    val id: String,
     val name: String,
     val status: String,
     val species: String,
@@ -16,34 +11,33 @@ data class CharacterUi(
     val gender: String,
     val origin: String,
     val location: String,
-    val imageUrl: String
-) : ListItem {
+    val imageUrl: String,
+) {
 
-    override val viewType: Int = this::class.hashCode()
+    companion object {
 
-    override val listId: String = this.id.toString()
+        val EMPTY = CharacterUi(
+            id = System.currentTimeMillis().toString(),
+            name = "",
+            status = "",
+            species = "",
+            type = "",
+            gender = "",
+            origin = "",
+            location = "",
+            imageUrl = "",
+        )
+    }
 }
 
-class CharacterUiMapper @Inject constructor(private val resourcesProvider: ResourcesProvider) {
-
-    operator fun invoke(dto: CharacterDto): CharacterUi = CharacterUi(
-        id = dto.id,
-        name = dto.name,
-        status = when (dto.status) {
-            StatusType.ALIVE -> resourcesProvider.getString(R.string.state_alive)
-            StatusType.DEAD -> resourcesProvider.getString(R.string.state_dead)
-            StatusType.UNKNOWN -> resourcesProvider.getString(R.string.state_unknown)
-        },
-        species = dto.species,
-        type = dto.type,
-        gender = when (dto.gender) {
-            GenderType.FEMALE -> resourcesProvider.getString(R.string.gender_female)
-            GenderType.MALE -> resourcesProvider.getString(R.string.gender_male)
-            GenderType.GENDERLESS -> resourcesProvider.getString(R.string.gender_genderless)
-            GenderType.UNKNOWN -> resourcesProvider.getString(R.string.gender_unknown)
-        },
-        origin = dto.origin,
-        location = dto.location,
-        imageUrl = dto.imageUrl
-    )
-}
+internal fun CharacterDto.toCharacterUi(): CharacterUi = CharacterUi(
+    id = id,
+    name = name,
+    status = status,
+    species = species,
+    type = type,
+    gender = gender,
+    origin = origin,
+    location = location,
+    imageUrl = imageUrl,
+)

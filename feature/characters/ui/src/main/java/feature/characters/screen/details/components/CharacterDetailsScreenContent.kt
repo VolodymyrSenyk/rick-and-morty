@@ -14,11 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
-import feature.characters.model.CharacterDetailsUiMapper
+import feature.characters.model.toCharacterDetailsUiList
 import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.screen.details.components.list.CharacterDetailsList
 import feature.characters.screen.details.mvi.CharacterDetailsViewState
-import feature.characters.util.provider.ResourcesProvider
 
 @Composable
 internal fun CharacterDetailsScreenContent(
@@ -32,14 +31,14 @@ internal fun CharacterDetailsScreenContent(
             .padding(horizontal = Dimens.Padding.Small)
     ) {
         AsyncImage(
-            model = viewState.characterAvatarUrl,
+            model = viewState.character.imageUrl,
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(Dimens.ImageSize.Big)
                 .padding(Dimens.Padding.Small),
         )
-        CharacterDetailsList(items = viewState.characterData)
+        CharacterDetailsList(items = viewState.character.toCharacterDetailsUiList(LocalContext.current))
     }
 }
 
@@ -47,15 +46,6 @@ internal fun CharacterDetailsScreenContent(
 @Composable
 private fun CharacterDetailsScreenContentPreview() {
     RickAndMortyTheme {
-        val context = LocalContext.current
-        val resourcesProvider = ResourcesProvider(context)
-        val mapper = CharacterDetailsUiMapper(resourcesProvider)
-        val characterDetails = mapper(CharactersPreviewMocks.character)
-        CharacterDetailsScreenContent(
-            viewState = CharacterDetailsViewState(
-                characterAvatarUrl = CharactersPreviewMocks.avatarConstructor(),
-                characterData = characterDetails,
-            ),
-        )
+        CharacterDetailsScreenContent(viewState = CharacterDetailsViewState(character = CharactersPreviewMocks.character))
     }
 }

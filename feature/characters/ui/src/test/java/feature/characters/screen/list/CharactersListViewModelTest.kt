@@ -2,18 +2,13 @@ package feature.characters.screen.list
 
 import domain.characters.CharacterRepository
 import domain.characters.model.CharacterDto
-import domain.characters.model.GenderType
-import domain.characters.model.StatusType
 import domain.characters.usecase.GetCharactersUseCase
 import feature.characters.model.CharacterUi
-import feature.characters.model.CharacterUiMapper
 import feature.characters.screen.list.mvi.CharactersListIntent
 import feature.characters.screen.list.mvi.CharactersListNavEvent
 import feature.characters.screen.list.mvi.CharactersListSideEffect
-import feature.characters.util.provider.ResourcesProvider
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,15 +28,11 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     @MockK
     lateinit var characterRepository: CharacterRepository
 
-    @MockK
-    lateinit var resourcesProvider: ResourcesProvider
-
     @BeforeEach
     override fun setUp() {
         super.setUp()
         viewModel = CharactersListViewModel(
             getCharactersUseCase = GetCharactersUseCase(characterRepository),
-            characterUiMapper = CharacterUiMapper(resourcesProvider),
         )
     }
 
@@ -61,7 +52,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testData = CharacterListTestData(startIndex = 0)
 
         coEvery { characterRepository.getCharacters(1) } returns testData.charactersList
-        every { resourcesProvider.getString(any()) } returns CharacterListTestData.DATA_MOCK
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
 
@@ -81,7 +71,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
 
         coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
-        coVerify(exactly = 0) { resourcesProvider.getString(any()) }
         assertEquals(CharactersListSideEffect.ShowErrorMessage, viewModel.sideEffect.value)
         with(viewModel.uiState.value) {
             assertEquals(emptyList<CharacterUi>(), this.charactersList)
@@ -98,7 +87,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
         coEvery { characterRepository.getCharacters(1) } returns testDataFirstPage.charactersList
         coEvery { characterRepository.getCharacters(2) } returns testDataSecondPage.charactersList
-        every { resourcesProvider.getString(any()) } returns CharacterListTestData.DATA_MOCK
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnScrolled(lastVisibleItemPosition = CharacterListTestData.PAGE_SIZE))
@@ -119,7 +107,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
         coEvery { characterRepository.getCharacters(1) } returns testDataFirstPage.charactersList
         coEvery { characterRepository.getCharacters(2) } returns testDataSecondPage.charactersList
-        every { resourcesProvider.getString(any()) } returns CharacterListTestData.DATA_MOCK
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnScrolled(lastVisibleItemPosition = CharacterListTestData.PAGE_SIZE))
@@ -138,32 +125,31 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     fun `characters list sorted`() = runTest {
         val testData = CharacterListTestData(startIndex = 0)
         val charactersList = listOf(
-            testData.characterDto.copy(id = 1, name = "C"),
-            testData.characterDto.copy(id = 2, name = "A"),
-            testData.characterDto.copy(id = 3, name = "D"),
-            testData.characterDto.copy(id = 4, name = "B"),
+            testData.characterDto.copy(id = "1", name = "C"),
+            testData.characterDto.copy(id = "2", name = "A"),
+            testData.characterDto.copy(id = "3", name = "D"),
+            testData.characterDto.copy(id = "4", name = "B"),
         )
         val charactersUiList = listOf(
-            testData.characterUi.copy(id = 1, name = "C"),
-            testData.characterUi.copy(id = 2, name = "A"),
-            testData.characterUi.copy(id = 3, name = "D"),
-            testData.characterUi.copy(id = 4, name = "B"),
+            testData.characterUi.copy(id = "1", name = "C"),
+            testData.characterUi.copy(id = "2", name = "A"),
+            testData.characterUi.copy(id = "3", name = "D"),
+            testData.characterUi.copy(id = "4", name = "B"),
         )
         val charactersUiListSortedAscending = listOf(
-            testData.characterUi.copy(id = 2, name = "A"),
-            testData.characterUi.copy(id = 4, name = "B"),
-            testData.characterUi.copy(id = 1, name = "C"),
-            testData.characterUi.copy(id = 3, name = "D"),
+            testData.characterUi.copy(id = "2", name = "A"),
+            testData.characterUi.copy(id = "4", name = "B"),
+            testData.characterUi.copy(id = "1", name = "C"),
+            testData.characterUi.copy(id = "3", name = "D"),
         )
         val charactersUiListSortedDescending = listOf(
-            testData.characterUi.copy(id = 3, name = "D"),
-            testData.characterUi.copy(id = 1, name = "C"),
-            testData.characterUi.copy(id = 4, name = "B"),
-            testData.characterUi.copy(id = 2, name = "A"),
+            testData.characterUi.copy(id = "3", name = "D"),
+            testData.characterUi.copy(id = "1", name = "C"),
+            testData.characterUi.copy(id = "4", name = "B"),
+            testData.characterUi.copy(id = "2", name = "A"),
         )
 
         coEvery { characterRepository.getCharacters(1) } returns charactersList
-        every { resourcesProvider.getString(any()) } returns CharacterListTestData.DATA_MOCK
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         assertEquals(charactersUiList, viewModel.uiState.value.charactersList)
@@ -182,7 +168,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val characterToNavigate = testData.charactersUiList[4]
 
         coEvery { characterRepository.getCharacters(1) } returns testData.charactersList
-        every { resourcesProvider.getString(any()) } returns CharacterListTestData.DATA_MOCK
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnCharacterClicked(characterToNavigate))
@@ -199,39 +184,38 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     class CharacterListTestData(val startIndex: Int) {
 
         val characterDto = CharacterDto(
-            id = 1,
+            id = "1",
             name = "Rick Sanchez",
-            status = StatusType.ALIVE,
+            status = "Alive",
             species = "Human",
             type = "",
-            gender = GenderType.MALE,
+            gender = "Male",
             origin = "Earth (C-137)",
             location = "Citadel of Ricks",
             imageUrl = "someUrl",
         )
 
         val characterUi = CharacterUi(
-            id = 1,
+            id = "1",
             name = "Rick Sanchez",
-            status = DATA_MOCK,
+            status = "Alive",
             species = "Human",
             type = "",
-            gender = DATA_MOCK,
+            gender = "Male",
             origin = "Earth (C-137)",
             location = "Citadel of Ricks",
             imageUrl = "someUrl",
         )
 
         val charactersList = List(PAGE_SIZE) { characterDto }.mapIndexed { index, model ->
-            model.copy(id = index + startIndex)
+            model.copy(id = (index + startIndex).toString())
         }
 
         val charactersUiList = List(PAGE_SIZE) { characterUi }.mapIndexed { index, model ->
-            model.copy(id = index + startIndex)
+            model.copy(id = (index + startIndex).toString())
         }
 
         companion object {
-            const val DATA_MOCK = "Some data"
             const val PAGE_SIZE = 20
         }
     }

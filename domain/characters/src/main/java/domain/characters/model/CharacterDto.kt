@@ -1,12 +1,12 @@
 package domain.characters.model
 
 data class CharacterDto(
-    val id: Int,
+    val id: String,
     val name: String,
-    val status: StatusType,
+    val status: String,
     val species: String,
     val type: String,
-    val gender: GenderType,
+    val gender: String,
     val origin: String,
     val location: String,
     val imageUrl: String

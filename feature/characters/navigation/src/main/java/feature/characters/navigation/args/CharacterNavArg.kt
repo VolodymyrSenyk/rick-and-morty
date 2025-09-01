@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 @Parcelize
 @Serializable
 data class CharacterNavArg(
-    val id: Int,
+    val id: String,
     val name: String,
     val status: String,
     val species: String,
