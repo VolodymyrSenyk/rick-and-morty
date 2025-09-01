@@ -13,9 +13,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
-import core.ui.theme.ThemeMode
 import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
+import domain.settings.model.ThemeMode
 import feature.characters.R
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.preview.CharactersPreviewMocks
@@ -25,10 +25,15 @@ import feature.characters.screen.list.mvi.CharactersListIntent
 import feature.characters.screen.list.mvi.CharactersListNavEvent
 import feature.characters.screen.list.mvi.CharactersListSideEffect
 import feature.characters.screen.list.mvi.CharactersListViewState
+import feature.settings.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
 @Composable
-internal fun CharactersListScreen(viewModel: CharactersListViewModel, router: Router) {
+internal fun CharactersListScreen(
+    viewModel: CharactersListViewModel,
+    settingsViewModel: SettingsViewModel,
+    router: Router,
+) {
     val gridState = rememberLazyGridState()
 
     CharactersListSideEffectHandler(viewModel = viewModel, gridState = gridState)
@@ -42,7 +47,10 @@ internal fun CharactersListScreen(viewModel: CharactersListViewModel, router: Ro
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     CustomScaffold(
         topAppBar = {
-            CharactersListTopAppBar(onSortClicked = { viewModel.onIntent(CharactersListIntent.OnSortClicked) })
+            CharactersListTopAppBar(
+                onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
+                onSortClicked = { viewModel.onIntent(CharactersListIntent.OnSortClicked) },
+            )
         }
     ) {
         CharactersListScreenContent(
@@ -87,7 +95,14 @@ private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, ro
 @Composable
 private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) theme: ThemeMode) {
     RickAndMortyTheme(themeMode = theme) {
-        CustomScaffold(topAppBar = { CharactersListTopAppBar(onSortClicked = {}) }) {
+        CustomScaffold(
+            topAppBar = {
+                CharactersListTopAppBar(
+                    onThemeSelected = {},
+                    onSortClicked = {},
+                )
+            }
+        ) {
             CharactersListScreenContent(
                 viewState = CharactersListViewState(
                     charactersList = CharactersPreviewMocks.charactersList,

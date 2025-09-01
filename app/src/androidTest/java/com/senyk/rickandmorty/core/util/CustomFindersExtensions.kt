@@ -2,12 +2,14 @@ package com.senyk.rickandmorty.core.util
 
 import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescriptionExactly
 import androidx.compose.ui.test.hasParent
+import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.isEditable
@@ -94,3 +96,10 @@ fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.f
     duplicateNodeIndex: Int,
     text: String,
 ): SemanticsNodeInteraction = onAllNodesWithText(text, useUnmergedTree = true)[duplicateNodeIndex]
+
+/**
+ * Finds node with the exact [ProgressBarRangeInfo].
+ */
+fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.findProgressBar(
+    rangeInfo: ProgressBarRangeInfo = ProgressBarRangeInfo(current = 0f, range = 0f..0f, steps = 0)
+): SemanticsNodeInteraction = onNode(hasProgressBarRangeInfo(rangeInfo), useUnmergedTree = true)

@@ -11,6 +11,7 @@ import feature.characters.screen.details.CharacterDetailsScreen
 import feature.characters.screen.details.CharacterDetailsViewModel
 import feature.characters.screen.list.CharactersListScreen
 import feature.characters.screen.list.CharactersListViewModel
+import feature.settings.viewmodel.SettingsViewModel
 import navigation.compose.router.JetpackRouter
 
 fun NavGraphBuilder.charactersGraph(navController: NavController) {
@@ -20,7 +21,8 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) },
     ) { entry ->
         val viewModel = hiltViewModel<CharactersListViewModel>(entry)
-        CharactersListScreen(viewModel = viewModel, router = router)
+        val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
+        CharactersListScreen(viewModel = viewModel, settingsViewModel = settingsViewModel, router = router)
     }
     composable<CharacterDetailsDestination>(
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
@@ -30,6 +32,7 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
     ) { entry ->
         val args = entry.toRoute<CharacterDetailsDestination>()
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
-        CharacterDetailsScreen(viewModel = viewModel, router = router, args = args)
+        val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
+        CharacterDetailsScreen(viewModel = viewModel, settingsViewModel = settingsViewModel, router = router, args = args)
     }
 }

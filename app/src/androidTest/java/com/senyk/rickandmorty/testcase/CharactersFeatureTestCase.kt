@@ -14,7 +14,6 @@ class CharactersFeatureTestCase : BaseTestCase() {
         val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith", "Abadango Cluster Princess")
         val rickDetails = listOf("Rick Sanchez", "Alive", "Human", "Male", "Earth (C-137)", "Citadel of Ricks")
         val abadangoDetails = listOf("Abadango Cluster Princess", "Alive", "Alien", "Female", "Abadango")
-        composeTestRule.waitForIdle()
         step("Check characters list and details navigation") {
             scenario(CheckCharactersListScenario(defaultList))
             scenario(CheckCharacterFromListScenario(name = rickDetails.first(), content = rickDetails, navigateBackWithSystemButton = true))
@@ -27,7 +26,6 @@ class CharactersFeatureTestCase : BaseTestCase() {
         val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith", "Abadango Cluster Princess")
         val ascendingList = listOf("Abadango Cluster Princess", "Abradolf Lincler", "Adjudicator Rick", "Agency Director")
         val descendingList = listOf("Summer Smith", "Rick Sanchez", "Morty Smith", "Jerry Smith")
-        composeTestRule.waitForIdle()
         step("Check characters list sorting") {
             step("Check default list without sorting") {
                 scenario(CheckCharactersListScenario(defaultList))

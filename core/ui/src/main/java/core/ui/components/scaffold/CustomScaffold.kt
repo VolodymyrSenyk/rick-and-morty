@@ -21,7 +21,7 @@ import core.ui.components.topappbar.SimpleTopAppBarTitle
 import core.ui.components.topappbar.TopAppBarShadow
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
-import core.ui.theme.ThemeMode
+import domain.settings.model.ThemeMode
 
 @Composable
 fun CustomScaffold(

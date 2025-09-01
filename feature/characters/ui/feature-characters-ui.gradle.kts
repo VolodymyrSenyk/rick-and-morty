@@ -17,6 +17,8 @@ dependencies {
 
     implementation(project(":feature:characters:navigation"))
 
+    implementation(project(":feature:settings:viewmodel"))
+
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
 

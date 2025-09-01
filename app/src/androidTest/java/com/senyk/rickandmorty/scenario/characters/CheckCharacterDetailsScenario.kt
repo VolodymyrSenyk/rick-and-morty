@@ -1,6 +1,7 @@
 package com.senyk.rickandmorty.scenario.characters
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.senyk.rickandmorty.core.base.BaseScenario
@@ -13,6 +14,7 @@ class CheckCharacterDetailsScenario<A : ComponentActivity>(private val name: Str
         get() = {
             step("Check character details screen") {
                 CharacterDetailsScreen(this).apply {
+                    waitUntil(5000L) { progressBar.isNotDisplayed() }
                     textTitle(name).assertExists()
                     content.forEachIndexed { index, text ->
                         val ordinalNumber = content.subList(0, index).count { it == text }

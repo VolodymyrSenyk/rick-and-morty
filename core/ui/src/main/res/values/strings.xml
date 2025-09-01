@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name" translatable="false">Rick &amp; Morty</string>
+
     <string name="menu_item_back">Back</string>
+    <string name="menu_item_night_theme">Night theme</string>
+    <string name="menu_item_day_theme">Day theme</string>
 
 </resources>

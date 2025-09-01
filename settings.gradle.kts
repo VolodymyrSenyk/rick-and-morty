@@ -9,9 +9,14 @@ include(":core:ui")
 include(":core:navigation-compose")
 include(":core:test-util")
 
+include(":domain:settings")
+include(":domain:settings:api")
 include(":domain:characters")
 
+include(":data:datastore")
 include(":data:network")
+
+include(":feature:settings:viewmodel")
 
 include(":feature:characters:navigation")
 include(":feature:characters:ui")

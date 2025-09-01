@@ -9,22 +9,24 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import core.ui.R
 import core.ui.components.scaffold.CustomScaffold
-import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
-import core.ui.theme.ThemeMode
 import core.ui.utils.NavEventHandler
+import domain.settings.model.ThemeMode
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.screen.details.components.CharacterDetailsScreenContent
+import feature.characters.screen.details.components.appbar.CharacterDetailsTopAppBar
 import feature.characters.screen.details.mvi.CharacterDetailsIntent
 import feature.characters.screen.details.mvi.CharacterDetailsNavEvent
 import feature.characters.screen.details.mvi.CharacterDetailsViewState
+import feature.settings.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
 @Composable
 internal fun CharacterDetailsScreen(
     viewModel: CharacterDetailsViewModel,
+    settingsViewModel: SettingsViewModel,
     router: Router,
     args: CharacterDetailsDestination,
 ) {
@@ -37,9 +39,10 @@ internal fun CharacterDetailsScreen(
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     CustomScaffold(
         topAppBar = {
-            SimpleTopAppBar(
+            CharacterDetailsTopAppBar(
                 titleText = viewState.character?.name ?: stringResource(R.string.app_name),
                 onNavigateBackClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
+                onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
             )
         }
     ) {
@@ -62,9 +65,10 @@ private fun CharacterDetailsScreenPreview(@PreviewParameter(provider = ThemePrev
     RickAndMortyTheme(themeMode = theme) {
         CustomScaffold(
             topAppBar = {
-                SimpleTopAppBar(
-                    titleText = CharactersPreviewMocks.character.name,
+                CharacterDetailsTopAppBar(
+                    titleText = CharactersPreviewMocks.characterDetails.name,
                     onNavigateBackClicked = {},
+                    onThemeSelected = {},
                 )
             }
         ) {

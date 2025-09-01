@@ -90,7 +90,10 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation-compose"))
 
+    implementation(project(":data:datastore"))
     implementation(project(":data:network"))
+
+    implementation(project(":feature:settings:viewmodel"))
 
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:ui"))

@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(project(":core:arch-android"))
+    api(project(":domain:settings:api"))
     implementation(Config.Libs.ktx)
     api(platform(Config.Libs.composeBom))
     api(Config.Libs.composeUi)

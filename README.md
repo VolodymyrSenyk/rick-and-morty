@@ -26,6 +26,7 @@ code quality with static analysis, testing and **CI** tools. Feel free to explor
 - Kotlin Coroutines
 - [Retrofit](https://github.com/square/retrofit) + [OkHttp](https://github.com/square/okhttp)
 - Material Design 3
+- Day/Night theme
 - Jetpack Compose
 - Single-activity architecture + Jetpack Compose Navigation
 - [Coil](https://github.com/coil-kt/coil)

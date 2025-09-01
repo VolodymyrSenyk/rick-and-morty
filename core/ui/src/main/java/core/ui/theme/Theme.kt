@@ -7,12 +7,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import core.ui.theme.colorscheme.DarkMaterialColorScheme
 import core.ui.theme.colorscheme.LightMaterialColorScheme
+import domain.settings.model.ThemeMode
 
 val LocalThemeMode = staticCompositionLocalOf { ThemeMode.SYSTEM }
-
-enum class ThemeMode {
-    SYSTEM, LIGHT, DARK,
-}
 
 @Composable
 fun RickAndMortyTheme(

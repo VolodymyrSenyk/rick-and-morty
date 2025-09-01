@@ -11,13 +11,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import core.ui.components.topappbar.SimpleTopAppBar
+import core.ui.components.topappbar.menu.ThemeChoosingMenuItem
 import core.ui.theme.RickAndMortyTheme
+import domain.settings.model.ThemeMode
 import feature.characters.R
 import core.ui.R as CoreR
 
 @Composable
 internal fun CharactersListTopAppBar(
     modifier: Modifier = Modifier,
+    onThemeSelected: (ThemeMode) -> Unit,
     onSortClicked: () -> Unit,
 ) {
     SimpleTopAppBar(
@@ -25,6 +28,7 @@ internal fun CharactersListTopAppBar(
         modifier = modifier
     ) {
         Row {
+            ThemeChoosingMenuItem(onThemeSelected = onThemeSelected)
             SortMenuItem(onClicked = onSortClicked)
         }
     }
@@ -52,6 +56,7 @@ private fun SortMenuItem(
 private fun CharactersListTopAppBarPreview() {
     RickAndMortyTheme {
         CharactersListTopAppBar(
+            onThemeSelected = {},
             onSortClicked = {},
         )
     }
