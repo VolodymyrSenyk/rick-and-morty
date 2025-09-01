@@ -18,7 +18,6 @@ import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
 import feature.characters.R
 import feature.characters.navigation.CharacterDetailsDestination
-import feature.characters.navigation.toNavArg
 import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.screen.list.components.CharactersListScreenContent
 import feature.characters.screen.list.components.appbar.CharactersListTopAppBar
@@ -76,8 +75,7 @@ private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, ro
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
             is CharactersListNavEvent.NavigateToCharacterDetails -> {
-                val destination = mviNavEvent.character.toNavArg()
-                router.navigateTo(CharacterDetailsDestination(destination))
+                router.navigateTo(CharacterDetailsDestination(mviNavEvent.character.id))
             }
 
             is CharactersListNavEvent.NavigateBack -> router.back()

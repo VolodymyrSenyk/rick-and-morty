@@ -198,12 +198,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val characterUi = CharacterUi(
             id = "1",
             name = "Rick Sanchez",
-            status = "Alive",
-            species = "Human",
-            type = "",
-            gender = "Male",
-            origin = "Earth (C-137)",
-            location = "Citadel of Ricks",
             imageUrl = "someUrl",
         )
 

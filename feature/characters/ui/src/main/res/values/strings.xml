@@ -14,6 +14,7 @@
 
     <!-- messages -->
     <string name="message_characters_empty_list">No characters found</string>
+    <string name="message_character_empty_details">Can not load this character details</string>
 
     <!-- errors -->
     <string name="error_unknown">Something went wrong</string>

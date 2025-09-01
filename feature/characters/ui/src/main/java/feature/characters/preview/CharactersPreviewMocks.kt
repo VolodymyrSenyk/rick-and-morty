@@ -1,5 +1,6 @@
 package feature.characters.preview
 
+import feature.characters.model.CharacterDetailsUi
 import feature.characters.model.CharacterUi
 
 internal object CharactersPreviewMocks {
@@ -8,6 +9,12 @@ internal object CharactersPreviewMocks {
         "https://rickandmortyapi.com/api/character/avatar/${index + 1}.jpeg"
 
     val character = CharacterUi(
+        id = "1",
+        name = "Rick Sanchez",
+        imageUrl = avatarConstructor(),
+    )
+
+    val characterDetails = CharacterDetailsUi(
         id = "1",
         name = "Rick Sanchez",
         status = "Alive",

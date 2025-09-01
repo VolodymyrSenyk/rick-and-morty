@@ -1,33 +1,27 @@
 package feature.characters.model
 
-import android.content.Context
-import feature.characters.R
+import domain.characters.model.CharacterDto
 
 data class CharacterDetailsUi(
-    val label: String,
-    val data: String,
+    val id: String,
+    val name: String,
+    val status: String,
+    val species: String,
+    val type: String,
+    val gender: String,
+    val origin: String,
+    val location: String,
+    val imageUrl: String,
 )
 
-internal fun CharacterUi.toCharacterDetailsUiList(context: Context): List<CharacterDetailsUi> = mutableListOf<CharacterDetailsUi>().apply {
-    if (name.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_name), data = name))
-    }
-    if (status.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_status), data = status))
-    }
-    if (species.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_species), data = species))
-    }
-    if (type.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_type), data = type))
-    }
-    if (gender.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_gender), data = gender))
-    }
-    if (origin.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_origin), data = origin))
-    }
-    if (location.isNotEmpty()) {
-        add(CharacterDetailsUi(label = context.getString(R.string.character_location), data = location))
-    }
-}
+internal fun CharacterDto.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDetailsUi(
+    id = id,
+    name = name,
+    status = status,
+    species = species,
+    type = type,
+    gender = gender,
+    origin = origin,
+    location = location,
+    imageUrl = imageUrl,
+)

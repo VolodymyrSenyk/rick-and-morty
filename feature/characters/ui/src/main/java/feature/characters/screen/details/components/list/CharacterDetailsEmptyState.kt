@@ -1,4 +1,4 @@
-package feature.characters.screen.list.components.list
+package feature.characters.screen.details.components.list
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -18,7 +18,7 @@ import core.ui.theme.RickAndMortyTheme
 import feature.characters.R
 
 @Composable
-internal fun CharactersListEmptyState(
+internal fun CharacterDetailsEmptyState(
     modifier: Modifier = Modifier,
     visible: Boolean,
 ) {
@@ -32,7 +32,7 @@ internal fun CharactersListEmptyState(
             modifier = modifier.fillMaxSize()
         ) {
             Text(
-                text = stringResource(R.string.message_characters_empty_list),
+                text = stringResource(R.string.message_character_empty_details),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onBackground,
@@ -45,8 +45,8 @@ internal fun CharactersListEmptyState(
 
 @Preview
 @Composable
-private fun CharactersListEmptyStatePreview() {
+private fun CharacterDetailsEmptyStatePreview() {
     RickAndMortyTheme {
-        CharactersListEmptyState(visible = true)
+        CharacterDetailsEmptyState(visible = true)
     }
 }

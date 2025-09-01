@@ -45,21 +45,13 @@ internal fun CharactersListScreenContent(
                 gridState = gridState,
                 loadingNextDataSet = viewState.loadingNextDataSet,
                 isRefreshing = viewState.isRefreshing,
-                items = viewState.charactersList.filterIsInstance<CharacterUi>(),
+                items = viewState.charactersList,
                 onItemClicked = onItemClicked,
                 onRefreshed = onRefreshed,
                 onScrolled = onScrolled,
             )
         }
-
-        AnimatedVisibility(
-            visible = viewState.charactersList.isEmpty() && !viewState.showProgress,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            CharactersListEmptyState()
-        }
-
+        CharactersListEmptyState(visible = viewState.charactersList.isEmpty() && !viewState.showProgress)
         BlockingProgress(
             visible = viewState.showProgress,
             modifier = Modifier.background(color = Color.Black.copy(alpha = 0.5f))

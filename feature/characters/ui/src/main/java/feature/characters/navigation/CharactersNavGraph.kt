@@ -7,15 +7,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import feature.characters.model.CharacterUi
-import feature.characters.navigation.args.CharacterNavArg
-import feature.characters.navigation.args.CharacterNavArgType
 import feature.characters.screen.details.CharacterDetailsScreen
 import feature.characters.screen.details.CharacterDetailsViewModel
 import feature.characters.screen.list.CharactersListScreen
 import feature.characters.screen.list.CharactersListViewModel
 import navigation.compose.router.JetpackRouter
-import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.charactersGraph(navController: NavController) {
     val router = JetpackRouter(navController)
@@ -27,7 +23,6 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         CharactersListScreen(viewModel = viewModel, router = router)
     }
     composable<CharacterDetailsDestination>(
-        typeMap = mapOf(typeOf<CharacterNavArg>() to CharacterNavArgType),
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
         exitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { it }) },
@@ -38,27 +33,3 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         CharacterDetailsScreen(viewModel = viewModel, router = router, args = args)
     }
 }
-
-internal fun CharacterUi.toNavArg(): CharacterNavArg = CharacterNavArg(
-    id = id,
-    name = name,
-    status = status,
-    species = species,
-    type = type,
-    gender = gender,
-    origin = origin,
-    location = location,
-    imageUrl = imageUrl,
-)
-
-internal fun CharacterNavArg.toModel(): CharacterUi = CharacterUi(
-    id = id,
-    name = name,
-    status = status,
-    species = species,
-    type = type,
-    gender = gender,
-    origin = origin,
-    location = location,
-    imageUrl = imageUrl,
-)

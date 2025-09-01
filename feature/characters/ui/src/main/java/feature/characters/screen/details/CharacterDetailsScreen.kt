@@ -3,9 +3,11 @@ package feature.characters.screen.details
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import core.ui.R
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.preview.ThemePreviewParameterProvider
@@ -13,7 +15,6 @@ import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.ThemeMode
 import core.ui.utils.NavEventHandler
 import feature.characters.navigation.CharacterDetailsDestination
-import feature.characters.navigation.toModel
 import feature.characters.preview.CharactersPreviewMocks
 import feature.characters.screen.details.components.CharacterDetailsScreenContent
 import feature.characters.screen.details.mvi.CharacterDetailsIntent
@@ -30,14 +31,14 @@ internal fun CharacterDetailsScreen(
     CharacterDetailsNavEventHandler(viewModel = viewModel, router = router)
 
     LaunchedEffect(args) {
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(character = args.character.toModel()))
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId = args.characterId))
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     CustomScaffold(
         topAppBar = {
             SimpleTopAppBar(
-                titleText = args.character.name,
+                titleText = viewState.character?.name ?: stringResource(R.string.app_name),
                 onNavigateBackClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
             )
         }
@@ -68,7 +69,7 @@ private fun CharacterDetailsScreenPreview(@PreviewParameter(provider = ThemePrev
             }
         ) {
             CharacterDetailsScreenContent(
-                viewState = CharacterDetailsViewState(character = CharactersPreviewMocks.character),
+                viewState = CharacterDetailsViewState(character = CharactersPreviewMocks.characterDetails),
             )
         }
     }

@@ -1,8 +1,9 @@
 package feature.characters.screen.details.mvi
 
 import arch.mvi.ViewState
-import feature.characters.model.CharacterUi
+import feature.characters.model.CharacterDetailsUi
 
 internal data class CharacterDetailsViewState(
-    val character: CharacterUi = CharacterUi.EMPTY,
+    val character: CharacterDetailsUi? = null,
+    val isLoading: Boolean = true,
 ) : ViewState

@@ -14,13 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
-import feature.characters.model.CharacterDetailsUi
 
 @Composable
 internal fun CharacterDetailsItem(
     modifier: Modifier = Modifier,
-    item: CharacterDetailsUi,
+    label: String,
+    data: String,
 ) {
+    if (label.isBlank() || data.isBlank()) return
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -28,7 +29,7 @@ internal fun CharacterDetailsItem(
             .padding(Dimens.Padding.Tiny)
     ) {
         Text(
-            text = item.label,
+            text = label,
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
@@ -38,7 +39,7 @@ internal fun CharacterDetailsItem(
         Spacer(Modifier.width(Dimens.Padding.Small))
 
         Text(
-            text = item.data,
+            text = data,
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onSurface,
             ),
@@ -50,6 +51,6 @@ internal fun CharacterDetailsItem(
 @Composable
 private fun CharacterDetailsItemPreview() {
     RickAndMortyTheme {
-        CharacterDetailsItem(item = CharacterDetailsUi(label = "Name:", data = "Rick Sanchez"))
+        CharacterDetailsItem(label = "Name:", data = "Rick Sanchez")
     }
 }
