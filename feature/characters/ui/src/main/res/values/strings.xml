@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- menu -->
+    <string name="menu_sort">Sort</string>
+
+    <!-- output -->
+    <string name="character_name">Name:</string>
+    <string name="character_status">Status:</string>
+    <string name="character_species">Species:</string>
+    <string name="character_type">Type:</string>
+    <string name="character_gender">Gender:</string>
+    <string name="character_origin">Origin:</string>
+    <string name="character_location">Location:</string>
+
+    <!-- messages -->
+    <string name="message_characters_empty_list">No characters found</string>
+    <string name="message_character_empty_details">Can not load this character details</string>
+
+    <!-- errors -->
+    <string name="error_unknown">Something went wrong</string>
+
+</resources>

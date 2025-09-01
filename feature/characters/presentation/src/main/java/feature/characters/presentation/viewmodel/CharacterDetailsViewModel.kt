@@ -1,0 +1,40 @@
+package feature.characters.presentation.viewmodel
+
+import arch.android.BaseSimpleMviViewModel
+import arch.mvi.MviSideEffect
+import dagger.hilt.android.lifecycle.HiltViewModel
+import domain.characters.usecase.GetCharacterByIdUseCase
+import feature.characters.presentation.model.toCharacterDetailsUi
+import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
+import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
+import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsViewState
+import javax.inject.Inject
+
+@HiltViewModel
+class CharacterDetailsViewModel @Inject constructor(
+    private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
+) : BaseSimpleMviViewModel<CharacterDetailsViewState, CharacterDetailsIntent, MviSideEffect, CharacterDetailsNavEvent>(
+    initialState = CharacterDetailsViewState()
+) {
+
+    override val tag: String = this.javaClass.simpleName
+
+    override suspend fun executeIntent(mviIntent: CharacterDetailsIntent) = when (mviIntent) {
+        is CharacterDetailsIntent.OnViewStarted -> onViewStarted(characterId = mviIntent.characterId)
+        is CharacterDetailsIntent.OnBackButtonClicked -> onBackButtonClicked()
+    }
+
+    private suspend fun onViewStarted(characterId: String) {
+        val character = getCharacterByIdUseCase(id = characterId)
+        updateUiState { oldState ->
+            oldState.copy(
+                character = character.toCharacterDetailsUi(),
+                isLoading = false,
+            )
+        }
+    }
+
+    private suspend fun onBackButtonClicked() {
+        sendNavEvent(CharacterDetailsNavEvent.NavigateBack)
+    }
+}

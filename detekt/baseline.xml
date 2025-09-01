@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+    <ManuallySuppressedIssues>
+        <ID>MagicNumber:Config.kt$Config$1000_000</ID>
+        <ID>MagicNumber:Config.kt$Config$1000</ID>
+        <ID>TooGenericExceptionCaught:BaseSimpleMviViewModel.kt$BaseSimpleMviViewModel$throwable: Throwable</ID>
+        <ID>TooGenericExceptionCaught:BaseCoroutinesViewModel.kt$BaseCoroutinesViewModel$throwable: Throwable</ID>
+        <ID>ThrowingExceptionsWithoutMessageOrCause:Kermit.kt$Kermit$Throwable()</ID>
+    </ManuallySuppressedIssues>
+</SmellBaseline>
