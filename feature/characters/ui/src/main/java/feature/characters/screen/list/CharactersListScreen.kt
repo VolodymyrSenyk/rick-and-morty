@@ -26,12 +26,14 @@ import feature.characters.screen.list.mvi.CharactersListNavEvent
 import feature.characters.screen.list.mvi.CharactersListSideEffect
 import feature.characters.screen.list.mvi.CharactersListViewState
 import feature.settings.viewmodel.SettingsViewModel
+import feature.settings.viewmodel.SplashViewModel
 import navigation.compose.router.Router
 
 @Composable
 internal fun CharactersListScreen(
     viewModel: CharactersListViewModel,
     settingsViewModel: SettingsViewModel,
+    splashViewModel: SplashViewModel,
     router: Router,
 ) {
     val gridState = rememberLazyGridState()
@@ -45,6 +47,7 @@ internal fun CharactersListScreen(
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
+    if (!viewState.showProgress) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
     CustomScaffold(
         topAppBar = {
             CharactersListTopAppBar(

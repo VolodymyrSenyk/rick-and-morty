@@ -17,6 +17,7 @@ include(":data:datastore")
 include(":data:network")
 
 include(":feature:settings:viewmodel")
+include(":feature:splash:viewmodel")
 
 include(":feature:characters:navigation")
 include(":feature:characters:ui")

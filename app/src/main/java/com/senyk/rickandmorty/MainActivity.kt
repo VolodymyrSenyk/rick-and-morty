@@ -12,12 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -28,6 +26,7 @@ import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.senyk.rickandmorty.components.SplashScreen
 import com.senyk.rickandmorty.navigation.RickAndMortyNavHost
@@ -35,9 +34,7 @@ import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.isUiTestRunning
 import dagger.hilt.android.AndroidEntryPoint
 import feature.settings.viewmodel.SettingsViewModel
-import kotlinx.coroutines.delay
-
-private const val SPLASH_SCREEN_DELAY_IN_MILLIS = 3000L
+import feature.settings.viewmodel.SplashViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -53,23 +50,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun MainActivityScreen(splashScreen: SplashScreen) {
+    val splashViewModel: SplashViewModel = hiltViewModel()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val themeMode by settingsViewModel.themeModeFlow.collectAsState()
-
     val context = LocalContext.current
-    var isSplashVisible by remember { mutableStateOf(!context.isUiTestRunning()) }
+    val isSplashVisible by if (context.isUiTestRunning()) {
+        remember { mutableStateOf(false) }
+    } else {
+        splashViewModel.show.collectAsStateWithLifecycle()
+    }
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
         splashScreen.setKeepOnScreenCondition { isSplashVisible }
     } else if (isSplashVisible) {
         SplashScreen()
     }
 
-    LaunchedEffect(Unit) {
-        delay(SPLASH_SCREEN_DELAY_IN_MILLIS)
-        isSplashVisible = false
-    }
-
     themeMode?.let { mode ->
+        splashViewModel.requirementDone(SplashViewModel.Requirement.THEME_LOADED)
         RickAndMortyTheme(themeMode = mode) {
             val statusBarColor = if (isSplashVisible) colorResource(R.color.colorSplashScreen) else MaterialTheme.colorScheme.primary
             val navigationBarColor = if (isSplashVisible) colorResource(R.color.colorSplashScreen) else Color.Black

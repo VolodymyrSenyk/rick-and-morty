@@ -94,6 +94,7 @@ dependencies {
     implementation(project(":data:network"))
 
     implementation(project(":feature:settings:viewmodel"))
+    implementation(project(":feature:splash:viewmodel"))
 
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:ui"))
