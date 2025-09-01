@@ -20,6 +20,7 @@ include(":feature:settings:viewmodel")
 include(":feature:splash:viewmodel")
 
 include(":feature:characters:navigation")
+include(":feature:characters:presentation")
 include(":feature:characters:ui")
 
 // Add ability to use a module name as part of a build script name

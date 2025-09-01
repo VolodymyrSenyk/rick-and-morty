@@ -34,7 +34,7 @@ import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.isUiTestRunning
 import dagger.hilt.android.AndroidEntryPoint
 import feature.settings.viewmodel.SettingsViewModel
-import feature.settings.viewmodel.SplashViewModel
+import feature.splash.viewmodel.SplashViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package feature.settings.viewmodel
+package feature.splash.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

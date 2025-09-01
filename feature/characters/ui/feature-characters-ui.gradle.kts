@@ -6,16 +6,14 @@ plugins {
 }
 
 android {
-    namespace = "feature.characters"
+    namespace = "feature.characters.ui"
 }
 
 dependencies {
-    implementation(project(":core:arch-android"))
     implementation(project(":core:ui"))
 
-    implementation(project(":domain:characters"))
-
     implementation(project(":feature:characters:navigation"))
+    implementation(project(":feature:characters:presentation"))
 
     implementation(project(":feature:settings:viewmodel"))
     implementation(project(":feature:splash:viewmodel"))
@@ -28,6 +26,4 @@ dependencies {
 
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
-
-    testImplementation(project(":core:test-util"))
 }

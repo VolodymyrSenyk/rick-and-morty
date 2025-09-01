@@ -7,7 +7,7 @@ import com.senyk.rickandmorty.core.util.findIconButton
 import com.senyk.rickandmorty.core.util.findListItemWithIndex
 import com.senyk.rickandmorty.core.util.findProgressBar
 import com.senyk.rickandmorty.core.util.findText
-import feature.characters.R
+import feature.characters.ui.R
 import core.ui.R as CoreR
 
 class CharactersListScreen<A : ComponentActivity>(composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<A>, A>) {

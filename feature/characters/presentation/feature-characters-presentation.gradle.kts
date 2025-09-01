@@ -5,13 +5,15 @@ plugins {
 }
 
 android {
-    namespace = "feature.settings.viewmodel"
+    namespace = "feature.characters.presentation"
 }
 
 dependencies {
     api(project(":core:arch-android"))
-    implementation(project(":domain:settings"))
+    implementation(project(":domain:characters"))
 
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
+
+    testImplementation(project(":core:test-util"))
 }
