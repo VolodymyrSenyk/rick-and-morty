@@ -11,6 +11,14 @@ interface CharactersApi {
     @GET("character")
     suspend fun getCharacters(@Query("page") page: Int): CharactersResponse
 
+    @GET("character")
+    suspend fun getCharactersByFilter(
+        @Query("page") page: Int,
+        @Query("name") name: String,
+        @Query("status") status: String,
+        @Query("gender") gender: String,
+    ): CharactersResponse
+
     @GET("character/{id}")
     suspend fun getCharacterById(@Path("id") id: String): CharactersResultsResponse
 }

@@ -11,6 +11,7 @@ internal val LightMaterialColorScheme = lightColorScheme(
     onBackground = AppColors.Black900,
 
     surface = AppColors.Grey050,
+    surfaceVariant = AppColors.Blue075,
     onSurface = AppColors.Black900,
 
     error = AppColors.Red500,

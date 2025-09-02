@@ -1,0 +1,74 @@
+package feature.characters.ui.screen.components.search.list
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import coil3.compose.AsyncImage
+import core.ui.theme.Dimens
+import core.ui.theme.RickAndMortyTheme
+import feature.characters.presentation.model.CharacterUi
+import feature.characters.ui.screen.preview.CharactersPreviewMocks
+
+@Composable
+internal fun CharactersSearchListCard(
+    modifier: Modifier = Modifier,
+    item: CharacterUi,
+    onItemClicked: (item: CharacterUi) -> Unit,
+) {
+    val shape = MaterialTheme.shapes.small
+    Card(
+        shape = shape,
+        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.Elevation.Medium),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onItemClicked(item) }
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.surface, shape = shape)
+                .padding(Dimens.Padding.Tiny)
+        ) {
+            AsyncImage(
+                model = item.imageUrl,
+                contentDescription = null,
+                modifier = Modifier.size(Dimens.ImageSize.Small)
+            )
+            Text(
+                text = item.name,
+                textAlign = TextAlign.Start,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Dimens.Padding.VerySmall)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun CharactersSearchListCardPreview() {
+    RickAndMortyTheme {
+        CharactersSearchListCard(
+            item = CharactersPreviewMocks.character,
+            onItemClicked = {},
+        )
+    }
+}

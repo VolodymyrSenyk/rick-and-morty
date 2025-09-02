@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 internal object AppColors {
 
     val Blue500 = Color(0xFF2222FF)
+    val Blue075 = Color(0xFFE6EAF7)
 
     val Black900 = Color(0xFF030303)
 

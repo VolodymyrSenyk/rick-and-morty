@@ -11,6 +11,7 @@ internal val DarkMaterialColorScheme = darkColorScheme(
     onBackground = AppColors.Grey100,
 
     surface = AppColors.Grey750,
+    surfaceVariant = AppColors.Grey600,
     onSurface = AppColors.Grey100,
 
     error = AppColors.Red600,

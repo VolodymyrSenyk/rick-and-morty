@@ -2,6 +2,10 @@
 
     <!-- menu -->
     <string name="menu_sort">Sort</string>
+    <string name="menu_search">Search</string>
+
+    <!-- hint -->
+    <string name="hint_search_field">Search…</string>
 
     <!-- output -->
     <string name="character_name">Name:</string>
@@ -13,6 +17,7 @@
     <string name="character_location">Location:</string>
 
     <!-- messages -->
+    <string name="message_empty_state_search">Enter search query</string>
     <string name="message_characters_empty_list">No characters found</string>
     <string name="message_character_empty_details">Can not load this character details</string>
 

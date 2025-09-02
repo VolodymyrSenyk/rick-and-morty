@@ -11,6 +11,7 @@ import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListDestination
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.CharactersListViewModel
+import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.ui.screen.CharacterDetailsScreen
 import feature.characters.ui.screen.CharactersListScreen
 import feature.settings.presentation.viewmodel.SettingsViewModel
@@ -25,10 +26,12 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) },
     ) { entry ->
         val viewModel = hiltViewModel<CharactersListViewModel>(entry)
+        val searchViewModel = hiltViewModel<CharactersSearchViewModel>(entry)
         val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
         val splashViewModel = hiltActivityViewModel<SplashViewModel>()
         CharactersListScreen(
             viewModel = viewModel,
+            searchViewModel = searchViewModel,
             splashViewModel = splashViewModel,
             settingsViewModel = settingsViewModel,
             router = router,

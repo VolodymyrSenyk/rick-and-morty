@@ -3,6 +3,8 @@ package feature.characters.ui.screen
 import android.widget.Toast
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,21 +20,27 @@ import core.ui.utils.SideEffectHandler
 import domain.settings.model.ThemeMode
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.presentation.viewmodel.CharactersListViewModel
+import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListSideEffect
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
+import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchIntent
 import feature.characters.ui.R
 import feature.characters.ui.screen.components.list.CharactersListScreenContent
 import feature.characters.ui.screen.components.list.CharactersListTopAppBar
+import feature.characters.ui.screen.components.search.CharactersSearchSection
+import feature.characters.ui.screen.components.search.CharactersSearchTopAppBar
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
 import navigation.compose.router.Router
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CharactersListScreen(
     viewModel: CharactersListViewModel,
+    searchViewModel: CharactersSearchViewModel,
     settingsViewModel: SettingsViewModel,
     splashViewModel: SplashViewModel,
     router: Router,
@@ -49,12 +57,22 @@ internal fun CharactersListScreen(
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
     if (!viewState.showProgress) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
+    val searchViewState by searchViewModel.uiState.collectAsStateWithLifecycle()
     CustomScaffold(
         topAppBar = {
-            CharactersListTopAppBar(
-                onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
-                onSortClicked = { viewModel.onIntent(CharactersListIntent.OnSortClicked) },
-            )
+            if (searchViewState.isSearching) {
+                CharactersSearchTopAppBar(
+                    searchQuery = searchViewState.searchQuery,
+                    onSearchQueryChange = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(it)) },
+                    onSearchToggle = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
+                )
+            } else {
+                CharactersListTopAppBar(
+                    onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
+                    onSortClicked = { viewModel.onIntent(CharactersListIntent.OnSortClicked) },
+                    onSearchClicked = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
+                )
+            }
         }
     ) {
         CharactersListScreenContent(
@@ -63,6 +81,12 @@ internal fun CharactersListScreen(
             onItemClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
             onRefreshed = { viewModel.onIntent(CharactersListIntent.OnRefreshed) },
             onScrolled = { viewModel.onIntent(CharactersListIntent.OnScrolled(it)) },
+        )
+        CharactersSearchSection(
+            listState = rememberLazyListState(),
+            viewState = searchViewState,
+            onItemClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
+            onScrolled = { searchViewModel.onIntent(CharactersSearchIntent.OnScrolled(it)) },
         )
     }
 }
@@ -104,6 +128,7 @@ private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePrevie
                 CharactersListTopAppBar(
                     onThemeSelected = {},
                     onSortClicked = {},
+                    onSearchClicked = {},
                 )
             }
         ) {

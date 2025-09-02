@@ -1,6 +1,8 @@
 package feature.characters.ui.screen.components.list
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,12 +24,14 @@ internal fun CharactersListTopAppBar(
     modifier: Modifier = Modifier,
     onThemeSelected: (ThemeMode) -> Unit,
     onSortClicked: () -> Unit,
+    onSearchClicked: () -> Unit,
 ) {
     SimpleTopAppBar(
         titleText = stringResource(CoreR.string.app_name),
         modifier = modifier
     ) {
         Row {
+            SearchMenuItem(onClicked = onSearchClicked)
             ThemeChoosingMenuItem(onThemeSelected = onThemeSelected)
             SortMenuItem(onClicked = onSortClicked)
         }
@@ -51,6 +55,22 @@ private fun SortMenuItem(
     }
 }
 
+@Composable
+private fun SearchMenuItem(
+    modifier: Modifier = Modifier,
+    onClicked: () -> Unit,
+) {
+    IconButton(
+        onClick = { onClicked() },
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Search,
+            contentDescription = stringResource(R.string.menu_search)
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun CharactersListTopAppBarPreview() {
@@ -58,6 +78,7 @@ private fun CharactersListTopAppBarPreview() {
         CharactersListTopAppBar(
             onThemeSelected = {},
             onSortClicked = {},
+            onSearchClicked = {},
         )
     }
 }
