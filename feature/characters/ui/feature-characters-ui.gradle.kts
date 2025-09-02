@@ -20,6 +20,8 @@ dependencies {
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
 
+    implementation(Config.Libs.composeExtendedIcons)
+
     implementation(Config.Libs.coil)
     implementation(Config.Libs.coilNetwork)
 

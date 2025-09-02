@@ -2,6 +2,7 @@ package feature.characters.presentation.viewmodel.mvi.list
 
 import arch.mvi.MviIntent
 import feature.characters.presentation.model.CharacterUi
+import feature.characters.presentation.model.CharactersListFilterSettings
 
 sealed class CharactersListIntent : MviIntent {
 
@@ -14,6 +15,10 @@ sealed class CharactersListIntent : MviIntent {
     data class OnCharacterClicked(val character: CharacterUi) : CharactersListIntent()
 
     data object OnSortClicked : CharactersListIntent()
+
+    data object OnFilterClicked : CharactersListIntent()
+
+    data class OnFilterApplied(val filterSettings: CharactersListFilterSettings) : CharactersListIntent()
 
     data object OnBackButtonClicked : CharactersListIntent()
 }

@@ -2,7 +2,7 @@ package feature.characters.presentation.viewmodel
 
 import domain.characters.CharacterRepository
 import domain.characters.model.CharacterDto
-import domain.characters.usecase.GetCharactersUseCase
+import domain.characters.usecase.GetCharactersByFilterUseCase
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
@@ -32,13 +32,13 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     override fun setUp() {
         super.setUp()
         viewModel = CharactersListViewModel(
-            getCharactersUseCase = GetCharactersUseCase(characterRepository),
+            getCharactersByFilterUseCase = GetCharactersByFilterUseCase(characterRepository),
         )
     }
 
     @Test
     fun `characters list initial state`() = runTest {
-        coVerify(exactly = 0) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 0) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
         with(viewModel.uiState.value) {
             assertEquals(emptyList<CharacterUi>(), this.charactersList)
             assertEquals(true, this.showProgress)
@@ -51,11 +51,11 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     fun `characters list opened`() = runTest {
         val testData = CharacterListTestData(startIndex = 0)
 
-        coEvery { characterRepository.getCharacters(1) } returns testData.charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } returns testData.charactersList
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
 
-        coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 1) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
         with(viewModel.uiState.value) {
             assertEquals(testData.charactersUiList, this.charactersList)
             assertEquals(false, this.showProgress)
@@ -66,11 +66,11 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list error while data set loading`() = runTest {
-        coEvery { characterRepository.getCharacters(1) } throws IllegalStateException("")
+        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } throws IllegalStateException("")
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
 
-        coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 1) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(CharactersListSideEffect.ShowErrorMessage, viewModel.sideEffect.value)
         with(viewModel.uiState.value) {
             assertEquals(emptyList<CharacterUi>(), this.charactersList)
@@ -85,13 +85,13 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testDataFirstPage = CharacterListTestData(startIndex = 0)
         val testDataSecondPage = CharacterListTestData(startIndex = CharacterListTestData.PAGE_SIZE + 1)
 
-        coEvery { characterRepository.getCharacters(1) } returns testDataFirstPage.charactersList
-        coEvery { characterRepository.getCharacters(2) } returns testDataSecondPage.charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } returns testDataFirstPage.charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 2, null, null, null) } returns testDataSecondPage.charactersList
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnScrolled(lastVisibleItemPosition = CharacterListTestData.PAGE_SIZE))
 
-        coVerify(exactly = 2) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 2) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
         with(viewModel.uiState.value) {
             assertEquals(testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList, this.charactersList)
             assertEquals(false, this.showProgress)
@@ -105,14 +105,14 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testDataFirstPage = CharacterListTestData(startIndex = 0)
         val testDataSecondPage = CharacterListTestData(startIndex = CharacterListTestData.PAGE_SIZE + 1)
 
-        coEvery { characterRepository.getCharacters(1) } returns testDataFirstPage.charactersList
-        coEvery { characterRepository.getCharacters(2) } returns testDataSecondPage.charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } returns testDataFirstPage.charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 2, null, null, null) } returns testDataSecondPage.charactersList
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnScrolled(lastVisibleItemPosition = CharacterListTestData.PAGE_SIZE))
         viewModel.onIntent(CharactersListIntent.OnRefreshed)
 
-        coVerify(exactly = 3) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 3) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
         with(viewModel.uiState.value) {
             assertEquals(testDataFirstPage.charactersUiList, this.charactersList)
             assertEquals(false, this.showProgress)
@@ -149,7 +149,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
             testData.characterUi.copy(id = "2", name = "A"),
         )
 
-        coEvery { characterRepository.getCharacters(1) } returns charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } returns charactersList
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         assertEquals(charactersUiList, viewModel.uiState.value.charactersList)
@@ -158,7 +158,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         assertEquals(charactersUiListSortedAscending, viewModel.uiState.value.charactersList)
 
         viewModel.onIntent(CharactersListIntent.OnSortClicked)
-        coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 1) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(charactersUiListSortedDescending, viewModel.uiState.value.charactersList)
     }
 
@@ -167,7 +167,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testData = CharacterListTestData(startIndex = 0)
         val characterToNavigate = testData.charactersUiList[4]
 
-        coEvery { characterRepository.getCharacters(1) } returns testData.charactersList
+        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } returns testData.charactersList
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnCharacterClicked(characterToNavigate))

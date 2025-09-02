@@ -11,7 +11,9 @@ include(":core:test-util")
 
 include(":domain:settings")
 include(":domain:settings:api")
+
 include(":domain:characters")
+include(":domain:characters:api")
 
 include(":data:datastore")
 include(":data:network")

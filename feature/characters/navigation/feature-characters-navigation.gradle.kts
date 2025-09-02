@@ -11,5 +11,6 @@ android {
 
 dependencies {
     api(project(":core:navigation-compose"))
+    api(project(":domain:characters:api"))
     implementation(Config.Libs.serialization)
 }

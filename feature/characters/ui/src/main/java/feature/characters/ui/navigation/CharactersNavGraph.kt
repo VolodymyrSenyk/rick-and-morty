@@ -6,13 +6,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListDestination
+import feature.characters.navigation.CharactersListFilterSettingsDestination
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.ui.screen.CharacterDetailsScreen
+import feature.characters.ui.screen.CharactersListFilterSettingsDialog
 import feature.characters.ui.screen.CharactersListScreen
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
@@ -47,5 +50,13 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
         val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
         CharacterDetailsScreen(viewModel = viewModel, settingsViewModel = settingsViewModel, router = router, args = args)
+    }
+    dialog<CharactersListFilterSettingsDestination> { entry ->
+        val args = entry.toRoute<CharactersListFilterSettingsDestination>()
+        CharactersListFilterSettingsDialog(
+            router = router,
+            previouslySelectedStatus = args.status,
+            previouslySelectedGender = args.gender,
+        )
     }
 }

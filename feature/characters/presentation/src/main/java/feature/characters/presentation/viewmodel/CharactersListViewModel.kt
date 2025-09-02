@@ -4,9 +4,10 @@ import arch.android.BaseSimpleMviViewModel
 import arch.util.PaginationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import domain.characters.model.CharacterDto
-import domain.characters.usecase.GetCharactersUseCase
+import domain.characters.usecase.GetCharactersByFilterUseCase
 import feature.characters.presentation.model.AlphaSortType
 import feature.characters.presentation.model.CharacterUi
+import feature.characters.presentation.model.CharactersListFilterSettings
 import feature.characters.presentation.model.toCharacterUi
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
@@ -16,13 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharactersListViewModel @Inject constructor(
-    private val getCharactersUseCase: GetCharactersUseCase,
+    private val getCharactersByFilterUseCase: GetCharactersByFilterUseCase,
 ) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
     initialState = CharactersListViewState(),
 ) {
 
     private val paginationHelper = PaginationHelper()
-
+    private var filterSettings: CharactersListFilterSettings = CharactersListFilterSettings.EMPTY
     private var sortType = AlphaSortType.NOT_SORTED
 
     override val tag: String = this.javaClass.simpleName
@@ -33,6 +34,8 @@ class CharactersListViewModel @Inject constructor(
         is CharactersListIntent.OnRefreshed -> onRefreshed()
         is CharactersListIntent.OnCharacterClicked -> onCharacterClicked(character = mviIntent.character)
         is CharactersListIntent.OnSortClicked -> onSortClicked()
+        is CharactersListIntent.OnFilterClicked -> onFilterClicked()
+        is CharactersListIntent.OnFilterApplied -> onFilterApplied(filterSettings = mviIntent.filterSettings)
         is CharactersListIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
@@ -52,9 +55,9 @@ class CharactersListViewModel @Inject constructor(
         updateUiState { oldState ->
             oldState.copy(isRefreshing = true)
         }
+        filterSettings = CharactersListFilterSettings.EMPTY
         paginationHelper.resetPagination()
-        val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
-        setData(data = characters)
+        loadCharacters()
         sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
@@ -90,6 +93,20 @@ class CharactersListViewModel @Inject constructor(
         sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
+    private suspend fun onFilterClicked() {
+        sendNavEvent(CharactersListNavEvent.NavigateToFilterSettings(filterSettings))
+    }
+
+    private suspend fun onFilterApplied(filterSettings: CharactersListFilterSettings) {
+        this.filterSettings = filterSettings
+        updateUiState { oldState ->
+            oldState.copy(showProgress = true)
+        }
+        paginationHelper.resetPagination()
+        loadCharacters()
+        sendSideEffect(CharactersListSideEffect.ScrollToTop)
+    }
+
     private suspend fun onBackButtonClicked() {
         sendNavEvent(CharactersListNavEvent.NavigateBack)
     }
@@ -106,7 +123,11 @@ class CharactersListViewModel @Inject constructor(
     }
 
     private suspend fun loadCharacters() {
-        val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
+        val characters = getCharactersByFilterUseCase(
+            page = paginationHelper.getPageForNewDataSet(),
+            status = filterSettings.statusType,
+            gender = filterSettings.genderType,
+        )
         setData(data = characters)
     }
 
