@@ -1,7 +1,6 @@
 <resources>
 
     <!-- menu -->
-    <string name="menu_sort">Sort</string>
     <string name="menu_search">Search</string>
     <string name="menu_filter">Filter</string>
 

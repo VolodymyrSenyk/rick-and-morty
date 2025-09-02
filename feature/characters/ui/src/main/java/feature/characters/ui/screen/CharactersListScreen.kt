@@ -73,7 +73,6 @@ internal fun CharactersListScreen(
             } else {
                 CharactersListTopAppBar(
                     onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
-                    onSortClicked = { viewModel.onIntent(CharactersListIntent.OnSortClicked) },
                     onSearchClicked = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
                     onFilterClicked = { viewModel.onIntent(CharactersListIntent.OnFilterClicked) },
                 )
@@ -149,7 +148,6 @@ private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePrevie
             topAppBar = {
                 CharactersListTopAppBar(
                     onThemeSelected = {},
-                    onSortClicked = {},
                     onSearchClicked = {},
                     onFilterClicked = {},
                 )

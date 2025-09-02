@@ -14,8 +14,6 @@ sealed class CharactersListIntent : MviIntent {
 
     data class OnCharacterClicked(val character: CharacterUi) : CharactersListIntent()
 
-    data object OnSortClicked : CharactersListIntent()
-
     data object OnFilterClicked : CharactersListIntent()
 
     data class OnFilterApplied(val filterSettings: CharactersListFilterSettings) : CharactersListIntent()

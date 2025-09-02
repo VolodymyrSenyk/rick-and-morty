@@ -4,7 +4,6 @@ import com.senyk.rickandmorty.core.base.BaseTestCase
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.scenario.characters.CheckCharacterFromListScenario
 import com.senyk.rickandmorty.scenario.characters.CheckCharactersListScenario
-import com.senyk.rickandmorty.scenario.characters.SortCharactersListScenario
 import org.junit.Test
 
 class CharactersFeatureTestCase : BaseTestCase() {
@@ -18,26 +17,6 @@ class CharactersFeatureTestCase : BaseTestCase() {
             scenario(CheckCharactersListScenario(defaultList))
             scenario(CheckCharacterFromListScenario(name = rickDetails.first(), content = rickDetails, navigateBackWithSystemButton = true))
             scenario(CheckCharacterFromListScenario(name = abadangoDetails.first(), content = abadangoDetails))
-        }
-    }
-
-    @Test
-    fun charactersSorting() {
-        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith", "Abadango Cluster Princess")
-        val ascendingList = listOf("Abadango Cluster Princess", "Abradolf Lincler", "Adjudicator Rick", "Agency Director")
-        val descendingList = listOf("Summer Smith", "Rick Sanchez", "Morty Smith", "Jerry Smith")
-        step("Check characters list sorting") {
-            step("Check default list without sorting") {
-                scenario(CheckCharactersListScenario(defaultList))
-            }
-            step("Check ascending characters list sorting") {
-                scenario(SortCharactersListScenario())
-                scenario(CheckCharactersListScenario(ascendingList))
-            }
-            step("Check descending characters list sorting") {
-                scenario(SortCharactersListScenario())
-                scenario(CheckCharactersListScenario(descendingList))
-            }
         }
     }
 }

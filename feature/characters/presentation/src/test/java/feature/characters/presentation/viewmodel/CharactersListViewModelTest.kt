@@ -122,47 +122,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     }
 
     @Test
-    fun `characters list sorted`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0)
-        val charactersList = listOf(
-            testData.characterDto.copy(id = "1", name = "C"),
-            testData.characterDto.copy(id = "2", name = "A"),
-            testData.characterDto.copy(id = "3", name = "D"),
-            testData.characterDto.copy(id = "4", name = "B"),
-        )
-        val charactersUiList = listOf(
-            testData.characterUi.copy(id = "1", name = "C"),
-            testData.characterUi.copy(id = "2", name = "A"),
-            testData.characterUi.copy(id = "3", name = "D"),
-            testData.characterUi.copy(id = "4", name = "B"),
-        )
-        val charactersUiListSortedAscending = listOf(
-            testData.characterUi.copy(id = "2", name = "A"),
-            testData.characterUi.copy(id = "4", name = "B"),
-            testData.characterUi.copy(id = "1", name = "C"),
-            testData.characterUi.copy(id = "3", name = "D"),
-        )
-        val charactersUiListSortedDescending = listOf(
-            testData.characterUi.copy(id = "3", name = "D"),
-            testData.characterUi.copy(id = "1", name = "C"),
-            testData.characterUi.copy(id = "4", name = "B"),
-            testData.characterUi.copy(id = "2", name = "A"),
-        )
-
-        coEvery { characterRepository.getCharactersByFilter(page = 1, null, null, null) } returns charactersList
-
-        viewModel.onIntent(CharactersListIntent.OnViewStarted)
-        assertEquals(charactersUiList, viewModel.uiState.value.charactersList)
-
-        viewModel.onIntent(CharactersListIntent.OnSortClicked)
-        assertEquals(charactersUiListSortedAscending, viewModel.uiState.value.charactersList)
-
-        viewModel.onIntent(CharactersListIntent.OnSortClicked)
-        coVerify(exactly = 1) { characterRepository.getCharactersByFilter(any(), any(), any(), any()) }
-        assertEquals(charactersUiListSortedDescending, viewModel.uiState.value.charactersList)
-    }
-
-    @Test
     fun `on character clicked`() = runTest {
         val testData = CharacterListTestData(startIndex = 0)
         val characterToNavigate = testData.charactersUiList[4]

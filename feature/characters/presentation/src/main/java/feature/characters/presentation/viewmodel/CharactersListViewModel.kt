@@ -5,7 +5,6 @@ import arch.util.PaginationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import domain.characters.model.CharacterDto
 import domain.characters.usecase.GetCharactersByFilterUseCase
-import feature.characters.presentation.model.AlphaSortType
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.model.CharactersListFilterSettings
 import feature.characters.presentation.model.toCharacterUi
@@ -24,7 +23,6 @@ class CharactersListViewModel @Inject constructor(
 
     private val paginationHelper = PaginationHelper()
     private var filterSettings: CharactersListFilterSettings = CharactersListFilterSettings.EMPTY
-    private var sortType = AlphaSortType.NOT_SORTED
 
     override val tag: String = this.javaClass.simpleName
 
@@ -33,7 +31,6 @@ class CharactersListViewModel @Inject constructor(
         is CharactersListIntent.OnScrolled -> onScrolled(lastVisibleItemPosition = mviIntent.lastVisibleItemPosition)
         is CharactersListIntent.OnRefreshed -> onRefreshed()
         is CharactersListIntent.OnCharacterClicked -> onCharacterClicked(character = mviIntent.character)
-        is CharactersListIntent.OnSortClicked -> onSortClicked()
         is CharactersListIntent.OnFilterClicked -> onFilterClicked()
         is CharactersListIntent.OnFilterApplied -> onFilterApplied(filterSettings = mviIntent.filterSettings)
         is CharactersListIntent.OnBackButtonClicked -> onBackButtonClicked()
@@ -63,34 +60,6 @@ class CharactersListViewModel @Inject constructor(
 
     private suspend fun onCharacterClicked(character: CharacterUi) {
         sendNavEvent(CharactersListNavEvent.NavigateToCharacterDetails(character = character))
-    }
-
-    private suspend fun onSortClicked() {
-        val characters = currentState.charactersList
-
-        updateUiState { oldState ->
-            oldState.copy(showProgress = true)
-        }
-
-        val sortedCharacters = when (sortType) {
-            AlphaSortType.NOT_SORTED, AlphaSortType.DESCENDING -> {
-                sortType = AlphaSortType.ASCENDING
-                characters.sortedBy { it.name }
-            }
-
-            AlphaSortType.ASCENDING -> {
-                sortType = AlphaSortType.DESCENDING
-                characters.sortedByDescending { it.name }
-            }
-        }
-
-        updateUiState { oldState ->
-            oldState.copy(
-                charactersList = sortedCharacters,
-                showProgress = false,
-            )
-        }
-        sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
     private suspend fun onFilterClicked() {
