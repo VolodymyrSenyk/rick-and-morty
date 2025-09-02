@@ -86,13 +86,17 @@ tasks.register<JacocoReport>("mergeJacocoReports") {
         html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/aggregate/html"))
     }
     sourceDirectories.setFrom(subprojects.flatMap { listOf(it.layout.projectDirectory.dir("src/main")) })
-    classDirectories.setFrom(files(subprojects.flatMap {
-        listOf(
-            fileTree(it.layout.buildDirectory.dir("intermediates/javac")) { exclude(testCoverageExclusions) },
-            fileTree(it.layout.buildDirectory.dir("/tmp/kotlin-classes")) { exclude(testCoverageExclusions) }
+    classDirectories.setFrom(
+        files(
+            subprojects.flatMap {
+                listOf(
+                    fileTree(it.layout.buildDirectory.dir("intermediates/javac")) { exclude(testCoverageExclusions) },
+                    fileTree(it.layout.buildDirectory.dir("/tmp/kotlin-classes")) { exclude(testCoverageExclusions) }
+                )
+            }
         )
-    }))
-    executionData.setFrom(files(subprojects.flatMap {
-        listOf(fileTree(it.layout.buildDirectory) { include("**/*.exec") })
-    }))
+    )
+    executionData.setFrom(
+        files(subprojects.flatMap { listOf(fileTree(it.layout.buildDirectory) { include("**/*.exec") }) })
+    )
 }

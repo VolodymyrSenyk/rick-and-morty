@@ -8,13 +8,16 @@ import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.screen.characters.CharacterDetailsScreen
 
-class CheckCharacterDetailsScenario<A : ComponentActivity>(private val name: String, private val content: List<String>) : BaseScenario<A>() {
+class CheckCharacterDetailsScenario<A : ComponentActivity>(
+    private val name: String,
+    private val content: List<String>,
+) : BaseScenario<A>() {
 
     override val steps: AndroidComposeTestRule<ActivityScenarioRule<A>, A>.() -> Unit
         get() = {
             step("Check character details screen") {
                 CharacterDetailsScreen(this).apply {
-                    waitUntil(5000L) { progressBar.isNotDisplayed() }
+                    waitUntil(WAIT_DURATION_MEDIUM) { progressBar.isNotDisplayed() }
                     textTitle(name).assertExists()
                     content.forEachIndexed { index, text ->
                         val ordinalNumber = content.subList(0, index).count { it == text }

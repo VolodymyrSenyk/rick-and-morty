@@ -10,6 +10,7 @@ android {
 
 dependencies {
     api(project(":core:arch-android"))
+
     implementation(project(":domain:characters"))
 
     implementation(Config.Libs.hilt)

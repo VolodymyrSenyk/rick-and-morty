@@ -9,7 +9,7 @@ import navigation.compose.Destination
 object CharactersListDestination : Destination
 
 @Serializable
-class CharactersListFilterSettingsDestination(
+class CharactersListFilterDestination(
     val status: StatusType?,
     val gender: GenderType?,
 ) : Destination

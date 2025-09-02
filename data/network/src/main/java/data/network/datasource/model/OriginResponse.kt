@@ -1,8 +1,8 @@
-package data.network.datasource.entity
+package data.network.datasource.model
 
 import com.google.gson.annotations.SerializedName
 
-data class LocationResponse(
+data class OriginResponse(
     @SerializedName("name") val name: String?,
     @SerializedName("url") val url: String?,
 )

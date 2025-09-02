@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import data.datastore.SettingsDataStoreRepository
-import data.network.CharacterNetworkRepository
-import domain.characters.CharacterRepository
+import data.network.CharactersNetworkRepository
+import domain.characters.CharactersRepository
 import domain.settings.SettingsRepository
 import javax.inject.Singleton
 
@@ -17,7 +17,7 @@ interface RepositoryModule {
 
     @Binds
     @Singleton
-    fun bindCharacterRepository(repository: CharacterNetworkRepository): CharacterRepository
+    fun bindCharactersRepository(repository: CharactersNetworkRepository): CharactersRepository
 
     @Binds
     @Singleton

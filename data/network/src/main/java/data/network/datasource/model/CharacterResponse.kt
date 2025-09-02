@@ -1,9 +1,9 @@
-package data.network.datasource.entity
+package data.network.datasource.model
 
 import com.google.gson.annotations.SerializedName
-import domain.characters.model.CharacterDto
+import domain.characters.model.Character
 
-data class CharactersResultsResponse(
+data class CharacterResponse(
     @SerializedName("id") val id: Int?,
     @SerializedName("name") val name: String?,
     @SerializedName("status") val status: String?,
@@ -18,7 +18,7 @@ data class CharactersResultsResponse(
     @SerializedName("created") val created: String?,
 )
 
-internal fun CharactersResultsResponse.toCharacterDto(): CharacterDto = CharacterDto(
+internal fun CharacterResponse.toCharacter(): Character = Character(
     id = (id ?: System.currentTimeMillis()).toString(),
     name = name ?: "",
     status = status ?: "",

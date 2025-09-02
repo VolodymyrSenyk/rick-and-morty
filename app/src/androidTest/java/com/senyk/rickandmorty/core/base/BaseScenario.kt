@@ -30,4 +30,9 @@ abstract class BaseScenario<A : ComponentActivity> {
      * Executes the provided [scenario] within the current [AndroidComposeTestRule] context.
      */
     fun AndroidComposeTestRule<ActivityScenarioRule<A>, A>.scenario(scenario: BaseScenario<A>) = scenario.invoke(this)
+
+    companion object {
+        const val WAIT_DURATION_LONG = 10_000L
+        const val WAIT_DURATION_MEDIUM = 5_000L
+    }
 }

@@ -151,7 +151,6 @@ tasks.register<Detekt>("detektAll") {
     setSource(files(projectDir))
     include("**/*.kt", "**/*.kts")
     exclude("**/resources/**", "**/build/**", "**/test/**", "**/androidTest/**")
-    exclude("**/jacoco.gradle.kts")
     reports {
         html.required.set(true)
         xml.required.set(true)

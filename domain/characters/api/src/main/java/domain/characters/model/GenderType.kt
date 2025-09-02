@@ -1,5 +1,8 @@
 package domain.characters.model
 
 enum class GenderType {
-    FEMALE, MALE, GENDERLESS, UNKNOWN
+    FEMALE,
+    MALE,
+    GENDERLESS,
+    UNKNOWN,
 }

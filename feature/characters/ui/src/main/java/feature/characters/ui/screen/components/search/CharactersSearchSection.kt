@@ -21,7 +21,7 @@ import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchViewState
 import feature.characters.ui.R
 import feature.characters.ui.screen.components.search.list.CharactersSearchList
-import feature.characters.ui.screen.preview.CharactersSearchViewStatePreviewParameterProvider
+import feature.characters.ui.screen.preview.CharactersSearchPreviewParameterProvider
 
 @Composable
 internal fun CharactersSearchSection(
@@ -42,21 +42,21 @@ internal fun CharactersSearchSection(
     ) {
         CharactersSearchList(
             listState = listState,
-            loadingNextDataSet = viewState.loadingNextDataPage,
+            loadingNextDataSet = viewState.isLoadingNextPage,
             items = viewState.searchResults,
             onItemClicked = onItemClicked,
             onScrolled = onScrolled,
         )
         SimpleEmptyState(
-            visible = viewState.searchResults.isEmpty() && !viewState.showProgress,
-            textMessage = if (viewState.tooSmallSearchQuery) {
+            visible = viewState.searchResults.isEmpty() && !viewState.isLoading,
+            textMessage = if (viewState.isInvalidSearchQuery) {
                 stringResource(R.string.message_empty_state_search)
             } else {
                 stringResource(R.string.message_characters_empty_list)
             },
         )
         SimpleCircularProgress(
-            visible = viewState.showProgress,
+            visible = viewState.isLoading,
             indicatorColor = MaterialTheme.colorScheme.primary,
         )
     }
@@ -65,7 +65,7 @@ internal fun CharactersSearchSection(
 @Preview
 @Composable
 private fun CharactersSearchSectionPreview(
-    @PreviewParameter(CharactersSearchViewStatePreviewParameterProvider::class) viewState: CharactersSearchViewState
+    @PreviewParameter(CharactersSearchPreviewParameterProvider::class) viewState: CharactersSearchViewState
 ) {
     RickAndMortyTheme {
         CharactersSearchSection(

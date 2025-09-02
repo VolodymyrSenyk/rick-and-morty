@@ -20,12 +20,12 @@ class CharacterDetailsViewModel @Inject constructor(
     override val tag: String = this.javaClass.simpleName
 
     override suspend fun executeIntent(mviIntent: CharacterDetailsIntent) = when (mviIntent) {
-        is CharacterDetailsIntent.OnViewStarted -> onViewStarted(characterId = mviIntent.characterId)
+        is CharacterDetailsIntent.OnViewStarted -> onViewStarted(mviIntent.characterId)
         is CharacterDetailsIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
     private suspend fun onViewStarted(characterId: String) {
-        val character = getCharacterByIdUseCase(id = characterId)
+        val character = getCharacterByIdUseCase(characterId)
         updateUiState { oldState ->
             oldState.copy(
                 character = character.toCharacterDetailsUi(),

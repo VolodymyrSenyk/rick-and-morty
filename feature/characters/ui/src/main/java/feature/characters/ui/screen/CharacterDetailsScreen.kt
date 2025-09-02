@@ -13,7 +13,6 @@ import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.NavEventHandler
 import domain.settings.model.ThemeMode
-import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
@@ -26,15 +25,15 @@ import navigation.compose.router.Router
 
 @Composable
 internal fun CharacterDetailsScreen(
+    characterId: String,
     viewModel: CharacterDetailsViewModel,
     settingsViewModel: SettingsViewModel,
     router: Router,
-    args: CharacterDetailsDestination,
 ) {
     CharacterDetailsNavEventHandler(viewModel = viewModel, router = router)
 
-    LaunchedEffect(args) {
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId = args.characterId))
+    LaunchedEffect(viewModel) {
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId))
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()

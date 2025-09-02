@@ -5,7 +5,7 @@ class PaginationHelper(
     private val loadMoreTriggerDataSetSize: Int = DEFAULT_DATA_SET_SIZE / 2,
     private var currentOffset: Int = 0,
     private var loadingInProgress: Boolean = false,
-    private var noDataLeft: Boolean = false
+    private var noDataLeft: Boolean = false,
 ) {
 
     fun resetPagination() {

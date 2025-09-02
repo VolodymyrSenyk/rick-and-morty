@@ -1,4 +1,4 @@
-package data.network.datasource.entity
+package data.network.datasource.model
 
 import com.google.gson.annotations.SerializedName
 

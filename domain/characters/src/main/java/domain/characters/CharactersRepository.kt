@@ -1,19 +1,19 @@
 package domain.characters
 
-import domain.characters.model.CharacterDto
+import domain.characters.model.Character
 import domain.characters.model.GenderType
 import domain.characters.model.StatusType
 
-interface CharacterRepository {
+interface CharactersRepository {
 
-    suspend fun getCharacters(page: Int): List<CharacterDto>
+    suspend fun getCharacters(page: Int): List<Character>
 
     suspend fun getCharactersByFilter(
         page: Int,
         name: String?,
         status: StatusType?,
         gender: GenderType?,
-    ): List<CharacterDto>
+    ): List<Character>
 
-    suspend fun getCharacterById(id: String): CharacterDto
+    suspend fun getCharacterById(id: String): Character
 }

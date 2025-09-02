@@ -1,22 +1,22 @@
-package com.senyk.rickandmorty.scenario.characters
+package com.senyk.rickandmorty.scenario.system
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.screen.characters.CharactersListScreen
 
-class OpenCharacterDetailsScenario<A : ComponentActivity>(
-    private val name: String,
-) : BaseScenario<A>() {
+class WaitUntilStartScenario<A : ComponentActivity>() : BaseScenario<A>() {
 
     override val steps: AndroidComposeTestRule<ActivityScenarioRule<A>, A>.() -> Unit
         get() = {
-            step("Open character details screen from characters list") {
+            step("Wait until first screen will be ready for testing") {
                 CharactersListScreen(this).apply {
-                    textListItem(name).performClick()
+                    waitUntil(WAIT_DURATION_LONG) {
+                        textTitle.isDisplayed()
+                    }
                 }
             }
         }

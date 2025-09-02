@@ -10,7 +10,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListDestination
-import feature.characters.navigation.CharactersListFilterSettingsDestination
+import feature.characters.navigation.CharactersListFilterDestination
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.presentation.viewmodel.CharactersSearchViewModel
@@ -42,17 +42,20 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
     }
     composable<CharacterDetailsDestination>(
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
-        exitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
-        popEnterTransition = { slideInHorizontally(initialOffsetX = { it }) },
         popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
     ) { entry ->
         val args = entry.toRoute<CharacterDetailsDestination>()
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
         val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
-        CharacterDetailsScreen(viewModel = viewModel, settingsViewModel = settingsViewModel, router = router, args = args)
+        CharacterDetailsScreen(
+            characterId = args.characterId,
+            viewModel = viewModel,
+            settingsViewModel = settingsViewModel,
+            router = router,
+        )
     }
-    dialog<CharactersListFilterSettingsDestination> { entry ->
-        val args = entry.toRoute<CharactersListFilterSettingsDestination>()
+    dialog<CharactersListFilterDestination> { entry ->
+        val args = entry.toRoute<CharactersListFilterDestination>()
         CharactersListFilterSettingsDialog(
             router = router,
             previouslySelectedStatus = args.status,

@@ -22,7 +22,7 @@ import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
 import feature.characters.ui.R
 import feature.characters.ui.screen.components.list.grid.CharactersGrid
-import feature.characters.ui.screen.preview.CharactersListViewStatePreviewParameterProvider
+import feature.characters.ui.screen.preview.CharactersListPreviewParameterProvider
 
 @Composable
 internal fun CharactersListScreenContent(
@@ -45,7 +45,7 @@ internal fun CharactersListScreenContent(
         ) {
             CharactersGrid(
                 gridState = gridState,
-                loadingNextDataSet = viewState.loadingNextDataSet,
+                loadingNextDataSet = viewState.isLoadingNextPage,
                 isRefreshing = viewState.isRefreshing,
                 items = viewState.charactersList,
                 onItemClicked = onItemClicked,
@@ -54,11 +54,11 @@ internal fun CharactersListScreenContent(
             )
         }
         SimpleEmptyState(
-            visible = viewState.charactersList.isEmpty() && !viewState.showProgress,
+            visible = viewState.charactersList.isEmpty() && !viewState.isLoading,
             textMessage = stringResource(R.string.message_characters_empty_list),
         )
         SimpleCircularProgress(
-            visible = viewState.showProgress,
+            visible = viewState.isLoading,
             modifier = Modifier.background(color = Color.Black.copy(alpha = 0.5f))
         )
     }
@@ -67,7 +67,7 @@ internal fun CharactersListScreenContent(
 @Preview
 @Composable
 private fun CharactersListScreenContentPreview(
-    @PreviewParameter(CharactersListViewStatePreviewParameterProvider::class) viewState: CharactersListViewState
+    @PreviewParameter(CharactersListPreviewParameterProvider::class) viewState: CharactersListViewState
 ) {
     RickAndMortyTheme {
         CharactersListScreenContent(

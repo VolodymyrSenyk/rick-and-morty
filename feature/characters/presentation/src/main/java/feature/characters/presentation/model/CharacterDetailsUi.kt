@@ -1,6 +1,6 @@
 package feature.characters.presentation.model
 
-import domain.characters.model.CharacterDto
+import domain.characters.model.Character
 
 data class CharacterDetailsUi(
     val id: String,
@@ -14,7 +14,7 @@ data class CharacterDetailsUi(
     val imageUrl: String,
 )
 
-internal fun CharacterDto.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDetailsUi(
+internal fun Character.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDetailsUi(
     id = id,
     name = name,
     status = status,

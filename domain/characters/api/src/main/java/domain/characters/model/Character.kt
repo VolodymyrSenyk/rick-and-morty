@@ -1,6 +1,6 @@
 package domain.characters.model
 
-data class CharacterDto(
+data class Character(
     val id: String,
     val name: String,
     val status: String,
@@ -9,5 +9,5 @@ data class CharacterDto(
     val gender: String,
     val origin: String,
     val location: String,
-    val imageUrl: String
+    val imageUrl: String,
 )

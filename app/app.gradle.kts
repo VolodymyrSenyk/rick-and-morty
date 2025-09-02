@@ -87,14 +87,14 @@ android {
 
 dependencies {
     implementation(project(":core:arch-android"))
-    implementation(project(":core:ui"))
     implementation(project(":core:navigation-compose"))
+    implementation(project(":core:ui"))
 
     implementation(project(":data:datastore"))
     implementation(project(":data:network"))
+
     implementation(project(":feature:settings:presentation"))
     implementation(project(":feature:splash:presentation"))
-
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:ui"))
 

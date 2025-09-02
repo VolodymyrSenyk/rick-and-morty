@@ -5,7 +5,6 @@ import arch.mvi.MviNavEvent
 import arch.mvi.MviSideEffect
 import arch.util.PaginationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import domain.characters.model.CharacterDto
 import domain.characters.usecase.GetCharactersByFilterUseCase
 import feature.characters.presentation.model.toCharacterUi
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchIntent
@@ -40,20 +39,20 @@ class CharactersSearchViewModel @Inject constructor(
     }
 
     private suspend fun onSearchQueryChanged(searchQuery: String) {
-        paginationHelper.resetPagination()
         updateUiState { oldState ->
             oldState.copy(
                 searchQuery = searchQuery,
-                tooSmallSearchQuery = searchQuery.length < MIN_SEARCH_QUERY_SIZE,
-                showProgress = true,
+                isInvalidSearchQuery = searchQuery.length < MIN_SEARCH_QUERY_SIZE,
+                isLoading = true,
             )
         }
+        paginationHelper.resetPagination()
         loadCharacters()
     }
 
     private suspend fun onScrolled(lastVisibleItemPosition: Int) {
         val isNextDataSetNeeded = paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)
-        val isLoading = currentState.showProgress
+        val isLoading = currentState.isLoading
         if (isNextDataSetNeeded && !isLoading) {
             loadCharacters()
         }
@@ -63,15 +62,15 @@ class CharactersSearchViewModel @Inject constructor(
         updateUiState { oldState ->
             oldState.copy(
                 searchResults = emptyList(),
-                showProgress = false,
-                loadingNextDataPage = false,
+                isLoading = false,
+                isLoadingNextPage = false,
             )
         }
         super.onError(throwable)
     }
 
     private suspend fun loadCharacters() {
-        val characters = if (currentState.tooSmallSearchQuery) {
+        val loadedDataSet = if (currentState.isInvalidSearchQuery) {
             emptyList()
         } else {
             getCharactersByFilterUseCase(
@@ -79,26 +78,22 @@ class CharactersSearchViewModel @Inject constructor(
                 name = currentState.searchQuery,
             )
         }
-        setData(data = characters)
-    }
-
-    private fun setData(data: List<CharacterDto>) {
         val dataList = if (paginationHelper.isCurrentDataSetEmpty()) {
             mutableListOf()
         } else {
             currentState.searchResults.toMutableList()
         }
 
-        if (data.isNotEmpty()) {
-            dataList.addAll(data.map { it.toCharacterUi() })
-            paginationHelper.onDataSetLoaded(data.size)
+        if (loadedDataSet.isNotEmpty()) {
+            dataList.addAll(loadedDataSet.map { it.toCharacterUi() })
+            paginationHelper.onDataSetLoaded(loadedDataSet.size)
         }
 
         updateUiState { oldState ->
             oldState.copy(
                 searchResults = dataList,
-                showProgress = false,
-                loadingNextDataPage = paginationHelper.hasMoreData(),
+                isLoading = false,
+                isLoadingNextPage = paginationHelper.hasMoreData(),
             )
         }
     }

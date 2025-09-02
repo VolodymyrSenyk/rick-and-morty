@@ -19,9 +19,9 @@ import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
 import domain.settings.model.ThemeMode
 import feature.characters.navigation.CharacterDetailsDestination
-import feature.characters.navigation.CharactersListFilterSettingsDestination
+import feature.characters.navigation.CharactersListFilterDestination
 import feature.characters.navigation.result.CharactersListFilterSettingsResult
-import feature.characters.presentation.model.CharactersListFilterSettings
+import feature.characters.presentation.model.CharactersListFilter
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
@@ -60,7 +60,7 @@ internal fun CharactersListScreen(
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    if (!viewState.showProgress) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
+    if (!viewState.isLoading) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
     val searchViewState by searchViewModel.uiState.collectAsStateWithLifecycle()
     CustomScaffold(
         topAppBar = {
@@ -114,15 +114,15 @@ private fun CharactersListSideEffectHandler(viewModel: CharactersListViewModel, 
 private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, router: Router) {
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
-            is CharactersListNavEvent.NavigateToFilterSettings -> {
-                val destination = CharactersListFilterSettingsDestination(
-                    status = mviNavEvent.filterSettings.statusType,
-                    gender = mviNavEvent.filterSettings.genderType,
+            is CharactersListNavEvent.NavigateToCharactersListFilter -> {
+                val destination = CharactersListFilterDestination(
+                    status = mviNavEvent.filter.statusType,
+                    gender = mviNavEvent.filter.genderType,
                 )
                 router.navigateForResult<CharactersListFilterSettingsResult>(destination)?.let { result ->
                     viewModel.onIntent(
                         CharactersListIntent.OnFilterApplied(
-                            filterSettings = CharactersListFilterSettings(
+                            charactersListFilter = CharactersListFilter(
                                 statusType = result.statusType,
                                 genderType = result.genderType,
                             ),
@@ -157,7 +157,7 @@ private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePrevie
                 viewState = CharactersListViewState(
                     charactersList = CharactersPreviewMocks.charactersList,
                     isRefreshing = false,
-                    showProgress = false,
+                    isLoading = false,
                 ),
                 gridState = rememberLazyGridState(),
                 onItemClicked = {},

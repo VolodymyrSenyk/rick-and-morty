@@ -1,7 +1,7 @@
 package feature.characters.presentation.viewmodel
 
-import domain.characters.CharacterRepository
-import domain.characters.model.CharacterDto
+import domain.characters.CharactersRepository
+import domain.characters.model.Character
 import domain.characters.usecase.GetCharacterByIdUseCase
 import feature.characters.presentation.model.CharacterDetailsUi
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
@@ -25,19 +25,19 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     private lateinit var viewModel: CharacterDetailsViewModel
 
     @MockK
-    lateinit var characterRepository: CharacterRepository
+    lateinit var charactersRepository: CharactersRepository
 
     @BeforeEach
     override fun setUp() {
         super.setUp()
         viewModel = CharacterDetailsViewModel(
-            getCharacterByIdUseCase = GetCharacterByIdUseCase(characterRepository),
+            getCharacterByIdUseCase = GetCharacterByIdUseCase(charactersRepository),
         )
     }
 
     @Test
     fun `character details initial state`() = runTest {
-        coVerify(exactly = 0) { characterRepository.getCharacterById(any()) }
+        coVerify(exactly = 0) { charactersRepository.getCharacterById(any()) }
         with(viewModel.uiState.value) {
             assertEquals(null, this.character)
             assertEquals(true, this.isLoading)
@@ -47,7 +47,7 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `character details opened`() = runTest {
         val id = "1"
-        val characterDto = CharacterDto(
+        val character = Character(
             id = id,
             name = "Rick Sanchez",
             status = "Alive",
@@ -70,11 +70,11 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
             imageUrl = "someUrl",
         )
 
-        coEvery { characterRepository.getCharacterById(id) } returns characterDto
+        coEvery { charactersRepository.getCharacterById(id) } returns character
 
         viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId = id))
 
-        coVerify(exactly = 1) { characterRepository.getCharacterById(any()) }
+        coVerify(exactly = 1) { charactersRepository.getCharacterById(any()) }
         assertEquals(characterUi, viewModel.uiState.value.character)
     }
 
