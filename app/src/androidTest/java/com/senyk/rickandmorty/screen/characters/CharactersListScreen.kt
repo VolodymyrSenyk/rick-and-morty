@@ -15,7 +15,8 @@ class CharactersListScreen<A : ComponentActivity>(composeTestRule: AndroidCompos
     val textTitle = composeTestRule.findText(CoreR.string.app_name)
 
     val menuSearch = composeTestRule.findIconButton(R.string.menu_search)
-
+    val menuNightTheme = composeTestRule.findIconButton(CoreR.string.menu_item_night_theme)
+    val menuDayTheme = composeTestRule.findIconButton(CoreR.string.menu_item_day_theme)
     val menuFilter = composeTestRule.findIconButton(R.string.menu_filter)
 
     val textListEmptyState = composeTestRule.findText(R.string.message_characters_empty_list)

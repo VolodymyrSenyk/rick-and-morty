@@ -13,6 +13,8 @@ class CharacterDetailsScreen<A : ComponentActivity>(composeTestRule: AndroidComp
     fun AndroidComposeTestRule<ActivityScenarioRule<A>, A>.textTitle(text: String) = findListItem(0, text)
 
     val menuBack = composeTestRule.findIconButton(R.string.menu_item_back)
+    val menuNightTheme = composeTestRule.findIconButton(R.string.menu_item_night_theme)
+    val menuDayTheme = composeTestRule.findIconButton(R.string.menu_item_day_theme)
 
     val progressBar = composeTestRule.findProgressBar()
 
