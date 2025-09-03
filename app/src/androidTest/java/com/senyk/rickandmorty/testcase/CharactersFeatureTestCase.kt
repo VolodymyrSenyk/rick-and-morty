@@ -3,9 +3,14 @@ package com.senyk.rickandmorty.testcase
 import com.senyk.rickandmorty.core.base.BaseTestCase
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.scenario.characters.details.CheckCharacterDetailsScenario
+import com.senyk.rickandmorty.scenario.characters.filter.ApplyCharactersListFilterScenario
+import com.senyk.rickandmorty.scenario.characters.filter.CancelCharactersListFilterScenario
 import com.senyk.rickandmorty.scenario.characters.list.CheckCharactersListScenario
 import com.senyk.rickandmorty.scenario.characters.list.OpenCharacterDetailsScenario
+import com.senyk.rickandmorty.scenario.characters.list.OpenCharactersListFilterScenario
 import com.senyk.rickandmorty.scenario.system.WaitUntilStartScenario
+import domain.characters.model.GenderType
+import domain.characters.model.StatusType
 import org.junit.Test
 
 class CharactersFeatureTestCase : BaseTestCase() {
@@ -23,6 +28,21 @@ class CharactersFeatureTestCase : BaseTestCase() {
             scenario(WaitUntilStartScenario())
             scenario(OpenCharacterDetailsScenario("Abadango Cluster Princess"))
             scenario(CheckCharacterDetailsScenario(abadangoDetails))
+        }
+    }
+
+    @Test
+    fun charactersListFiltration() {
+        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith")
+        val filteredList = listOf("Summer Smith", "Beth Smith", "Abadango Cluster Princess", "Annie")
+        scenario(WaitUntilStartScenario())
+        step("Check characters list filtration") {
+            scenario(CheckCharactersListScenario(defaultList))
+            scenario(OpenCharactersListFilterScenario())
+            scenario(CancelCharactersListFilterScenario())
+            scenario(OpenCharactersListFilterScenario())
+            scenario(ApplyCharactersListFilterScenario(gender = GenderType.FEMALE, status = StatusType.ALIVE))
+            scenario(CheckCharactersListScenario(filteredList))
         }
     }
 }

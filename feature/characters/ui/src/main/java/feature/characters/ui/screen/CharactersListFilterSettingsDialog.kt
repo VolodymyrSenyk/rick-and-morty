@@ -42,7 +42,7 @@ internal fun CharactersListFilterSettingsDialog(
     )
 
     var selectedGender by remember { mutableStateOf(previouslySelectedGender) }
-    val genders = mutableListOf<Pair<GenderType?, String>>(null to stringResource(R.string.status_all))
+    val genders = mutableListOf<Pair<GenderType?, String>>(null to stringResource(R.string.gender_all))
     genders.addAll(
         GenderType.entries.map { gender ->
             when (gender) {
