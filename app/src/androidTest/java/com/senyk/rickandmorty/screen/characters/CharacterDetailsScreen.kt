@@ -1,25 +1,16 @@
 package com.senyk.rickandmorty.screen.characters
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.senyk.rickandmorty.core.util.findIconButton
-import com.senyk.rickandmorty.core.util.findListItem
-import com.senyk.rickandmorty.core.util.findProgressBar
+import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
+import com.senyk.rickandmorty.core.utils.findIconButton
+import com.senyk.rickandmorty.core.utils.findProgressBar
 import core.ui.R
 
-class CharacterDetailsScreen<A : ComponentActivity>(composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<A>, A>) {
-
-    fun AndroidComposeTestRule<ActivityScenarioRule<A>, A>.textTitle(text: String) = findListItem(0, text)
+class CharacterDetailsScreen<A : ComponentActivity>(composeTestRule: ActivityComposeTestRule<A>) {
 
     val menuBack = composeTestRule.findIconButton(R.string.menu_item_back)
     val menuNightTheme = composeTestRule.findIconButton(R.string.menu_item_night_theme)
     val menuDayTheme = composeTestRule.findIconButton(R.string.menu_item_day_theme)
 
     val progressBar = composeTestRule.findProgressBar()
-
-    fun AndroidComposeTestRule<ActivityScenarioRule<A>, A>.textListItem(
-        index: Int,
-        text: String,
-    ) = findListItem(index, text)
 }

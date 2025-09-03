@@ -1,4 +1,4 @@
-package com.senyk.rickandmorty.core.util
+package com.senyk.rickandmorty.core.utils
 
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry

@@ -1,9 +1,10 @@
-package com.senyk.rickandmorty.core.util
+package com.senyk.rickandmorty.core.utils
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasAnyChild
 import androidx.compose.ui.test.hasParent
 import androidx.compose.ui.test.isDialog
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onFirst
@@ -28,3 +29,15 @@ fun ComposeTestRule.dialog(): SemanticsNodeInteraction? {
  * Returns the topmost semantics node, preferring a dialog if present, otherwise the root screen.
  */
 fun ComposeTestRule.currentSemanticsTree(): SemanticsNodeInteraction = dialog() ?: rootScreen()
+
+/**
+ * Waits until the given [node] is no longer displayed on the screen.
+ *
+ * @param node The node to wait for hiding.
+ * @throws AssertionError if the node is still visible after the timeout (5 seconds).
+ */
+fun ComposeTestRule.waitUntilHiding(node: SemanticsNodeInteraction) {
+    waitUntil(5_000L) {
+        node.isNotDisplayed()
+    }
+}

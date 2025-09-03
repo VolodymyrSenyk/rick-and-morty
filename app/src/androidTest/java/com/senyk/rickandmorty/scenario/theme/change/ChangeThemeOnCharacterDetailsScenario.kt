@@ -1,12 +1,11 @@
 package com.senyk.rickandmorty.scenario.theme.change
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.performClick
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
-import com.senyk.rickandmorty.scenario.characters.OpenCharacterDetailsScenario
+import com.senyk.rickandmorty.scenario.characters.list.OpenCharacterDetailsScenario
 import com.senyk.rickandmorty.scenario.system.PressDeviceBackButtonScenario
 import com.senyk.rickandmorty.scenario.theme.check.CheckThemeOnCharactersListScenario
 import com.senyk.rickandmorty.screen.characters.CharacterDetailsScreen
@@ -16,7 +15,7 @@ class ChangeThemeOnCharacterDetailsScenario<A : ComponentActivity>(
     private val isDayToNightTheme: Boolean,
 ) : BaseScenario<A>() {
 
-    override val steps: AndroidComposeTestRule<ActivityScenarioRule<A>, A>.() -> Unit
+    override val steps: ActivityComposeTestRule<A>.() -> Unit
         get() = {
             step("Check and change theme on 'Character details' screen") {
                 scenario(OpenCharacterDetailsScenario(characterName))

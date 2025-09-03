@@ -2,18 +2,17 @@ package com.senyk.rickandmorty.scenario.system
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
+import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
-import com.senyk.rickandmorty.core.util.getTargetContext
-import com.senyk.rickandmorty.core.util.getUiDevice
+import com.senyk.rickandmorty.core.utils.getTargetContext
+import com.senyk.rickandmorty.core.utils.getUiDevice
 
-class ReopenAppScenario<A : ComponentActivity>() : BaseScenario<A>() {
+class ReopenAppScenario<A : ComponentActivity> : BaseScenario<A>() {
 
-    override val steps: AndroidComposeTestRule<ActivityScenarioRule<A>, A>.() -> Unit
+    override val steps: ActivityComposeTestRule<A>.() -> Unit
         get() = {
             step("Reopen application") {
                 val device = getUiDevice()

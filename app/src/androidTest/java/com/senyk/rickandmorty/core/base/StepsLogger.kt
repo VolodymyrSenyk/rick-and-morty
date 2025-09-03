@@ -3,7 +3,7 @@ package com.senyk.rickandmorty.core.base
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.printToLog
 import arch.log.Kermit
-import com.senyk.rickandmorty.core.util.currentSemanticsTree
+import com.senyk.rickandmorty.core.utils.currentSemanticsTree
 import java.util.Stack
 
 /**
