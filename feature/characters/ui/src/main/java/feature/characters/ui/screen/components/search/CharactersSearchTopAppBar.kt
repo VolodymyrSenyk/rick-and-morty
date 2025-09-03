@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.theme.RickAndMortyTheme
 import feature.characters.ui.R
+import core.ui.R as CoreR
 
 @Composable
 internal fun CharactersSearchTopAppBar(
@@ -71,7 +72,7 @@ internal fun CharactersSearchTopAppBar(
                 IconButton(onClick = { onSearchQueryChange("") }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Clear"
+                        contentDescription = stringResource(CoreR.string.menu_item_clear),
                     )
                 }
             }

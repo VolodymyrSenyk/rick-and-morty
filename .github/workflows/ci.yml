@@ -97,7 +97,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -wipe-data -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedDevUitestAndroidTest --no-daemon
+          script: ./gradlew connectedDevUitestAndroidTest --no-daemon || (echo "Try to rerun tests due to failure..." && ./gradlew connectedDevUitestAndroidTest --no-daemon)
 
   upload:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')

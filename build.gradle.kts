@@ -150,6 +150,7 @@ tasks.register<Detekt>("detektAll") {
 
     setSource(files(projectDir))
     include("**/*.kt", "**/*.kts")
+    exclude("**/build/**")
     reports {
         html.required.set(true)
         xml.required.set(true)

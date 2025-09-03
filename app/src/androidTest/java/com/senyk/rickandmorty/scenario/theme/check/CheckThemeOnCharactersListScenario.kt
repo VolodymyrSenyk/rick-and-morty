@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
+import com.senyk.rickandmorty.core.utils.waitUntilDisplaying
 import com.senyk.rickandmorty.screen.characters.CharactersListScreen
 
 class CheckThemeOnCharactersListScenario<A : ComponentActivity>(
@@ -14,6 +15,7 @@ class CheckThemeOnCharactersListScenario<A : ComponentActivity>(
         get() = {
             step("Check theme on 'Characters list' screen") {
                 CharactersListScreen(this).apply {
+                    waitUntilDisplaying(textTitle)
                     if (isDayTheme) {
                         menuDayTheme.assertExists()
                         menuNightTheme.assertDoesNotExist()

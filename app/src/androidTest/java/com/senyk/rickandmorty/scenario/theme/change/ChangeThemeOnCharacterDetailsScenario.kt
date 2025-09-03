@@ -7,7 +7,6 @@ import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.scenario.characters.list.OpenCharacterDetailsScenario
 import com.senyk.rickandmorty.scenario.system.PressDeviceBackButtonScenario
-import com.senyk.rickandmorty.scenario.theme.check.CheckThemeOnCharactersListScenario
 import com.senyk.rickandmorty.screen.characters.CharacterDetailsScreen
 
 class ChangeThemeOnCharacterDetailsScenario<A : ComponentActivity>(
@@ -21,7 +20,13 @@ class ChangeThemeOnCharacterDetailsScenario<A : ComponentActivity>(
                 scenario(OpenCharacterDetailsScenario(characterName))
                 CharacterDetailsScreen(this).apply {
                     step("Check theme before change") {
-                        scenario(CheckThemeOnCharactersListScenario(isDayTheme = isDayToNightTheme))
+                        if (isDayToNightTheme) {
+                            menuDayTheme.assertExists()
+                            menuNightTheme.assertDoesNotExist()
+                        } else {
+                            menuDayTheme.assertDoesNotExist()
+                            menuNightTheme.assertExists()
+                        }
                     }
                     step("Change theme") {
                         if (isDayToNightTheme) {
@@ -31,7 +36,13 @@ class ChangeThemeOnCharacterDetailsScenario<A : ComponentActivity>(
                         }
                     }
                     step("Check theme after change") {
-                        scenario(CheckThemeOnCharactersListScenario(isDayTheme = !isDayToNightTheme))
+                        if (!isDayToNightTheme) {
+                            menuDayTheme.assertExists()
+                            menuNightTheme.assertDoesNotExist()
+                        } else {
+                            menuDayTheme.assertDoesNotExist()
+                            menuNightTheme.assertExists()
+                        }
                     }
                 }
                 scenario(PressDeviceBackButtonScenario())

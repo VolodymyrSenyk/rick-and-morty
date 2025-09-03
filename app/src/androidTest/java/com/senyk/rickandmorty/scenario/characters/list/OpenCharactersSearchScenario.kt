@@ -7,13 +7,13 @@ import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.screen.characters.CharactersListScreen
 
-class OpenCharactersListFilterScenario<A : ComponentActivity> : BaseScenario<A>() {
+class OpenCharactersSearchScenario<A : ComponentActivity> : BaseScenario<A>() {
 
     override val steps: ActivityComposeTestRule<A>.() -> Unit
         get() = {
-            step("Open 'Characters List Filter' from 'Characters List'") {
+            step("Open 'Characters List Search' from 'Characters List'") {
                 CharactersListScreen(this).apply {
-                    menuFilter.performClick()
+                    menuSearch.performClick()
                 }
             }
         }

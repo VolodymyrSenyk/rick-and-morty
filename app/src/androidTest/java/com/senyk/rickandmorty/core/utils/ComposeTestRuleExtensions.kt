@@ -4,6 +4,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasAnyChild
 import androidx.compose.ui.test.hasParent
 import androidx.compose.ui.test.isDialog
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.ComposeTestRule
@@ -39,5 +40,17 @@ fun ComposeTestRule.currentSemanticsTree(): SemanticsNodeInteraction = dialog() 
 fun ComposeTestRule.waitUntilHiding(node: SemanticsNodeInteraction) {
     waitUntil(5_000L) {
         node.isNotDisplayed()
+    }
+}
+
+/**
+ * Waits until the given [node] is displayed on the screen.
+ *
+ * @param node The node to wait for displaying.
+ * @throws AssertionError if the node is still not visible after the timeout (10 seconds).
+ */
+fun ComposeTestRule.waitUntilDisplaying(node: SemanticsNodeInteraction) {
+    waitUntil(10_000L) {
+        node.isDisplayed()
     }
 }

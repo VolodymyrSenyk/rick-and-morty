@@ -4,7 +4,6 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
@@ -14,6 +13,7 @@ import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEditable
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onChildren
 import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 
 /**
@@ -123,13 +123,15 @@ fun <A : ComponentActivity> ActivityComposeTestRule<A>.findFieldByHint(
     onAllNodes(isEditable() and hasAnySibling(hasText(getString(hintRes))), useUnmergedTree)[index]
 
 /**
- * Finds a list item by [index] within a scrollable container.
+ * Finds an item by [index] inside a scrollable container identified by [listIndex].
  *
- * @param index The index of the matched scrollable container node.
+ * @param index The index of the item inside the target scrollable container.
+ * @param listIndex The index of the scrollable container among all containers on screen (default is 0).
  */
 fun <A : ComponentActivity> ActivityComposeTestRule<A>.findListItemByIndex(
     index: Int,
-): SemanticsNodeInteraction = onAllNodes(hasAnyAncestor(hasScrollAction()), useUnmergedTree = false)[index]
+    listIndex: Int = 0,
+): SemanticsNodeInteraction = onAllNodes(hasScrollAction(), useUnmergedTree = false)[listIndex].onChildren()[index]
 
 /**
  * Finds a progress bar with the given [rangeInfo].

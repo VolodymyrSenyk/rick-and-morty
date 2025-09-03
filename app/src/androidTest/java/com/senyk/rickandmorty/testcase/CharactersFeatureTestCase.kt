@@ -8,6 +8,10 @@ import com.senyk.rickandmorty.scenario.characters.filter.CancelCharactersListFil
 import com.senyk.rickandmorty.scenario.characters.list.CheckCharactersListScenario
 import com.senyk.rickandmorty.scenario.characters.list.OpenCharacterDetailsScenario
 import com.senyk.rickandmorty.scenario.characters.list.OpenCharactersListFilterScenario
+import com.senyk.rickandmorty.scenario.characters.list.OpenCharactersSearchScenario
+import com.senyk.rickandmorty.scenario.characters.search.CheckCharactersListSearchClearingScenario
+import com.senyk.rickandmorty.scenario.characters.search.CheckCharactersListSearchScenario
+import com.senyk.rickandmorty.scenario.characters.search.CloseCharactersListSearchScenario
 import com.senyk.rickandmorty.scenario.system.WaitUntilStartScenario
 import domain.characters.model.GenderType
 import domain.characters.model.StatusType
@@ -25,9 +29,25 @@ class CharactersFeatureTestCase : BaseTestCase() {
             scenario(CheckCharactersListScenario(defaultList))
             scenario(OpenCharacterDetailsScenario("Rick Sanchez"))
             scenario(CheckCharacterDetailsScenario(rickDetails))
-            scenario(WaitUntilStartScenario())
             scenario(OpenCharacterDetailsScenario("Abadango Cluster Princess"))
             scenario(CheckCharacterDetailsScenario(abadangoDetails))
+        }
+    }
+
+    @Test
+    fun charactersListSearch() {
+        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith")
+        val searchResultList = listOf("Tickets Please Guy", "Ticktock", "Sticky")
+        scenario(WaitUntilStartScenario())
+        step("Check characters list searching feature") {
+            scenario(OpenCharactersSearchScenario())
+            scenario(CheckCharactersListSearchScenario())
+            scenario(CheckCharactersListSearchScenario("Ti"))
+            scenario(CheckCharactersListSearchClearingScenario())
+            scenario(CheckCharactersListSearchScenario("Tick", searchResultList))
+            scenario(CheckCharactersListSearchClearingScenario())
+            scenario(CloseCharactersListSearchScenario())
+            scenario(CheckCharactersListScenario(defaultList))
         }
     }
 
