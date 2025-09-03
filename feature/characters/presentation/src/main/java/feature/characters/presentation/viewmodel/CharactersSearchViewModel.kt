@@ -14,11 +14,10 @@ import javax.inject.Inject
 @HiltViewModel
 class CharactersSearchViewModel @Inject constructor(
     private val getCharactersByFilterUseCase: GetCharactersByFilterUseCase,
+    private val paginationHelper: PaginationHelper,
 ) : BaseSimpleMviViewModel<CharactersSearchViewState, CharactersSearchIntent, MviSideEffect, MviNavEvent>(
     initialState = CharactersSearchViewState.INITIAL,
 ) {
-
-    private val paginationHelper = PaginationHelper()
 
     override val tag: String = this.javaClass.simpleName
 

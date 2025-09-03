@@ -5,7 +5,7 @@ import feature.characters.presentation.model.CharacterUi
 
 class CharacterListTestData(
     val startIndex: Int,
-    val pageSize: Int = DEFAULT_PAGE_SIZE,
+    val pageSize: Int,
 ) {
 
     val character = Character(
@@ -32,9 +32,5 @@ class CharacterListTestData(
 
     val charactersUiList = List(pageSize) { characterUi }.mapIndexed { index, model ->
         model.copy(id = (index + startIndex).toString())
-    }
-
-    companion object {
-        private const val DEFAULT_PAGE_SIZE = 20
     }
 }

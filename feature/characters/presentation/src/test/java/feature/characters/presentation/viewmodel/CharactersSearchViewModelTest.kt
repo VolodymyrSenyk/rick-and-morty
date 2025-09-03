@@ -1,5 +1,6 @@
 package feature.characters.presentation.viewmodel
 
+import arch.util.PaginationHelper
 import domain.characters.CharactersRepository
 import domain.characters.usecase.GetCharactersByFilterUseCase
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchIntent
@@ -28,11 +29,17 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @MockK
     lateinit var charactersRepository: CharactersRepository
 
+    private val paginationHelper = PaginationHelper(
+        dataSetSize = DATA_PAGE_SIZE,
+        loadMoreTriggerDataSetSize = DATA_PAGE_SIZE / 2,
+    )
+
     @BeforeEach
     override fun setUp() {
         super.setUp()
         viewModel = CharactersSearchViewModel(
             getCharactersByFilterUseCase = GetCharactersByFilterUseCase(charactersRepository),
+            paginationHelper = paginationHelper,
         )
     }
 
@@ -74,7 +81,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search performed`() = runTest {
         val searchQuery = "Rick"
-        val testData = CharacterListTestData(startIndex = 0)
+        val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchResults = testData.charactersUiList,
@@ -115,8 +122,8 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results loaded empty data set`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0)
-        val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize + 1, pageSize = 0)
+        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchResults = testDataFirstPage.charactersUiList,
@@ -161,8 +168,11 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results list scrolled`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0)
-        val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize + 1)
+        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testDataSecondPage = CharacterListTestData(
+            startIndex = testDataFirstPage.pageSize,
+            pageSize = DATA_PAGE_SIZE,
+        )
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchResults = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
@@ -186,8 +196,11 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results list scrolled while already is loading`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0)
-        val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize + 1)
+        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testDataSecondPage = CharacterListTestData(
+            startIndex = testDataFirstPage.pageSize,
+            pageSize = DATA_PAGE_SIZE,
+        )
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchResults = emptyList(),
@@ -252,5 +265,9 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
                 gender = null,
             )
         } throws IllegalStateException("")
+    }
+
+    companion object {
+        private const val DATA_PAGE_SIZE = 20
     }
 }

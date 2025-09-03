@@ -1,15 +1,19 @@
 package arch.util
 
-class PaginationHelper(
-    private val dataSetSize: Int = DEFAULT_DATA_SET_SIZE,
-    private val loadMoreTriggerDataSetSize: Int = DEFAULT_DATA_SET_SIZE / 2,
-    private var currentOffset: Int = 0,
-    private var loadingInProgress: Boolean = false,
-    private var noDataLeft: Boolean = false,
+import javax.inject.Inject
+
+class PaginationHelper @Inject constructor(
+    private val dataSetSize: Int,
+    private val loadMoreTriggerDataSetSize: Int,
 ) {
+
+    private var currentOffset: Int = 0
+    private var loadingInProgress: Boolean = false
+    private var noDataLeft: Boolean = false
 
     fun resetPagination() {
         currentOffset = 0
+        loadingInProgress = false
         noDataLeft = false
     }
 
@@ -38,8 +42,4 @@ class PaginationHelper(
     fun isCurrentDataSetEmpty(): Boolean = currentOffset == 0
 
     fun hasMoreData(): Boolean = !noDataLeft
-
-    companion object {
-        private const val DEFAULT_DATA_SET_SIZE = 20
-    }
 }

@@ -16,11 +16,11 @@ import javax.inject.Inject
 @HiltViewModel
 class CharactersListViewModel @Inject constructor(
     private val getCharactersByFilterUseCase: GetCharactersByFilterUseCase,
+    private val paginationHelper: PaginationHelper,
 ) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
     initialState = CharactersListViewState.INITIAL,
 ) {
 
-    private val paginationHelper = PaginationHelper()
     private var charactersListFilter = CharactersListFilter()
 
     override val tag: String = this.javaClass.simpleName
