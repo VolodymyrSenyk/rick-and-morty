@@ -6,6 +6,7 @@
         <ID>TooGenericExceptionCaught:BaseSimpleMviViewModel.kt$BaseSimpleMviViewModel$throwable: Throwable</ID>
         <ID>TooGenericExceptionCaught:BaseCoroutinesViewModel.kt$BaseCoroutinesViewModel$throwable: Throwable</ID>
         <ID>ThrowingExceptionsWithoutMessageOrCause:Kermit.kt$Kermit$Throwable()</ID>
+        <ID>NestedBlockDepth:StepsLogger.kt$StepsLogger$fun step(text: String, actions: () -> Unit)</ID>
         <ID>LongMethod:SimpleDropdownMenu.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SimpleDropdownMenu( modifier: Modifier = Modifier, options: List&lt;String>, selectedOption: String?, onOptionSelected: (String) -> Unit, )</ID>
     </ManuallySuppressedIssues>
 </SmellBaseline>
