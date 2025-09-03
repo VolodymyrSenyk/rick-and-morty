@@ -206,5 +206,15 @@ tasks.named<SonarTask>("sonar") {
     dependsOn("codeCoverageReport", "detektAll")
 }
 
-@Suppress("UNCHECKED_CAST")
-val testCoverageExclusions = rootProject.extra["testCoverageExclusions"] as List<String>
+// Exclusions to check code coverage only for ViewModel classes
+val testCoverageExclusions = listOf(
+    "**/*App.kt",
+    "**/*Activity.kt",
+    "**/core/**",
+    "**/di/**",
+    "**/data/**",
+    "**/domain/**",
+    "**/navigation/**",
+    "**/components/**",
+    "**/ui/**",
+)
