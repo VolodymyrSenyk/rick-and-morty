@@ -17,7 +17,7 @@ import javax.inject.Inject
 class CharactersListViewModel @Inject constructor(
     private val getCharactersByFilterUseCase: GetCharactersByFilterUseCase,
 ) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
-    initialState = CharactersListViewState(),
+    initialState = CharactersListViewState.INITIAL,
 ) {
 
     private val paginationHelper = PaginationHelper()
@@ -102,10 +102,8 @@ class CharactersListViewModel @Inject constructor(
             currentState.charactersList.toMutableList()
         }
 
-        if (loadedDataList.isNotEmpty()) {
-            resultDataList.addAll(loadedDataList.map { it.toCharacterUi() })
-            paginationHelper.onDataSetLoaded(loadedDataList.size)
-        }
+        resultDataList.addAll(loadedDataList.map { it.toCharacterUi() })
+        paginationHelper.onDataSetLoaded(loadedDataList.size)
 
         updateUiState { oldState ->
             oldState.copy(

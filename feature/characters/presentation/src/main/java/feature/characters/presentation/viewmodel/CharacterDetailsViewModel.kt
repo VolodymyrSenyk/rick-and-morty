@@ -14,7 +14,7 @@ import javax.inject.Inject
 class CharacterDetailsViewModel @Inject constructor(
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
 ) : BaseSimpleMviViewModel<CharacterDetailsViewState, CharacterDetailsIntent, MviSideEffect, CharacterDetailsNavEvent>(
-    initialState = CharacterDetailsViewState()
+    initialState = CharacterDetailsViewState.INITIAL,
 ) {
 
     override val tag: String = this.javaClass.simpleName

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class CharactersSearchViewModel @Inject constructor(
     private val getCharactersByFilterUseCase: GetCharactersByFilterUseCase,
 ) : BaseSimpleMviViewModel<CharactersSearchViewState, CharactersSearchIntent, MviSideEffect, MviNavEvent>(
-    initialState = CharactersSearchViewState(),
+    initialState = CharactersSearchViewState.INITIAL,
 ) {
 
     private val paginationHelper = PaginationHelper()
@@ -31,7 +31,7 @@ class CharactersSearchViewModel @Inject constructor(
     private fun onSearchToggle() {
         updateUiState { oldState ->
             if (currentState.isSearching) {
-                CharactersSearchViewState()
+                CharactersSearchViewState.INITIAL
             } else {
                 oldState.copy(isSearching = true)
             }
@@ -61,7 +61,6 @@ class CharactersSearchViewModel @Inject constructor(
     override suspend fun onError(throwable: Throwable) {
         updateUiState { oldState ->
             oldState.copy(
-                searchResults = emptyList(),
                 isLoading = false,
                 isLoadingNextPage = false,
             )
@@ -84,10 +83,8 @@ class CharactersSearchViewModel @Inject constructor(
             currentState.searchResults.toMutableList()
         }
 
-        if (loadedDataSet.isNotEmpty()) {
-            dataList.addAll(loadedDataSet.map { it.toCharacterUi() })
-            paginationHelper.onDataSetLoaded(loadedDataSet.size)
-        }
+        dataList.addAll(loadedDataSet.map { it.toCharacterUi() })
+        paginationHelper.onDataSetLoaded(loadedDataSet.size)
 
         updateUiState { oldState ->
             oldState.copy(

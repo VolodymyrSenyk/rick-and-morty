@@ -12,6 +12,7 @@ internal class CharactersSearchPreviewParameterProvider : PreviewParameterProvid
             searchQuery = "",
             isInvalidSearchQuery = true,
             isLoading = false,
+            isLoadingNextPage = false,
         ),
         CharactersSearchViewState(
             isSearching = true,
@@ -19,6 +20,7 @@ internal class CharactersSearchPreviewParameterProvider : PreviewParameterProvid
             searchQuery = "dwdwfwaas",
             isInvalidSearchQuery = false,
             isLoading = false,
+            isLoadingNextPage = false,
         ),
         CharactersSearchViewState(
             isSearching = true,
@@ -26,6 +28,7 @@ internal class CharactersSearchPreviewParameterProvider : PreviewParameterProvid
             searchQuery = "Rick",
             isInvalidSearchQuery = false,
             isLoading = false,
+            isLoadingNextPage = false,
         ),
         CharactersSearchViewState(
             isSearching = true,
@@ -33,6 +36,7 @@ internal class CharactersSearchPreviewParameterProvider : PreviewParameterProvid
             searchQuery = "Rick",
             isInvalidSearchQuery = false,
             isLoading = true,
+            isLoadingNextPage = false,
         ),
     )
 }

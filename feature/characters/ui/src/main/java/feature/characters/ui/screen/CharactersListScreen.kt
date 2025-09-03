@@ -158,6 +158,7 @@ private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePrevie
                     charactersList = CharactersPreviewMocks.charactersList,
                     isRefreshing = false,
                     isLoading = false,
+                    isLoadingNextPage = false
                 ),
                 gridState = rememberLazyGridState(),
                 onItemClicked = {},

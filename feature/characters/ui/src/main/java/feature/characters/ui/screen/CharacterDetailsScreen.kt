@@ -73,7 +73,10 @@ private fun CharacterDetailsScreenPreview(@PreviewParameter(provider = ThemePrev
             }
         ) {
             CharacterDetailsScreenContent(
-                viewState = CharacterDetailsViewState(character = CharactersPreviewMocks.characterDetails),
+                viewState = CharacterDetailsViewState(
+                    character = CharactersPreviewMocks.characterDetails,
+                    isLoading = false,
+                ),
             )
         }
     }

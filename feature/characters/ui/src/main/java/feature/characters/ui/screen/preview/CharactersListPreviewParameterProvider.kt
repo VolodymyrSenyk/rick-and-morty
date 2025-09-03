@@ -9,16 +9,19 @@ internal class CharactersListPreviewParameterProvider : PreviewParameterProvider
         CharactersListViewState(
             charactersList = emptyList(),
             isLoading = true,
+            isLoadingNextPage = false,
             isRefreshing = false,
         ),
         CharactersListViewState(
             charactersList = emptyList(),
             isLoading = false,
+            isLoadingNextPage = false,
             isRefreshing = false,
         ),
         CharactersListViewState(
             charactersList = CharactersPreviewMocks.charactersList,
             isLoading = false,
+            isLoadingNextPage = false,
             isRefreshing = false,
         ),
         CharactersListViewState(
