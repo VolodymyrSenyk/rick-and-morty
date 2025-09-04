@@ -24,6 +24,7 @@ class CharactersSearchViewModel @Inject constructor(
     override suspend fun executeIntent(mviIntent: CharactersSearchIntent) = when (mviIntent) {
         is CharactersSearchIntent.OnSearchToggle -> onSearchToggle()
         is CharactersSearchIntent.OnSearchQueryChanged -> onSearchQueryChanged(mviIntent.searchQuery)
+        is CharactersSearchIntent.PerformSearch -> onPerformSearch()
         is CharactersSearchIntent.OnScrolled -> onScrolled(mviIntent.lastVisibleItemPosition)
     }
 
@@ -37,7 +38,7 @@ class CharactersSearchViewModel @Inject constructor(
         }
     }
 
-    private suspend fun onSearchQueryChanged(searchQuery: String) {
+    private fun onSearchQueryChanged(searchQuery: String) {
         updateUiState { oldState ->
             oldState.copy(
                 searchQuery = searchQuery,
@@ -45,6 +46,10 @@ class CharactersSearchViewModel @Inject constructor(
                 showBlockingProgress = true,
             )
         }
+        onIntent(CharactersSearchIntent.PerformSearch(searchQuery))
+    }
+
+    private suspend fun onPerformSearch() {
         paginationHelper.resetPagination()
         loadCharacters()
     }

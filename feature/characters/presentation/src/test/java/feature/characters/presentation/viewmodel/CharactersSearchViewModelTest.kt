@@ -97,6 +97,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+        advanceUntilIdle()
 
         coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -117,6 +118,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+        advanceUntilIdle()
 
         coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -140,6 +142,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+        advanceUntilIdle()
 
         coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -165,7 +168,9 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+        advanceUntilIdle()
         viewModel.onIntent(CharactersSearchIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
+        advanceUntilIdle()
 
         coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -188,6 +193,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+        advanceUntilIdle()
 
         coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -216,7 +222,9 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+        advanceUntilIdle()
         viewModel.onIntent(CharactersSearchIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
+        advanceUntilIdle()
 
         coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -240,26 +248,35 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
             showPaginationProgress = false,
         )
         val expectedViewStateAfterDelay = expectedViewState.copy(
-            searchResults = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
+            searchResults = testDataFirstPage.charactersUiList,
             showEmptyState = false,
             showBlockingProgress = false,
             showPaginationProgress = true,
         )
+        val expectedViewStateAfterSecondDelay = expectedViewStateAfterDelay.copy(
+            searchResults = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
+        )
 
         mockGetListRequestWithDelay(page = 1, name = searchQuery, testData = testDataFirstPage)
-        mockGetListRequest(page = 2, name = searchQuery, testData = testDataSecondPage)
+        mockGetListRequestWithDelay(page = 2, name = searchQuery, testData = testDataSecondPage)
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
         viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
-        viewModel.onIntent(CharactersSearchIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
 
-        coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
 
         advanceUntilIdle()
 
+        viewModel.onIntent(CharactersSearchIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
+
         coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewStateAfterDelay, viewModel.uiState.value)
+
+        advanceUntilIdle()
+
+        coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewStateAfterSecondDelay, viewModel.uiState.value)
     }
 
     private fun mockGetListRequest(page: Int, name: String?, testData: CharacterListTestData) {
@@ -299,6 +316,6 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     }
 
     companion object {
-        private const val DATA_PAGE_SIZE = 20
+        private const val DATA_PAGE_SIZE = 2
     }
 }
