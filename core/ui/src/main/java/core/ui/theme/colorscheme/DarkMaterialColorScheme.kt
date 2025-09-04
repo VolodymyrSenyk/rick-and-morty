@@ -7,6 +7,8 @@ internal val DarkMaterialColorScheme = darkColorScheme(
     primary = AppColors.Black900,
     onPrimary = AppColors.Grey100,
 
+    secondary = AppColors.Grey750,
+
     background = AppColors.Grey850,
     onBackground = AppColors.Grey100,
 

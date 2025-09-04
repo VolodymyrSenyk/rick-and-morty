@@ -8,18 +8,20 @@ data class CharactersSearchViewState(
     val searchQuery: String,
     val isInvalidSearchQuery: Boolean,
     val searchResults: List<CharacterUi>,
-    val isLoading: Boolean,
-    val isLoadingNextPage: Boolean,
+    val showEmptyState: Boolean,
+    val showBlockingProgress: Boolean,
+    val showPaginationProgress: Boolean,
 ) : ViewState {
 
     companion object {
         val INITIAL = CharactersSearchViewState(
             isSearching = false,
-            searchResults = emptyList(),
             searchQuery = "",
             isInvalidSearchQuery = true,
-            isLoading = false,
-            isLoadingNextPage = false,
+            searchResults = emptyList(),
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         )
     }
 }

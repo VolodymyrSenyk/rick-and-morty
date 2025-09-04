@@ -41,7 +41,7 @@ class CharactersListViewModel @Inject constructor(
 
     private suspend fun onScrolled(lastVisibleItemPosition: Int) {
         val isNextDataSetNeeded = paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)
-        val isLoading = currentState.isRefreshing || currentState.isLoading
+        val isLoading = currentState.showRefreshProgress || currentState.showBlockingProgress
         if (isNextDataSetNeeded && !isLoading) {
             loadCharacters()
         }
@@ -49,7 +49,7 @@ class CharactersListViewModel @Inject constructor(
 
     private suspend fun onRefreshed() {
         updateUiState { oldState ->
-            oldState.copy(isRefreshing = true)
+            oldState.copy(showRefreshProgress = true)
         }
         charactersListFilter = CharactersListFilter()
         paginationHelper.resetPagination()
@@ -68,7 +68,7 @@ class CharactersListViewModel @Inject constructor(
     private suspend fun onFilterApplied(filter: CharactersListFilter) {
         charactersListFilter = filter
         updateUiState { oldState ->
-            oldState.copy(isLoading = true)
+            oldState.copy(showBlockingProgress = true)
         }
         paginationHelper.resetPagination()
         loadCharacters()
@@ -82,8 +82,9 @@ class CharactersListViewModel @Inject constructor(
     override suspend fun onError(throwable: Throwable) {
         updateUiState { oldState ->
             oldState.copy(
-                isRefreshing = false,
-                isLoading = false,
+                showRefreshProgress = false,
+                showBlockingProgress = false,
+                showPaginationProgress = false,
             )
         }
         sendSideEffect(CharactersListSideEffect.ShowErrorMessage)
@@ -108,9 +109,10 @@ class CharactersListViewModel @Inject constructor(
         updateUiState { oldState ->
             oldState.copy(
                 charactersList = resultDataList,
-                isRefreshing = false,
-                isLoading = false,
-                isLoadingNextPage = paginationHelper.hasMoreData(),
+                showEmptyState = resultDataList.isEmpty(),
+                showRefreshProgress = false,
+                showBlockingProgress = false,
+                showPaginationProgress = paginationHelper.hasMoreData(),
             )
         }
     }

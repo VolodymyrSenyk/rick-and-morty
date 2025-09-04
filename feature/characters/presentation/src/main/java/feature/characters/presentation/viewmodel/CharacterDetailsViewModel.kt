@@ -24,11 +24,22 @@ class CharacterDetailsViewModel @Inject constructor(
         is CharacterDetailsIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
+    override suspend fun onError(throwable: Throwable) {
+        updateUiState { oldState ->
+            oldState.copy(
+                showEmptyState = currentState.character == null,
+                isLoading = false,
+            )
+        }
+        super.onError(throwable)
+    }
+
     private suspend fun onViewStarted(characterId: String) {
         val character = getCharacterByIdUseCase(characterId)
         updateUiState { oldState ->
             oldState.copy(
                 character = character.toCharacterDetailsUi(),
+                showEmptyState = false,
                 isLoading = false,
             )
         }

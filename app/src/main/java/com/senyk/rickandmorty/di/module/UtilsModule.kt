@@ -19,6 +19,6 @@ class UtilsModule {
         )
 
     companion object {
-        private const val PAGE_SIZE = 2
+        private const val PAGE_SIZE = 20
     }
 }

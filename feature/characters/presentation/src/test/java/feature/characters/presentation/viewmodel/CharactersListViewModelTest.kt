@@ -51,9 +51,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     fun `characters list initial state`() = runTest {
         val expectedViewState = CharactersListViewState(
             charactersList = emptyList(),
-            isRefreshing = false,
-            isLoading = true,
-            isLoadingNextPage = false,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = true,
+            showPaginationProgress = false,
         )
         coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -64,9 +65,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
         val expectedViewState = CharactersListViewState(
             charactersList = testData.charactersUiList,
-            isRefreshing = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, testData = testData)
@@ -83,9 +85,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList,
-            isRefreshing = false,
-            isLoading = false,
-            isLoadingNextPage = false,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         )
 
         mockGetListRequest(page = 1, testData = testDataFirstPage)
@@ -100,7 +103,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list error while data set loading`() = runTest {
-        val expectedViewState = CharactersListViewState.INITIAL.copy(isLoading = false)
+        val expectedViewState = CharactersListViewState.INITIAL.copy(showBlockingProgress = false)
 
         mockGetListRequestWithError(page = 1)
 
@@ -120,9 +123,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         )
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
-            isRefreshing = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, testData = testDataFirstPage)
@@ -140,9 +144,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList,
-            isRefreshing = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, testData = testDataFirstPage)
@@ -171,9 +176,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         )
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList,
-            isRefreshing = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, testData = testDataFirstPage)
@@ -193,9 +199,10 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         val filter = CharactersListFilter(statusType = StatusType.ALIVE)
         val expectedViewState = CharactersListViewState(
             charactersList = testData.charactersUiList,
-            isRefreshing = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, testData = testData)

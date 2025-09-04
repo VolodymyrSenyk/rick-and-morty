@@ -3,23 +3,12 @@ package feature.characters.ui.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import core.ui.R
-import core.ui.components.scaffold.CustomScaffold
-import core.ui.preview.ThemePreviewParameterProvider
-import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.NavEventHandler
-import domain.settings.model.ThemeMode
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
-import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsViewState
 import feature.characters.ui.screen.components.details.CharacterDetailsScreenContent
-import feature.characters.ui.screen.components.details.CharacterDetailsTopAppBar
-import feature.characters.ui.screen.preview.CharactersPreviewMocks
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
@@ -37,17 +26,11 @@ internal fun CharacterDetailsScreen(
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    CustomScaffold(
-        topAppBar = {
-            CharacterDetailsTopAppBar(
-                titleText = viewState.character?.name ?: stringResource(R.string.app_name),
-                onNavigateBackClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
-                onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
-            )
-        }
-    ) {
-        CharacterDetailsScreenContent(viewState = viewState)
-    }
+    CharacterDetailsScreenContent(
+        viewState = viewState,
+        onThemeSelected = { settingsViewModel.onThemeSelected(it) },
+        onBackButtonClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
+    )
 }
 
 @Composable
@@ -55,29 +38,6 @@ private fun CharacterDetailsNavEventHandler(viewModel: CharacterDetailsViewModel
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
             is CharacterDetailsNavEvent.NavigateBack -> router.back()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CharacterDetailsScreenPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) theme: ThemeMode) {
-    RickAndMortyTheme(themeMode = theme) {
-        CustomScaffold(
-            topAppBar = {
-                CharacterDetailsTopAppBar(
-                    titleText = CharactersPreviewMocks.characterDetails.name,
-                    onNavigateBackClicked = {},
-                    onThemeSelected = {},
-                )
-            }
-        ) {
-            CharacterDetailsScreenContent(
-                viewState = CharacterDetailsViewState(
-                    character = CharactersPreviewMocks.characterDetails,
-                    isLoading = false,
-                ),
-            )
         }
     }
 }

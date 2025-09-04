@@ -1,43 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- menu -->
-    <string name="menu_search">Search</string>
-    <string name="menu_filter">Filter</string>
+    <string name="menu_item_search">Search</string>
+    <string name="menu_item_filter">Filter</string>
 
-    <!-- hint -->
-    <string name="hint_search_field">Search…</string>
+    <string name="hint_search">Search…</string>
 
-    <!-- output -->
-    <string name="character_name">Name:</string>
-    <string name="character_status">Status:</string>
-    <string name="character_species">Species:</string>
-    <string name="character_type">Type:</string>
-    <string name="character_gender">Gender:</string>
-    <string name="character_origin">Origin:</string>
-    <string name="character_location">Location:</string>
+    <string name="label_character_name">Name:</string>
+    <string name="label_character_status">Status:</string>
+    <string name="label_character_species">Species:</string>
+    <string name="label_character_type">Type:</string>
+    <string name="label_character_gender">Gender:</string>
+    <string name="label_character_origin">Origin:</string>
+    <string name="label_character_location">Location:</string>
 
-    <!-- character status-->
-    <string name="status_all">All statuses</string>
-    <string name="status_alive">Alive</string>
-    <string name="status_dead">Dead</string>
-    <string name="status_unknown">Unknown</string>
+    <string name="message_empty_state_characters_list">Characters not found</string>
+    <string name="message_empty_state_character_details">Can\'t load details for the selected character</string>
+    <string name="message_error_unknown">Something went wrong</string>
 
-    <!-- character gender -->
-    <string name="gender_all">All genders</string>
-    <string name="gender_female">Female</string>
-    <string name="gender_male">Male</string>
-    <string name="gender_genderless">Genderless</string>
-    <string name="gender_unknown">Unknown</string>
-
-    <!-- messages -->
-    <string name="message_empty_state_search">Enter search query</string>
-    <string name="message_characters_empty_list">No characters found</string>
-    <string name="message_character_empty_details">Can not load this character details</string>
-
-    <!-- errors -->
-    <string name="error_unknown">Something went wrong</string>
-
-    <!-- dialogs -->
-    <string name="dialog_title_characters_list_filter_settings">Filter</string>
+    <string name="dialog_title_characters_list_filter_settings">Filter characters</string>
 
 </resources>

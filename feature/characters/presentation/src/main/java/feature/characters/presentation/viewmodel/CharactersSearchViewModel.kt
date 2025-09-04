@@ -41,8 +41,8 @@ class CharactersSearchViewModel @Inject constructor(
         updateUiState { oldState ->
             oldState.copy(
                 searchQuery = searchQuery,
-                isInvalidSearchQuery = searchQuery.length < MIN_SEARCH_QUERY_SIZE,
-                isLoading = true,
+                isInvalidSearchQuery = searchQuery.isEmpty(),
+                showBlockingProgress = true,
             )
         }
         paginationHelper.resetPagination()
@@ -51,7 +51,7 @@ class CharactersSearchViewModel @Inject constructor(
 
     private suspend fun onScrolled(lastVisibleItemPosition: Int) {
         val isNextDataSetNeeded = paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)
-        val isLoading = currentState.isLoading
+        val isLoading = currentState.showBlockingProgress
         if (isNextDataSetNeeded && !isLoading) {
             loadCharacters()
         }
@@ -60,8 +60,10 @@ class CharactersSearchViewModel @Inject constructor(
     override suspend fun onError(throwable: Throwable) {
         updateUiState { oldState ->
             oldState.copy(
-                isLoading = false,
-                isLoadingNextPage = false,
+                searchResults = emptyList(),
+                showEmptyState = !currentState.isInvalidSearchQuery,
+                showBlockingProgress = false,
+                showPaginationProgress = false,
             )
         }
         super.onError(throwable)
@@ -88,13 +90,10 @@ class CharactersSearchViewModel @Inject constructor(
         updateUiState { oldState ->
             oldState.copy(
                 searchResults = dataList,
-                isLoading = false,
-                isLoadingNextPage = paginationHelper.hasMoreData(),
+                showEmptyState = dataList.isEmpty() && !currentState.isInvalidSearchQuery,
+                showBlockingProgress = false,
+                showPaginationProgress = paginationHelper.hasMoreData(),
             )
         }
-    }
-
-    companion object {
-        private const val MIN_SEARCH_QUERY_SIZE = 3
     }
 }

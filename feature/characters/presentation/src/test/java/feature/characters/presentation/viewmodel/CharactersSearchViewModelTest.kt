@@ -47,11 +47,12 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     fun `search feature initial state`() = runTest {
         val expectedViewState = CharactersSearchViewState(
             isSearching = false,
-            searchResults = emptyList(),
             searchQuery = "",
             isInvalidSearchQuery = true,
-            isLoading = false,
-            isLoadingNextPage = false,
+            searchResults = emptyList(),
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         )
         coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -84,11 +85,12 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
         val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
-            searchResults = testData.charactersUiList,
             searchQuery = searchQuery,
             isInvalidSearchQuery = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            searchResults = testData.charactersUiList,
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, name = searchQuery, testData = testData)
@@ -102,14 +104,15 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `search performed with too small search query`() = runTest {
-        val searchQuery = "Ri"
+        val searchQuery = ""
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
-            searchResults = emptyList(),
             searchQuery = searchQuery,
             isInvalidSearchQuery = true,
-            isLoading = false,
-            isLoadingNextPage = false,
+            searchResults = emptyList(),
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         )
 
         viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
@@ -122,15 +125,39 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results loaded empty data set`() = runTest {
         val searchQuery = "Rick"
+        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = 0)
+        val expectedViewState = CharactersSearchViewState(
+            isSearching = true,
+            searchQuery = searchQuery,
+            isInvalidSearchQuery = false,
+            searchResults = emptyList(),
+            showEmptyState = true,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
+        )
+
+        mockGetListRequest(page = 1, name = searchQuery, testData = testDataFirstPage)
+
+        viewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
+        viewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(searchQuery))
+
+        coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
+    }
+
+    @Test
+    fun `search results loaded empty data set on scroll`() = runTest {
+        val searchQuery = "Rick"
         val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
         val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
-            searchResults = testDataFirstPage.charactersUiList,
             searchQuery = searchQuery,
             isInvalidSearchQuery = false,
-            isLoading = false,
-            isLoadingNextPage = false,
+            searchResults = testDataFirstPage.charactersUiList,
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         )
 
         mockGetListRequest(page = 1, name = searchQuery, testData = testDataFirstPage)
@@ -149,11 +176,12 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
         val searchQuery = "Rick"
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
-            searchResults = emptyList(),
             searchQuery = searchQuery,
             isInvalidSearchQuery = false,
-            isLoading = false,
-            isLoadingNextPage = false,
+            searchResults = emptyList(),
+            showEmptyState = true,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         )
 
         mockGetListRequestWithError(page = 1, name = searchQuery)
@@ -175,11 +203,12 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
         )
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
-            searchResults = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
             searchQuery = searchQuery,
             isInvalidSearchQuery = false,
-            isLoading = false,
-            isLoadingNextPage = true,
+            searchResults = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequest(page = 1, name = searchQuery, testData = testDataFirstPage)
@@ -203,16 +232,18 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
         )
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
-            searchResults = emptyList(),
             searchQuery = searchQuery,
             isInvalidSearchQuery = false,
-            isLoading = true,
-            isLoadingNextPage = false,
+            searchResults = emptyList(),
+            showEmptyState = false,
+            showBlockingProgress = true,
+            showPaginationProgress = false,
         )
         val expectedViewStateAfterDelay = expectedViewState.copy(
             searchResults = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
-            isLoading = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
         mockGetListRequestWithDelay(page = 1, name = searchQuery, testData = testDataFirstPage)

@@ -16,8 +16,8 @@ class CheckCharactersListSearchClearingScenario<A : ComponentActivity> : BaseSce
             step("Check 'Characters List Search' search clearing") {
                 CharactersListSearchScreen(this).apply {
                     menuClear.performClick()
-                    findText(R.string.hint_search_field).assertExists()
-                    textInvalidSearchQuery.assertExists()
+                    findText(R.string.hint_search).assertExists()
+                    textListEmptyState.assertDoesNotExist()
                 }
             }
         }

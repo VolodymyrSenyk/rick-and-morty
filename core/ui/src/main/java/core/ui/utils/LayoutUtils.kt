@@ -11,6 +11,13 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 
 @Composable
+fun widthWithCoef(widthCoef: Float): Dp {
+    val windowInfo = LocalWindowInfo.current
+    val density = LocalDensity.current
+    return with(density) { windowInfo.containerSize.width.toDp() * widthCoef }
+}
+
+@Composable
 fun heightWithCoef(heightCoef: Float): Dp {
     val windowInfo = LocalWindowInfo.current
     val density = LocalDensity.current
@@ -20,7 +27,8 @@ fun heightWithCoef(heightCoef: Float): Dp {
 @ExperimentalMaterial3WindowSizeClassApi
 @Composable
 fun isLandscape(): Boolean {
-    val windowSizeClass = calculateWindowSizeClass(activity = LocalContext.current as Activity)
+    val activity = LocalContext.current as? Activity ?: return false
+    val windowSizeClass = calculateWindowSizeClass(activity)
     return when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> false
         WindowWidthSizeClass.Medium, WindowWidthSizeClass.Expanded -> true

@@ -42,8 +42,6 @@ class CharactersFeatureTestCase : BaseTestCase() {
         step("Check characters list searching feature") {
             scenario(OpenCharactersSearchScenario())
             scenario(CheckCharactersListSearchScenario())
-            scenario(CheckCharactersListSearchScenario("Ti"))
-            scenario(CheckCharactersListSearchClearingScenario())
             scenario(CheckCharactersListSearchScenario("Tick", searchResultList))
             scenario(CheckCharactersListSearchClearingScenario())
             scenario(CloseCharactersListSearchScenario())

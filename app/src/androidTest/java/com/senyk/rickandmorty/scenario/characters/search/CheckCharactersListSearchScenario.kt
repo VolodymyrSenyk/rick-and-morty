@@ -10,6 +10,7 @@ import com.senyk.rickandmorty.core.utils.findField
 import com.senyk.rickandmorty.core.utils.findListItemByIndex
 import com.senyk.rickandmorty.core.utils.findText
 import com.senyk.rickandmorty.core.utils.waitUntilDisplaying
+import com.senyk.rickandmorty.core.utils.waitUntilHiding
 import com.senyk.rickandmorty.screen.characters.CharactersListSearchScreen
 import feature.characters.ui.R
 
@@ -22,17 +23,13 @@ class CheckCharactersListSearchScenario<A : ComponentActivity>(
         get() = {
             step("Check 'Characters List Search' content") {
                 CharactersListSearchScreen(this).apply {
-                    findText(R.string.hint_search_field).assertExists()
-                    textInvalidSearchQuery.assertExists()
-                    findText(R.string.hint_search_field).performTextReplacement(searchQuery)
+                    waitUntilHiding(progressBar)
+                    findText(R.string.hint_search).assertExists()
+                    findText(R.string.hint_search).performTextReplacement(searchQuery)
                     if (searchQuery.isEmpty()) {
-                        findText(R.string.hint_search_field).assertExists()
+                        findText(R.string.hint_search).assertExists()
                         menuClear.assertDoesNotExist()
-                        textInvalidSearchQuery.assertExists()
-                    } else if (searchQuery.length < 3) {
-                        findField(searchQuery).assertExists()
-                        menuClear.assertExists()
-                        textInvalidSearchQuery.assertExists()
+                        textListEmptyState.assertDoesNotExist()
                     } else {
                         findField(searchQuery).assertExists()
                         menuClear.assertExists()

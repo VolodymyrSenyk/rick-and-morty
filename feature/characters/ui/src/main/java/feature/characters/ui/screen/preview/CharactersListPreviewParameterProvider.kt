@@ -8,27 +8,24 @@ internal class CharactersListPreviewParameterProvider : PreviewParameterProvider
     override val values = sequenceOf(
         CharactersListViewState(
             charactersList = emptyList(),
-            isLoading = true,
-            isLoadingNextPage = false,
-            isRefreshing = false,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = true,
+            showPaginationProgress = false,
         ),
         CharactersListViewState(
             charactersList = emptyList(),
-            isLoading = false,
-            isLoadingNextPage = false,
-            isRefreshing = false,
+            showEmptyState = true,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
         ),
         CharactersListViewState(
             charactersList = CharactersPreviewMocks.charactersList,
-            isLoading = false,
-            isLoadingNextPage = false,
-            isRefreshing = false,
-        ),
-        CharactersListViewState(
-            charactersList = CharactersPreviewMocks.charactersList,
-            isLoading = false,
-            isRefreshing = false,
-            isLoadingNextPage = true,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         ),
     )
 }

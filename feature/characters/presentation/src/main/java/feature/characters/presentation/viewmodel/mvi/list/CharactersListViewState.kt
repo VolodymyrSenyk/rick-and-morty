@@ -5,17 +5,19 @@ import feature.characters.presentation.model.CharacterUi
 
 data class CharactersListViewState(
     val charactersList: List<CharacterUi>,
-    val isRefreshing: Boolean,
-    val isLoading: Boolean,
-    val isLoadingNextPage: Boolean,
+    val showEmptyState: Boolean,
+    val showRefreshProgress: Boolean,
+    val showBlockingProgress: Boolean,
+    val showPaginationProgress: Boolean,
 ) : ViewState {
 
     companion object {
         val INITIAL = CharactersListViewState(
             charactersList = emptyList(),
-            isRefreshing = false,
-            isLoading = true,
-            isLoadingNextPage = false,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = true,
+            showPaginationProgress = false,
         )
     }
 }

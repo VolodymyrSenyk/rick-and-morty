@@ -1,6 +1,7 @@
 package core.ui.components.scaffold
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -17,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import core.ui.components.topappbar.SimpleTopAppBar
-import core.ui.components.topappbar.SimpleTopAppBarTitle
 import core.ui.components.topappbar.TopAppBarShadow
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.RickAndMortyTheme
@@ -27,12 +27,13 @@ import domain.settings.model.ThemeMode
 fun CustomScaffold(
     modifier: Modifier = Modifier,
     topAppBar: @Composable () -> Unit,
-    content: @Composable () -> Unit,
+    background: Color = MaterialTheme.colorScheme.background,
+    content: @Composable BoxScope.() -> Unit,
 ) {
-    Surface(color = MaterialTheme.colorScheme.background, modifier = modifier) {
+    Surface(color = background, modifier = modifier) {
         Column(modifier = Modifier.fillMaxSize()) {
             topAppBar()
-            Box {
+            Box(modifier = Modifier.fillMaxSize()) {
                 TopAppBarShadow(modifier = Modifier.align(Alignment.TopCenter))
                 content()
             }
@@ -44,23 +45,15 @@ fun CustomScaffold(
 @Composable
 private fun CustomScaffoldPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) themeMode: ThemeMode) {
     RickAndMortyTheme(themeMode) {
-        CustomScaffold(
-            topAppBar = {
-                SimpleTopAppBar(
-                    title = {
-                        SimpleTopAppBarTitle(titleText = "Some Screen")
-                    }
-                )
-            }
-        ) {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                Icon(
-                    imageVector = Icons.Filled.AccountBox,
-                    contentDescription = null,
-                    tint = Color.Black,
-                    modifier = Modifier.size(100.dp)
-                )
-            }
+        CustomScaffold(topAppBar = { SimpleTopAppBar(titleText = "Some Screen") }) {
+            Icon(
+                imageVector = Icons.Filled.AccountBox,
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier
+                    .size(100.dp)
+                    .align(alignment = Alignment.Center)
+            )
         }
     }
 }

@@ -13,8 +13,7 @@ class CharactersListSearchScreen<A : ComponentActivity>(composeTestRule: Activit
     val menuBack = composeTestRule.findIconButton(CoreR.string.menu_item_back)
     val menuClear = composeTestRule.findIconButton(CoreR.string.menu_item_clear)
 
-    val textInvalidSearchQuery = composeTestRule.findText(R.string.message_empty_state_search)
-    val textListEmptyState = composeTestRule.findText(R.string.message_characters_empty_list)
+    val textListEmptyState = composeTestRule.findText(R.string.message_empty_state_characters_list)
 
     val progressBar = composeTestRule.findProgressBar()
 }

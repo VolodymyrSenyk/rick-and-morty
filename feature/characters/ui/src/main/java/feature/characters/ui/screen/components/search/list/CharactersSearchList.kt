@@ -8,11 +8,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import core.ui.components.progress.SimpleCircularProgress
@@ -69,11 +69,7 @@ internal fun CharactersSearchList(
         }
         if (loadingNextDataSet && items.isNotEmpty()) {
             item {
-                SimpleCircularProgress(
-                    visible = true,
-                    blocking = false,
-                    indicatorColor = MaterialTheme.colorScheme.primary,
-                )
+                SimpleCircularProgress(modifier = Modifier.scale(0.6f))
             }
         }
     }

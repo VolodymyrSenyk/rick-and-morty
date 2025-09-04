@@ -40,9 +40,27 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     fun `character details initial state`() = runTest {
         val expectedViewState = CharacterDetailsViewState(
             character = null,
+            showEmptyState = false,
             isLoading = true,
         )
         coVerify(exactly = 0) { charactersRepository.getCharacterById(any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
+    }
+
+    @Test
+    fun `search error while data set loading`() = runTest {
+        val characterId = "1"
+        val expectedViewState = CharacterDetailsViewState(
+            character = null,
+            showEmptyState = true,
+            isLoading = false,
+        )
+
+        coEvery { charactersRepository.getCharacterById(characterId) } throws IllegalStateException("")
+
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId))
+
+        coVerify(exactly = 1) { charactersRepository.getCharacterById(any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
@@ -73,6 +91,7 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
         )
         val expectedViewState = CharacterDetailsViewState(
             character = characterUi,
+            showEmptyState = false,
             isLoading = false,
         )
 

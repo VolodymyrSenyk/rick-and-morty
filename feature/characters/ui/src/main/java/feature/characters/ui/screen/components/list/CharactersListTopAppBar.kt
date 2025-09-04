@@ -24,10 +24,7 @@ internal fun CharactersListTopAppBar(
     onSearchClicked: () -> Unit,
     onFilterClicked: () -> Unit,
 ) {
-    SimpleTopAppBar(
-        titleText = stringResource(CoreR.string.app_name),
-        modifier = modifier
-    ) {
+    SimpleTopAppBar(titleText = stringResource(CoreR.string.app_name), modifier = modifier) {
         Row {
             SearchMenuItem(onClicked = onSearchClicked)
             ThemeChoosingMenuItem(onThemeSelected = onThemeSelected)
@@ -37,33 +34,21 @@ internal fun CharactersListTopAppBar(
 }
 
 @Composable
-private fun SearchMenuItem(
-    modifier: Modifier = Modifier,
-    onClicked: () -> Unit,
-) {
-    IconButton(
-        onClick = { onClicked() },
-        modifier = modifier
-    ) {
+private fun SearchMenuItem(modifier: Modifier = Modifier, onClicked: () -> Unit) {
+    IconButton(onClick = { onClicked() }, modifier = modifier) {
         Icon(
             imageVector = Icons.Filled.Search,
-            contentDescription = stringResource(R.string.menu_search)
+            contentDescription = stringResource(R.string.menu_item_search)
         )
     }
 }
 
 @Composable
-private fun FilterMenuItem(
-    modifier: Modifier = Modifier,
-    onClicked: () -> Unit,
-) {
-    IconButton(
-        onClick = { onClicked() },
-        modifier = modifier
-    ) {
+private fun FilterMenuItem(modifier: Modifier = Modifier, onClicked: () -> Unit) {
+    IconButton(onClick = { onClicked() }, modifier = modifier) {
         Icon(
             imageVector = Icons.Filled.FilterList,
-            contentDescription = stringResource(R.string.menu_filter)
+            contentDescription = stringResource(R.string.menu_item_filter)
         )
     }
 }

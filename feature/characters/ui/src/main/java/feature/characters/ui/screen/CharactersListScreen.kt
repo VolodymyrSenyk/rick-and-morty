@@ -1,23 +1,17 @@
 package feature.characters.ui.screen
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import core.ui.components.scaffold.CustomScaffold
-import core.ui.preview.ThemePreviewParameterProvider
-import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
-import domain.settings.model.ThemeMode
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListFilterDestination
 import feature.characters.navigation.result.CharactersListFilterSettingsResult
@@ -27,14 +21,9 @@ import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListSideEffect
-import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchIntent
 import feature.characters.ui.R
 import feature.characters.ui.screen.components.list.CharactersListScreenContent
-import feature.characters.ui.screen.components.list.CharactersListTopAppBar
-import feature.characters.ui.screen.components.search.CharactersSearchSection
-import feature.characters.ui.screen.components.search.CharactersSearchTopAppBar
-import feature.characters.ui.screen.preview.CharactersPreviewMocks
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
 import navigation.compose.router.Router
@@ -60,38 +49,24 @@ internal fun CharactersListScreen(
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    if (!viewState.isLoading) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
+    if (!viewState.showBlockingProgress) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
     val searchViewState by searchViewModel.uiState.collectAsStateWithLifecycle()
-    CustomScaffold(
-        topAppBar = {
-            if (searchViewState.isSearching) {
-                CharactersSearchTopAppBar(
-                    searchQuery = searchViewState.searchQuery,
-                    onSearchQueryChange = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(it)) },
-                    onSearchToggle = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
-                )
-            } else {
-                CharactersListTopAppBar(
-                    onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
-                    onSearchClicked = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
-                    onFilterClicked = { viewModel.onIntent(CharactersListIntent.OnFilterClicked) },
-                )
-            }
-        }
-    ) {
-        CharactersListScreenContent(
-            gridState = gridState,
-            viewState = viewState,
-            onItemClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
-            onRefreshed = { viewModel.onIntent(CharactersListIntent.OnRefreshed) },
-            onScrolled = { viewModel.onIntent(CharactersListIntent.OnScrolled(it)) },
-        )
-        CharactersSearchSection(
-            listState = rememberLazyListState(),
-            viewState = searchViewState,
-            onItemClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
-            onScrolled = { searchViewModel.onIntent(CharactersSearchIntent.OnScrolled(it)) },
-        )
+    CharactersListScreenContent(
+        gridState = gridState,
+        viewState = viewState,
+        searchViewState = searchViewState,
+        onSearchClicked = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
+        onSearchQueryChanged = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(it)) },
+        onFilterClicked = { viewModel.onIntent(CharactersListIntent.OnFilterClicked) },
+        onThemeSelected = { settingsViewModel.onThemeSelected(it) },
+        onCharacterClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
+        onRefreshed = { viewModel.onIntent(CharactersListIntent.OnRefreshed) },
+        onCharactersGridScrolled = { viewModel.onIntent(CharactersListIntent.OnScrolled(it)) },
+        onSearchResultsScrolled = { searchViewModel.onIntent(CharactersSearchIntent.OnScrolled(it)) },
+    )
+
+    BackHandler(searchViewState.isSearching) {
+        searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
     }
 }
 
@@ -101,7 +76,7 @@ private fun CharactersListSideEffectHandler(viewModel: CharactersListViewModel, 
     SideEffectHandler(viewModel) { mviEffect ->
         when (mviEffect) {
             is CharactersListSideEffect.ShowErrorMessage -> {
-                val message = context.getString(R.string.error_unknown)
+                val message = context.getString(R.string.message_error_unknown)
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
 
@@ -136,35 +111,6 @@ private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, ro
             }
 
             is CharactersListNavEvent.NavigateBack -> router.back()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) theme: ThemeMode) {
-    RickAndMortyTheme(themeMode = theme) {
-        CustomScaffold(
-            topAppBar = {
-                CharactersListTopAppBar(
-                    onThemeSelected = {},
-                    onSearchClicked = {},
-                    onFilterClicked = {},
-                )
-            }
-        ) {
-            CharactersListScreenContent(
-                viewState = CharactersListViewState(
-                    charactersList = CharactersPreviewMocks.charactersList,
-                    isRefreshing = false,
-                    isLoading = false,
-                    isLoadingNextPage = false
-                ),
-                gridState = rememberLazyGridState(),
-                onItemClicked = {},
-                onRefreshed = {},
-                onScrolled = {},
-            )
         }
     }
 }
