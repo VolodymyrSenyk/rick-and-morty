@@ -13,7 +13,7 @@ data class CharacterDetailsViewState(
         val INITIAL = CharacterDetailsViewState(
             character = null,
             showEmptyState = false,
-            isLoading = true,
+            isLoading = false,
         )
     }
 }

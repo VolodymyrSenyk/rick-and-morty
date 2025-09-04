@@ -41,7 +41,7 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
         val expectedViewState = CharacterDetailsViewState(
             character = null,
             showEmptyState = false,
-            isLoading = true,
+            isLoading = false,
         )
         coVerify(exactly = 0) { charactersRepository.getCharacterById(any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)

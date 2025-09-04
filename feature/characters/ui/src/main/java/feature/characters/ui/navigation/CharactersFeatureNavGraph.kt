@@ -1,7 +1,5 @@
 package feature.characters.ui.navigation
 
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -19,14 +17,16 @@ import feature.characters.ui.screen.CharactersListFilterSettingsDialog
 import feature.characters.ui.screen.CharactersListScreen
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
+import navigation.compose.animation.FadeScaleAnimatedTransition
 import navigation.compose.router.JetpackRouter
 import navigation.compose.utils.hiltActivityViewModel
 
 fun NavGraphBuilder.charactersGraph(navController: NavController) {
     val router = JetpackRouter(navController)
+    val listToDetailsTransition = FadeScaleAnimatedTransition()
     composable<CharactersListDestination>(
-        exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) },
-        popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) },
+        exitTransition = listToDetailsTransition.sourceScreen.exitTransition,
+        popEnterTransition = listToDetailsTransition.sourceScreen.popEnterTransition,
     ) { entry ->
         val viewModel = hiltViewModel<CharactersListViewModel>(entry)
         val searchViewModel = hiltViewModel<CharactersSearchViewModel>(entry)
@@ -41,8 +41,8 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         )
     }
     composable<CharacterDetailsDestination>(
-        enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
-        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
+        enterTransition = listToDetailsTransition.targetScreen.enterTransition,
+        popExitTransition = listToDetailsTransition.targetScreen.popExitTransition,
     ) { entry ->
         val args = entry.toRoute<CharacterDetailsDestination>()
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
