@@ -1,5 +1,6 @@
 package feature.characters.ui.screen.components.list.grid
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,9 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
+import core.ui.utils.WithAnimatedVisibilityScope
+import core.ui.utils.WithSharedTransitionScope
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun CharactersGridCard(
     modifier: Modifier = Modifier,
@@ -29,33 +33,42 @@ internal fun CharactersGridCard(
     onItemClicked: (item: CharacterUi) -> Unit,
 ) {
     val shape = MaterialTheme.shapes.medium
-    Card(
-        shape = shape,
-        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.Elevation.Medium),
-        modifier = modifier.clickable { onItemClicked(item) }
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface, shape = shape)
-                .padding(Dimens.Padding.Tiny)
-        ) {
-            AsyncImage(
-                model = item.imageUrl,
-                contentDescription = null,
-                modifier = Modifier.size(Dimens.ImageSize.Medium)
-            )
-            Text(
-                text = item.name,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Dimens.Padding.Tiny)
-            )
+    WithSharedTransitionScope {
+        WithAnimatedVisibilityScope {
+            val animatedVisibilityScope = this
+            Card(
+                shape = shape,
+                elevation = CardDefaults.cardElevation(defaultElevation = Dimens.Elevation.Medium),
+                modifier = modifier.clickable { onItemClicked(item) }
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.surface, shape = shape)
+                        .padding(Dimens.Padding.Tiny)
+                        .sharedBounds(rememberSharedContentState(key = item.id), animatedVisibilityScope)
+                ) {
+                    AsyncImage(
+                        model = item.imageUrl,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(Dimens.ImageSize.Medium)
+                            .sharedElement(rememberSharedContentState(key = item.imageUrl), animatedVisibilityScope)
+                    )
+                    Text(
+                        text = item.name,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = Dimens.Padding.Tiny)
+                            .sharedElement(rememberSharedContentState(key = item.name), animatedVisibilityScope)
+                    )
+                }
+            }
         }
     }
 }

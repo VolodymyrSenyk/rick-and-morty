@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package feature.characters.ui.screen.components.details
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
+import core.ui.utils.WithAnimatedVisibilityScope
+import core.ui.utils.WithSharedTransitionScope
 import core.ui.utils.isLandscape
 import feature.characters.presentation.model.CharacterDetailsUi
 import feature.characters.ui.screen.components.details.list.CharacterDetailsList
@@ -32,16 +37,24 @@ private fun CharacterDetailsSectionPortrait(
     modifier: Modifier = Modifier,
     character: CharacterDetailsUi,
 ) {
-    Column(modifier = modifier.padding(horizontal = Dimens.Padding.Small)) {
-        AsyncImage(
-            model = character.imageUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.ImageSize.Big)
-                .padding(Dimens.Padding.Small),
-        )
-        CharacterDetailsList(character = character)
+    WithSharedTransitionScope {
+        WithAnimatedVisibilityScope {
+            Column(modifier = modifier.padding(horizontal = Dimens.Padding.Small)) {
+                AsyncImage(
+                    model = character.imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(Dimens.ImageSize.Big)
+                        .padding(Dimens.Padding.Small)
+                        .sharedElement(
+                            rememberSharedContentState(key = character.imageUrl),
+                            animatedVisibilityScope = this@WithAnimatedVisibilityScope
+                        )
+                )
+                CharacterDetailsList(character = character)
+            }
+        }
     }
 }
 
@@ -50,15 +63,23 @@ private fun CharacterDetailsSectionLandscape(
     modifier: Modifier = Modifier,
     character: CharacterDetailsUi,
 ) {
-    Row(modifier = modifier.padding(Dimens.Padding.Small)) {
-        AsyncImage(
-            model = character.imageUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(Dimens.Padding.Small),
-        )
-        CharacterDetailsList(character = character)
+    WithSharedTransitionScope {
+        WithAnimatedVisibilityScope {
+            Row(modifier = modifier.padding(Dimens.Padding.Small)) {
+                AsyncImage(
+                    model = character.imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(Dimens.Padding.Small)
+                        .sharedElement(
+                            rememberSharedContentState(key = character.imageUrl),
+                            animatedVisibilityScope = this@WithAnimatedVisibilityScope
+                        )
+                )
+                CharacterDetailsList(character = character)
+            }
+        }
     }
 }
 

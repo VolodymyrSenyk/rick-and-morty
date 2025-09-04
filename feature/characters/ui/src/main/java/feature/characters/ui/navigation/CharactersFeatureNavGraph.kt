@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
+import core.ui.utils.ProvideAnimatedVisibilityScope
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListDestination
 import feature.characters.navigation.CharactersListFilterDestination
@@ -20,44 +21,39 @@ import feature.characters.ui.screen.CharactersListFilterSettingsDialog
 import feature.characters.ui.screen.CharactersListScreen
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
-import navigation.compose.animation.FadeScaleAnimatedTransition
 import navigation.compose.router.JetpackRouter
 import navigation.compose.utils.hiltActivityViewModel
 import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.charactersGraph(navController: NavController) {
     val router = JetpackRouter(navController)
-    val listToDetailsTransition = FadeScaleAnimatedTransition()
-    composable<CharactersListDestination>(
-        exitTransition = listToDetailsTransition.sourceScreen.exitTransition,
-        popEnterTransition = listToDetailsTransition.sourceScreen.popEnterTransition,
-    ) { entry ->
+    composable<CharactersListDestination> { entry ->
         val viewModel = hiltViewModel<CharactersListViewModel>(entry)
         val searchViewModel = hiltViewModel<CharactersSearchViewModel>(entry)
         val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
         val splashViewModel = hiltActivityViewModel<SplashViewModel>()
-        CharactersListScreen(
-            viewModel = viewModel,
-            searchViewModel = searchViewModel,
-            splashViewModel = splashViewModel,
-            settingsViewModel = settingsViewModel,
-            router = router,
-        )
+        ProvideAnimatedVisibilityScope {
+            CharactersListScreen(
+                viewModel = viewModel,
+                searchViewModel = searchViewModel,
+                splashViewModel = splashViewModel,
+                settingsViewModel = settingsViewModel,
+                router = router,
+            )
+        }
     }
-    composable<CharacterDetailsDestination>(
-        typeMap = mapOf(typeOf<CharacterNavArg>() to CharacterNavArgType),
-        enterTransition = listToDetailsTransition.targetScreen.enterTransition,
-        popExitTransition = listToDetailsTransition.targetScreen.popExitTransition,
-    ) { entry ->
+    composable<CharacterDetailsDestination>(typeMap = mapOf(typeOf<CharacterNavArg>() to CharacterNavArgType)) { entry ->
         val args = entry.toRoute<CharacterDetailsDestination>()
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
         val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
-        CharacterDetailsScreen(
-            character = args.character.toCharacterUi(),
-            viewModel = viewModel,
-            settingsViewModel = settingsViewModel,
-            router = router,
-        )
+        ProvideAnimatedVisibilityScope {
+            CharacterDetailsScreen(
+                character = args.character.toCharacterUi(),
+                viewModel = viewModel,
+                settingsViewModel = settingsViewModel,
+                router = router,
+            )
+        }
     }
     dialog<CharactersListFilterDestination> { entry ->
         val args = entry.toRoute<CharactersListFilterDestination>()

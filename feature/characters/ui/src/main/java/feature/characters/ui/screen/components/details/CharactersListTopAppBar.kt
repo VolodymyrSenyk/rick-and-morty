@@ -1,24 +1,27 @@
 package feature.characters.ui.screen.components.details
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import core.ui.components.topappbar.SimpleTopAppBar
+import core.ui.components.topappbar.SimpleTopAppBarTitle
 import core.ui.components.topappbar.menu.ThemeChoosingMenuItem
 import core.ui.theme.RickAndMortyTheme
 import domain.settings.model.ThemeMode
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun CharacterDetailsTopAppBar(
     modifier: Modifier = Modifier,
-    titleText: String,
+    title: @Composable () -> Unit,
     onNavigateBackClicked: () -> Unit,
     onThemeSelected: (ThemeMode) -> Unit,
 ) {
     SimpleTopAppBar(
-        titleText = titleText,
+        title = title,
         onNavigateBackClicked = onNavigateBackClicked,
         modifier = modifier
     ) {
@@ -33,7 +36,7 @@ internal fun CharacterDetailsTopAppBar(
 private fun CharacterDetailsTopAppBarPreview() {
     RickAndMortyTheme {
         CharacterDetailsTopAppBar(
-            titleText = CharactersPreviewMocks.characterDetails.name,
+            title = { SimpleTopAppBarTitle(titleText = CharactersPreviewMocks.characterDetails.name) },
             onNavigateBackClicked = {},
             onThemeSelected = {},
         )

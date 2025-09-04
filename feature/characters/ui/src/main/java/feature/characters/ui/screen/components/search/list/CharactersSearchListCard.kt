@@ -1,5 +1,6 @@
 package feature.characters.ui.screen.components.search.list
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -19,9 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
+import core.ui.utils.WithAnimatedVisibilityScope
+import core.ui.utils.WithSharedTransitionScope
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun CharactersSearchListCard(
     modifier: Modifier = Modifier,
@@ -36,28 +40,37 @@ internal fun CharactersSearchListCard(
             .fillMaxWidth()
             .clickable { onItemClicked(item) }
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface, shape = shape)
-                .padding(Dimens.Padding.Tiny)
-        ) {
-            AsyncImage(
-                model = item.imageUrl,
-                contentDescription = null,
-                modifier = Modifier.size(Dimens.ImageSize.Small)
-            )
-            Text(
-                text = item.name,
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Dimens.Padding.VerySmall)
-            )
+        WithSharedTransitionScope {
+            WithAnimatedVisibilityScope {
+                val animatedVisibilityScope = this
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.surface, shape = shape)
+                        .padding(Dimens.Padding.Tiny)
+                        .sharedElement(rememberSharedContentState(key = item.id), animatedVisibilityScope)
+                ) {
+                    AsyncImage(
+                        model = item.imageUrl,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(Dimens.ImageSize.Small)
+                            .sharedElement(rememberSharedContentState(key = item.imageUrl), animatedVisibilityScope)
+                    )
+                    Text(
+                        text = item.name,
+                        textAlign = TextAlign.Start,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Dimens.Padding.VerySmall)
+                            .sharedElement(rememberSharedContentState(key = item.name), animatedVisibilityScope)
+                    )
+                }
+            }
         }
     }
 }

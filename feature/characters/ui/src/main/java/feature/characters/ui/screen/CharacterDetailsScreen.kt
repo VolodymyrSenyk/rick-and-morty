@@ -34,11 +34,13 @@ internal fun CharacterDetailsScreen(
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    CharacterDetailsScreenContent(
-        viewState = viewState,
-        onThemeSelected = { settingsViewModel.onThemeSelected(it) },
-        onBackButtonClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
-    )
+    viewState.character?.let {
+        CharacterDetailsScreenContent(
+            viewState = viewState,
+            onThemeSelected = { settingsViewModel.onThemeSelected(it) },
+            onBackButtonClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
+        )
+    }
 }
 
 @Composable
