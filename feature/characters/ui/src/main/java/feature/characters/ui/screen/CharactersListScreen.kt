@@ -23,6 +23,7 @@ import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListSideEffect
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchIntent
 import feature.characters.ui.R
+import feature.characters.ui.navigation.toCharacterNavArg
 import feature.characters.ui.screen.components.list.CharactersListScreenContent
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
@@ -107,7 +108,7 @@ private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, ro
             }
 
             is CharactersListNavEvent.NavigateToCharacterDetails -> {
-                router.navigateTo(CharacterDetailsDestination(mviNavEvent.character.id))
+                router.navigateTo(CharacterDetailsDestination(mviNavEvent.character.toCharacterNavArg()))
             }
 
             is CharactersListNavEvent.NavigateBack -> router.back()

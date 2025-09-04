@@ -25,3 +25,15 @@ internal fun Character.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDet
     location = location,
     imageUrl = imageUrl,
 )
+
+internal fun CharacterUi.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDetailsUi(
+    id = id,
+    name = name,
+    imageUrl = imageUrl,
+    status = "",
+    species = "",
+    type = "",
+    gender = "",
+    origin = "",
+    location = "",
+)

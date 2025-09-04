@@ -9,6 +9,9 @@ import androidx.navigation.toRoute
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListDestination
 import feature.characters.navigation.CharactersListFilterDestination
+import feature.characters.navigation.args.CharacterNavArg
+import feature.characters.navigation.args.CharacterNavArgType
+import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.presentation.viewmodel.CharactersSearchViewModel
@@ -20,6 +23,7 @@ import feature.splash.presentation.viewmodel.SplashViewModel
 import navigation.compose.animation.FadeScaleAnimatedTransition
 import navigation.compose.router.JetpackRouter
 import navigation.compose.utils.hiltActivityViewModel
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.charactersGraph(navController: NavController) {
     val router = JetpackRouter(navController)
@@ -41,6 +45,7 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         )
     }
     composable<CharacterDetailsDestination>(
+        typeMap = mapOf(typeOf<CharacterNavArg>() to CharacterNavArgType),
         enterTransition = listToDetailsTransition.targetScreen.enterTransition,
         popExitTransition = listToDetailsTransition.targetScreen.popExitTransition,
     ) { entry ->
@@ -48,7 +53,7 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         val viewModel = hiltViewModel<CharacterDetailsViewModel>(entry)
         val settingsViewModel = hiltViewModel<SettingsViewModel>(entry)
         CharacterDetailsScreen(
-            characterId = args.characterId,
+            character = args.character.toCharacterUi(),
             viewModel = viewModel,
             settingsViewModel = settingsViewModel,
             router = router,
@@ -63,3 +68,15 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
         )
     }
 }
+
+internal fun CharacterUi.toCharacterNavArg(): CharacterNavArg = CharacterNavArg(
+    id = id,
+    name = name,
+    imageUrl = imageUrl,
+)
+
+internal fun CharacterNavArg.toCharacterUi(): CharacterUi = CharacterUi(
+    id = id,
+    name = name,
+    imageUrl = imageUrl,
+)

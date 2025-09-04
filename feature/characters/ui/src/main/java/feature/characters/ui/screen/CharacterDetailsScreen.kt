@@ -1,28 +1,36 @@
 package feature.characters.ui.screen
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import core.ui.utils.NavEventHandler
+import core.ui.utils.SideEffectHandler
+import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
+import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsSideEffect
+import feature.characters.ui.R
 import feature.characters.ui.screen.components.details.CharacterDetailsScreenContent
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
 @Composable
 internal fun CharacterDetailsScreen(
-    characterId: String,
+    character: CharacterUi,
     viewModel: CharacterDetailsViewModel,
     settingsViewModel: SettingsViewModel,
     router: Router,
 ) {
+    CharacterDetailsSideEffectHandler(viewModel = viewModel)
+
     CharacterDetailsNavEventHandler(viewModel = viewModel, router = router)
 
     LaunchedEffect(viewModel) {
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId))
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(character))
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -31,6 +39,19 @@ internal fun CharacterDetailsScreen(
         onThemeSelected = { settingsViewModel.onThemeSelected(it) },
         onBackButtonClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
     )
+}
+
+@Composable
+private fun CharacterDetailsSideEffectHandler(viewModel: CharacterDetailsViewModel) {
+    val context = LocalContext.current
+    SideEffectHandler(viewModel) { mviEffect ->
+        when (mviEffect) {
+            is CharacterDetailsSideEffect.ShowErrorMessage -> {
+                val message = context.getString(R.string.message_empty_state_character_details)
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 }
 
 @Composable

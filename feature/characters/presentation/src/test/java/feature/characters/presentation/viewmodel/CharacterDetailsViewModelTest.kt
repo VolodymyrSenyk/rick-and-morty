@@ -4,6 +4,8 @@ import domain.characters.CharactersRepository
 import domain.characters.model.Character
 import domain.characters.usecase.GetCharacterByIdUseCase
 import feature.characters.presentation.model.CharacterDetailsUi
+import feature.characters.presentation.model.CharacterUi
+import feature.characters.presentation.model.toCharacterDetailsUi
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsViewState
@@ -40,8 +42,6 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     fun `character details initial state`() = runTest {
         val expectedViewState = CharacterDetailsViewState(
             character = null,
-            showEmptyState = false,
-            isLoading = false,
         )
         coVerify(exactly = 0) { charactersRepository.getCharacterById(any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -51,14 +51,12 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     fun `search error while data set loading`() = runTest {
         val characterId = "1"
         val expectedViewState = CharacterDetailsViewState(
-            character = null,
-            showEmptyState = true,
-            isLoading = false,
+            character = characterUi(characterId).toCharacterDetailsUi(),
         )
 
         coEvery { charactersRepository.getCharacterById(characterId) } throws IllegalStateException("")
 
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId))
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterUi(characterId)))
 
         coVerify(exactly = 1) { charactersRepository.getCharacterById(any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -67,37 +65,13 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `character details opened`() = runTest {
         val characterId = "1"
-        val character = Character(
-            id = characterId,
-            name = "Rick Sanchez",
-            status = "Alive",
-            species = "Human",
-            type = "",
-            gender = "Male",
-            origin = "Earth (C-137)",
-            location = "Citadel of Ricks",
-            imageUrl = "someUrl",
-        )
-        val characterUi = CharacterDetailsUi(
-            id = characterId,
-            name = "Rick Sanchez",
-            status = "Alive",
-            species = "Human",
-            type = "",
-            gender = "Male",
-            origin = "Earth (C-137)",
-            location = "Citadel of Ricks",
-            imageUrl = "someUrl",
-        )
         val expectedViewState = CharacterDetailsViewState(
-            character = characterUi,
-            showEmptyState = false,
-            isLoading = false,
+            character = characterDetailsUi(characterId),
         )
 
-        coEvery { charactersRepository.getCharacterById(characterId) } returns character
+        coEvery { charactersRepository.getCharacterById(characterId) } returns character(characterId)
 
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId))
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterUi(characterId)))
 
         coVerify(exactly = 1) { charactersRepository.getCharacterById(any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
@@ -108,4 +82,34 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
         viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked)
         assertEquals(CharacterDetailsNavEvent.NavigateBack, viewModel.navEvent.value)
     }
+
+    private fun character(id: String) = Character(
+        id = id,
+        name = "Rick Sanchez",
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth (C-137)",
+        location = "Citadel of Ricks",
+        imageUrl = "someUrl",
+    )
+
+    private fun characterUi(id: String) = CharacterUi(
+        id = id,
+        name = "Rick Sanchez",
+        imageUrl = "someUrl",
+    )
+
+    private fun characterDetailsUi(id: String) = CharacterDetailsUi(
+        id = id,
+        name = "Rick Sanchez",
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth (C-137)",
+        location = "Citadel of Ricks",
+        imageUrl = "someUrl",
+    )
 }
