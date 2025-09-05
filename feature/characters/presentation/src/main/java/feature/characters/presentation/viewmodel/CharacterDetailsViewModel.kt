@@ -31,7 +31,7 @@ class CharacterDetailsViewModel @Inject constructor(
         }
         val updatedCharacter = getCharacterByIdUseCase(character.id)
         updateUiState { oldState ->
-            oldState.copy(character = updatedCharacter.toCharacterDetailsUi())
+            oldState.copy(character = updatedCharacter.toCharacterDetailsUi(uiId = character.uiId))
         }
     }
 

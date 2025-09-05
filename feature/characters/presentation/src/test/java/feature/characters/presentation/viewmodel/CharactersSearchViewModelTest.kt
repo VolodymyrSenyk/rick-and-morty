@@ -82,7 +82,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search performed`() = runTest {
         val searchQuery = "Rick"
-        val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testData = createTestData(startIndex = 0)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchQuery = searchQuery,
@@ -127,7 +127,7 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results loaded empty data set`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = 0)
+        val testDataFirstPage = createTestData(startIndex = 0, pageSize = 0)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchQuery = searchQuery,
@@ -151,8 +151,8 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results loaded empty data set on scroll`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
-        val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchQuery = searchQuery,
@@ -202,11 +202,8 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results list scrolled`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
-        val testDataSecondPage = CharacterListTestData(
-            startIndex = testDataFirstPage.pageSize,
-            pageSize = DATA_PAGE_SIZE,
-        )
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchQuery = searchQuery,
@@ -233,11 +230,8 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `search results list scrolled while already is loading`() = runTest {
         val searchQuery = "Rick"
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
-        val testDataSecondPage = CharacterListTestData(
-            startIndex = testDataFirstPage.pageSize,
-            pageSize = DATA_PAGE_SIZE,
-        )
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize)
         val expectedViewState = CharactersSearchViewState(
             isSearching = true,
             searchQuery = searchQuery,
@@ -314,6 +308,13 @@ class CharactersSearchViewModelTest : BaseCoroutinesTest() {
             )
         } throws IllegalStateException("")
     }
+
+    private fun createTestData(startIndex: Int, pageSize: Int = DATA_PAGE_SIZE): CharacterListTestData =
+        CharacterListTestData(
+            startIndex = startIndex,
+            pageSize = pageSize,
+            idPrefix = viewModel.javaClass.simpleName,
+        )
 
     companion object {
         private const val DATA_PAGE_SIZE = 2

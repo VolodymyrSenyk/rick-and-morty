@@ -103,7 +103,7 @@ class CharactersListViewModel @Inject constructor(
             currentState.charactersList.toMutableList()
         }
 
-        resultDataList.addAll(loadedDataList.map { it.toCharacterUi() })
+        resultDataList.addAll(loadedDataList.map { it.toCharacterUi(tag) })
         paginationHelper.onDataSetLoaded(loadedDataList.size)
 
         updateUiState { oldState ->

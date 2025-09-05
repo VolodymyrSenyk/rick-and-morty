@@ -10,12 +10,14 @@ internal object CharactersPreviewMocks {
 
     val character = CharacterUi(
         id = "1",
+        uiId = "a_1",
         name = "Rick Sanchez",
         imageUrl = avatarConstructor(),
     )
 
     val characterDetails = CharacterDetailsUi(
         id = "1",
+        uiId = "a_1",
         name = "Rick Sanchez",
         status = "Alive",
         species = "Human",

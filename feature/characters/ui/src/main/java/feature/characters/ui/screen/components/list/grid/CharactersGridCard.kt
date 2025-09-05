@@ -35,7 +35,6 @@ internal fun CharactersGridCard(
     val shape = MaterialTheme.shapes.medium
     WithSharedTransitionScope {
         WithAnimatedVisibilityScope {
-            val animatedVisibilityScope = this
             Card(
                 shape = shape,
                 elevation = CardDefaults.cardElevation(defaultElevation = Dimens.Elevation.Medium),
@@ -44,16 +43,22 @@ internal fun CharactersGridCard(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
+                        .sharedElement(
+                            rememberSharedContentState(key = item.uiId + item.id),
+                            animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                        )
                         .background(color = MaterialTheme.colorScheme.surface, shape = shape)
                         .padding(Dimens.Padding.Tiny)
-                        .sharedBounds(rememberSharedContentState(key = item.id), animatedVisibilityScope)
                 ) {
                     AsyncImage(
                         model = item.imageUrl,
                         contentDescription = null,
                         modifier = Modifier
+                            .sharedElement(
+                                rememberSharedContentState(key = item.uiId + item.imageUrl),
+                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                            )
                             .size(Dimens.ImageSize.Medium)
-                            .sharedElement(rememberSharedContentState(key = item.imageUrl), animatedVisibilityScope)
                     )
                     Text(
                         text = item.name,
@@ -63,9 +68,12 @@ internal fun CharactersGridCard(
                             fontWeight = FontWeight.Bold,
                         ),
                         modifier = Modifier
+                            .sharedElement(
+                                rememberSharedContentState(key = item.uiId + item.name),
+                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                            )
                             .fillMaxWidth()
                             .padding(vertical = Dimens.Padding.Tiny)
-                            .sharedElement(rememberSharedContentState(key = item.name), animatedVisibilityScope)
                     )
                 }
             }

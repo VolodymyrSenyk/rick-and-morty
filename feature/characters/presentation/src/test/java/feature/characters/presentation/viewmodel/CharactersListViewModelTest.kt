@@ -62,7 +62,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list opened`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testData = createTestData(startIndex = 0)
         val expectedViewState = CharactersListViewState(
             charactersList = testData.charactersUiList,
             showEmptyState = false,
@@ -81,8 +81,8 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list loaded empty data set`() = runTest {
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
-        val testDataSecondPage = CharacterListTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList,
             showEmptyState = false,
@@ -116,11 +116,8 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list scrolled`() = runTest {
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
-        val testDataSecondPage = CharacterListTestData(
-            startIndex = testDataFirstPage.pageSize,
-            pageSize = DATA_PAGE_SIZE,
-        )
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize)
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
             showEmptyState = false,
@@ -141,7 +138,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list scrolled to top`() = runTest {
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testDataFirstPage = createTestData(startIndex = 0)
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList,
             showEmptyState = false,
@@ -169,11 +166,8 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list refreshed`() = runTest {
-        val testDataFirstPage = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
-        val testDataSecondPage = CharacterListTestData(
-            startIndex = testDataFirstPage.pageSize,
-            pageSize = DATA_PAGE_SIZE,
-        )
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize)
         val expectedViewState = CharactersListViewState(
             charactersList = testDataFirstPage.charactersUiList,
             showEmptyState = false,
@@ -195,7 +189,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `characters list filter applied`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testData = createTestData(startIndex = 0)
         val filter = CharactersListFilter(statusType = StatusType.ALIVE)
         val expectedViewState = CharactersListViewState(
             charactersList = testData.charactersUiList,
@@ -221,7 +215,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
 
     @Test
     fun `on character clicked`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0, pageSize = DATA_PAGE_SIZE)
+        val testData = createTestData(startIndex = 0)
         val characterToNavigate = testData.charactersUiList.first()
 
         mockGetListRequest(page = 1, testData = testData)
@@ -269,7 +263,14 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         } throws IllegalStateException("")
     }
 
+    private fun createTestData(startIndex: Int, pageSize: Int = DATA_PAGE_SIZE): CharacterListTestData =
+        CharacterListTestData(
+            startIndex = startIndex,
+            pageSize = pageSize,
+            idPrefix = viewModel.javaClass.simpleName,
+        )
+
     companion object {
-        private const val DATA_PAGE_SIZE = 3
+        private const val DATA_PAGE_SIZE = 2
     }
 }

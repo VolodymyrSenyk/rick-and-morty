@@ -4,6 +4,7 @@ import domain.characters.model.Character
 
 data class CharacterDetailsUi(
     val id: String,
+    val uiId: String,
     val name: String,
     val status: String,
     val species: String,
@@ -14,8 +15,9 @@ data class CharacterDetailsUi(
     val imageUrl: String,
 )
 
-internal fun Character.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDetailsUi(
+internal fun Character.toCharacterDetailsUi(uiId: String): CharacterDetailsUi = CharacterDetailsUi(
     id = id,
+    uiId = uiId,
     name = name,
     status = status,
     species = species,
@@ -28,6 +30,7 @@ internal fun Character.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDet
 
 internal fun CharacterUi.toCharacterDetailsUi(): CharacterDetailsUi = CharacterDetailsUi(
     id = id,
+    uiId = uiId,
     name = name,
     imageUrl = imageUrl,
     status = "",

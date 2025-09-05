@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class CharacterNavArg(
     val id: String,
+    val uiId: String,
     val name: String,
     val imageUrl: String,
 ) : Parcelable

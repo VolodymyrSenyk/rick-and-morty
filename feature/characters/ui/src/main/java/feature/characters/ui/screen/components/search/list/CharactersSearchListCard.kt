@@ -42,20 +42,25 @@ internal fun CharactersSearchListCard(
     ) {
         WithSharedTransitionScope {
             WithAnimatedVisibilityScope {
-                val animatedVisibilityScope = this
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
+                        .sharedElement(
+                            rememberSharedContentState(key = item.uiId + item.id),
+                            animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                        )
                         .background(color = MaterialTheme.colorScheme.surface, shape = shape)
                         .padding(Dimens.Padding.Tiny)
-                        .sharedElement(rememberSharedContentState(key = item.id), animatedVisibilityScope)
                 ) {
                     AsyncImage(
                         model = item.imageUrl,
                         contentDescription = null,
                         modifier = Modifier
+                            .sharedElement(
+                                rememberSharedContentState(key = item.uiId + item.imageUrl),
+                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                            )
                             .size(Dimens.ImageSize.Small)
-                            .sharedElement(rememberSharedContentState(key = item.imageUrl), animatedVisibilityScope)
                     )
                     Text(
                         text = item.name,
@@ -65,9 +70,12 @@ internal fun CharactersSearchListCard(
                             fontWeight = FontWeight.Bold,
                         ),
                         modifier = Modifier
+                            .sharedElement(
+                                rememberSharedContentState(key = item.uiId + item.name),
+                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                            )
                             .fillMaxWidth()
                             .padding(Dimens.Padding.VerySmall)
-                            .sharedElement(rememberSharedContentState(key = item.name), animatedVisibilityScope)
                     )
                 }
             }

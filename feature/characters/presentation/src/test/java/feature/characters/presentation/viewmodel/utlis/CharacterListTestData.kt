@@ -6,6 +6,7 @@ import feature.characters.presentation.model.CharacterUi
 class CharacterListTestData(
     val startIndex: Int,
     val pageSize: Int,
+    val idPrefix: String,
 ) {
 
     val character = Character(
@@ -22,6 +23,7 @@ class CharacterListTestData(
 
     val characterUi = CharacterUi(
         id = "1",
+        uiId = idPrefix + "1",
         name = "Rick Sanchez",
         imageUrl = "someUrl",
     )
@@ -31,6 +33,9 @@ class CharacterListTestData(
     }
 
     val charactersUiList = List(pageSize) { characterUi }.mapIndexed { index, model ->
-        model.copy(id = (index + startIndex).toString())
+        model.copy(
+            id = (index + startIndex).toString(),
+            uiId = idPrefix + (index + startIndex).toString()
+        )
     }
 }

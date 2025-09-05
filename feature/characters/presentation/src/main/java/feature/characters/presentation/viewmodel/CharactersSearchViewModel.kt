@@ -89,7 +89,7 @@ class CharactersSearchViewModel @Inject constructor(
             currentState.searchResults.toMutableList()
         }
 
-        dataList.addAll(loadedDataSet.map { it.toCharacterUi() })
+        dataList.addAll(loadedDataSet.map { it.toCharacterUi(idPrefix = tag) })
         paginationHelper.onDataSetLoaded(loadedDataSet.size)
 
         updateUiState { oldState ->

@@ -97,12 +97,14 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
 
     private fun characterUi(id: String) = CharacterUi(
         id = id,
+        uiId = "a_$id",
         name = "Rick Sanchez",
         imageUrl = "someUrl",
     )
 
     private fun characterDetailsUi(id: String) = CharacterDetailsUi(
         id = id,
+        uiId = "a_$id",
         name = "Rick Sanchez",
         status = "Alive",
         species = "Human",

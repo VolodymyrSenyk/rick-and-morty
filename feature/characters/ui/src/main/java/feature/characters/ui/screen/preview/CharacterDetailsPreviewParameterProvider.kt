@@ -11,6 +11,7 @@ internal class CharacterDetailsPreviewParameterProvider : PreviewParameterProvid
             character = with(CharactersPreviewMocks.character) {
                 CharacterDetailsUi(
                     id = id,
+                    uiId = uiId,
                     name = name,
                     imageUrl = imageUrl,
                     status = "",

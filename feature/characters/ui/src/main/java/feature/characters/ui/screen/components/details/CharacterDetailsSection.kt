@@ -44,13 +44,13 @@ private fun CharacterDetailsSectionPortrait(
                     model = character.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
+                        .sharedElement(
+                            rememberSharedContentState(key = character.uiId + character.imageUrl),
+                            animatedVisibilityScope = this@WithAnimatedVisibilityScope
+                        )
                         .fillMaxWidth()
                         .height(Dimens.ImageSize.Big)
                         .padding(Dimens.Padding.Small)
-                        .sharedElement(
-                            rememberSharedContentState(key = character.imageUrl),
-                            animatedVisibilityScope = this@WithAnimatedVisibilityScope
-                        )
                 )
                 CharacterDetailsList(character = character)
             }
@@ -70,12 +70,12 @@ private fun CharacterDetailsSectionLandscape(
                     model = character.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(Dimens.Padding.Small)
                         .sharedElement(
-                            rememberSharedContentState(key = character.imageUrl),
+                            rememberSharedContentState(key = character.uiId + character.imageUrl),
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope
                         )
+                        .fillMaxHeight()
+                        .padding(Dimens.Padding.Small)
                 )
                 CharacterDetailsList(character = character)
             }

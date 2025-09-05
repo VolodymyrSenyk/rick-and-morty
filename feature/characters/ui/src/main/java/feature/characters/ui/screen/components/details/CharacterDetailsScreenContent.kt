@@ -28,17 +28,18 @@ internal fun CharacterDetailsScreenContent(
 ) {
     WithSharedTransitionScope {
         WithAnimatedVisibilityScope {
+            val character = viewState.character
             CustomScaffold(
                 background = MaterialTheme.colorScheme.surface,
                 topAppBar = {
                     CharacterDetailsTopAppBar(
                         title = {
-                            val titleText = viewState.character?.name ?: stringResource(core.ui.R.string.app_name)
+                            val titleText = character?.name ?: stringResource(core.ui.R.string.app_name)
                             SimpleTopAppBarTitle(
                                 titleText = titleText,
                                 modifier = Modifier
                                     .sharedElement(
-                                        rememberSharedContentState(key = titleText),
+                                        rememberSharedContentState(key = character?.uiId + titleText),
                                         animatedVisibilityScope = this,
                                     )
                             )
@@ -50,12 +51,12 @@ internal fun CharacterDetailsScreenContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface)
-                        .sharedBounds(
-                            rememberSharedContentState(key = viewState.character?.id.toString()),
+                        .sharedElement(
+                            rememberSharedContentState(key = character?.uiId + viewState.character?.id),
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface)
                 ) {
                     CharacterDetailsSection(character = viewState.character)
                 }

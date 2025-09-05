@@ -67,12 +67,14 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
 
 internal fun CharacterUi.toCharacterNavArg(): CharacterNavArg = CharacterNavArg(
     id = id,
+    uiId = uiId,
     name = name,
     imageUrl = imageUrl,
 )
 
 internal fun CharacterNavArg.toCharacterUi(): CharacterUi = CharacterUi(
     id = id,
+    uiId = uiId,
     name = name,
     imageUrl = imageUrl,
 )
