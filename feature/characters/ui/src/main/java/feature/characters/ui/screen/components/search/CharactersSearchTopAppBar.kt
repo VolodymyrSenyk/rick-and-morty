@@ -81,8 +81,10 @@ internal fun CharactersSearchTopAppBar(
                 )
 
                 LaunchedEffect(Unit) {
-                    delay(enterAnimMillis - 200)
-                    focusRequester.requestFocus()
+                    if (searchQuery.isEmpty()) {
+                        delay(enterAnimMillis - 200)
+                        focusRequester.requestFocus()
+                    }
                 }
             },
             onNavigateBackClicked = onSearchToggle,

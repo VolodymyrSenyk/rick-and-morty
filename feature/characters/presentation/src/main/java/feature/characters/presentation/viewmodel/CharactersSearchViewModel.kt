@@ -39,14 +39,20 @@ class CharactersSearchViewModel @Inject constructor(
     }
 
     private fun onSearchQueryChanged(searchQuery: String) {
+        val isSearchQueryValid = searchQuery.isNotBlank()
         updateUiState { oldState ->
             oldState.copy(
                 searchQuery = searchQuery,
-                isInvalidSearchQuery = searchQuery.isEmpty(),
-                showBlockingProgress = true,
+                isInvalidSearchQuery = !isSearchQueryValid,
+                searchResults = emptyList(),
+                showEmptyState = false,
+                showBlockingProgress = isSearchQueryValid,
+                showPaginationProgress = false,
             )
         }
-        onIntent(CharactersSearchIntent.PerformSearch(searchQuery))
+        if (isSearchQueryValid) {
+            onIntent(CharactersSearchIntent.PerformSearch(searchQuery))
+        }
     }
 
     private suspend fun onPerformSearch() {

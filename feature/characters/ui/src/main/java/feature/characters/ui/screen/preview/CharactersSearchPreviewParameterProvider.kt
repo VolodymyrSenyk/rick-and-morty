@@ -28,7 +28,7 @@ internal class CharactersSearchPreviewParameterProvider : PreviewParameterProvid
             isSearching = true,
             searchQuery = "Rick",
             isInvalidSearchQuery = false,
-            searchResults = CharactersPreviewMocks.charactersList.filter { it.name.contains("Rick") },
+            searchResults = emptyList(),
             showEmptyState = false,
             showBlockingProgress = true,
             showPaginationProgress = false,

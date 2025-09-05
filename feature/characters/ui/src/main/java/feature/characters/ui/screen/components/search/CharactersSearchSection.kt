@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +21,7 @@ import core.ui.components.emptystate.SimpleEmptyState
 import core.ui.components.progress.SimpleCircularProgress
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
+import core.ui.utils.heightWithCoef
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchViewState
 import feature.characters.ui.R
@@ -51,7 +52,11 @@ internal fun CharactersSearchSection(
             CharactersSearchResultsListEmptyState()
         }
         FadeAnimatedVisibility(visible = viewState.showBlockingProgress) {
-            SimpleCircularProgress(blocking = true, backgroundColor = Color.Transparent)
+            SimpleCircularProgress(
+                blocking = true,
+                indicatorAlignment = Alignment.TopCenter,
+                indicatorPadding = heightWithCoef(0.1f),
+            )
         }
     }
 }

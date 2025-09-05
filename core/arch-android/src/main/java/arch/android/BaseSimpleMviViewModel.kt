@@ -211,6 +211,6 @@ abstract class BaseSimpleMviViewModel<S : ViewState, I : MviIntent, E : MviSideE
 
     companion object {
         private const val DEFAULT_FLOW_BUFFER_CAPACITY = 64
-        private const val DEFAULT_DEBOUNCE_TIMEOUT_MILLIS: Long = 500
+        private const val DEFAULT_DEBOUNCE_TIMEOUT_MILLIS: Long = 1_500
     }
 }
