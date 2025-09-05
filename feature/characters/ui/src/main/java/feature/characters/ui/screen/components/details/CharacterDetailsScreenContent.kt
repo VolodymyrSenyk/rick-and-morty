@@ -58,7 +58,7 @@ internal fun CharacterDetailsScreenContent(
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
-                    CharacterDetailsSection(character = viewState.character)
+                    CharacterDetailsSection(item = viewState.character)
                 }
             }
         }

@@ -53,7 +53,6 @@ internal fun CharactersSearchList(
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Tiny),
-        overscrollEffect = null,
         contentPadding = PaddingValues(Dimens.Padding.Tiny),
         modifier = modifier.fillMaxSize()
     ) {
