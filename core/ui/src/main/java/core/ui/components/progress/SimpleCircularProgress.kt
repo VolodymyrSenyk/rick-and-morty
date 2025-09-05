@@ -25,7 +25,7 @@ fun SimpleCircularProgress(
     modifier: Modifier = Modifier,
     blocking: Boolean = false,
     backgroundColor: Color = if (blocking) Color.Black.copy(alpha = 0.3f) else Color.Transparent,
-    indicatorColor: Color = MaterialTheme.colorScheme.primary,
+    indicatorColor: Color = MaterialTheme.colorScheme.secondary,
     indicatorAlignment: Alignment = Alignment.Center,
     indicatorPadding: Dp = Dimens.Padding.Big,
 ) {

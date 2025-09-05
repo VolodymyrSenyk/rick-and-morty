@@ -38,7 +38,7 @@ internal fun CharactersSearchSection(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
+            .background(color = MaterialTheme.colorScheme.surfaceContainerLowest)
             .zIndex(1f)
     ) {
         CharactersSearchList(

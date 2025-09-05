@@ -31,7 +31,7 @@ fun BaseDialogButton(
         shape = MaterialTheme.shapes.medium,
         border = BorderStroke(
             width = Dimens.Size.Border,
-            color = MaterialTheme.colorScheme.outline,
+            color = MaterialTheme.colorScheme.outlineVariant,
         ),
         modifier = modifier
     ) {

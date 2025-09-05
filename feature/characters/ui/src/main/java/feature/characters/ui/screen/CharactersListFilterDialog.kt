@@ -9,22 +9,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import core.ui.components.dialog.BaseDialogContent
 import core.ui.components.dialog.model.DialogButtonData
 import core.ui.components.dialog.parts.BaseDialogButtonsRow
-import core.ui.components.dropdown.SimpleDropdownMenu
+import core.ui.components.dropdown.SimpleDropdown
+import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 import domain.characters.model.GenderType
 import domain.characters.model.StatusType
-import feature.characters.navigation.result.CharactersListFilterSettingsResult
+import feature.characters.navigation.result.CharactersListFilterResult
 import feature.characters.ui.R
 import navigation.compose.router.Router
 import navigation.compose.router.RouterStub
 import core.ui.R as CoreR
 
 @Composable
-internal fun CharactersListFilterSettingsDialog(
+internal fun CharactersListFilterDialog(
     router: Router,
     previouslySelectedStatus: StatusType?,
     previouslySelectedGender: GenderType?,
@@ -58,15 +58,15 @@ internal fun CharactersListFilterSettingsDialog(
         onDismiss = router::back,
         title = stringResource(R.string.dialog_title_characters_list_filter_settings),
         message = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                SimpleDropdownMenu(
+            Column(verticalArrangement = Arrangement.spacedBy(Dimens.Padding.VerySmall)) {
+                SimpleDropdown(
                     options = statuses.map { it.second },
                     selectedOption = statuses.firstOrNull { it.first == selectedStatus }?.second,
                     onOptionSelected = { statusString ->
                         selectedStatus = statuses.first { it.second == statusString }.first
                     },
                 )
-                SimpleDropdownMenu(
+                SimpleDropdown(
                     options = genders.map { it.second },
                     selectedOption = genders.firstOrNull { it.first == selectedGender }?.second,
                     onOptionSelected = { genderString ->
@@ -82,9 +82,9 @@ internal fun CharactersListFilterSettingsDialog(
                         text = stringResource(CoreR.string.dialog_answer_apply),
                         onClick = {
                             router.backWith(
-                                CharactersListFilterSettingsResult(
-                                    statusType = selectedStatus,
-                                    genderType = selectedGender,
+                                CharactersListFilterResult(
+                                    status = selectedStatus,
+                                    gender = selectedGender,
                                 )
                             )
                         },
@@ -99,7 +99,7 @@ internal fun CharactersListFilterSettingsDialog(
 @Composable
 private fun CharactersListFilterSettingsDialogPreview() {
     RickAndMortyTheme {
-        CharactersListFilterSettingsDialog(
+        CharactersListFilterDialog(
             router = RouterStub(),
             previouslySelectedStatus = null,
             previouslySelectedGender = null,

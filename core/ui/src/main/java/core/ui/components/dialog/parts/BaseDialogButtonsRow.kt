@@ -1,5 +1,6 @@
 package core.ui.components.dialog.parts
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import core.ui.components.dialog.model.DialogButtonData
@@ -31,19 +33,19 @@ fun BaseDialogButtonsRow(
         val buttonsModifier = if (outlinedButtonData != null && filledButtonData != null) {
             Modifier
                 .weight(1f)
-                .padding(horizontal = Dimens.Padding.VerySmall)
+                .padding(horizontal = Dimens.Padding.Small)
         } else {
             Modifier
                 .fillMaxWidth(SINGLE_BUTTON_WIDTH_COEF)
-                .padding(horizontal = Dimens.Padding.VerySmall)
+                .padding(horizontal = Dimens.Padding.Small)
         }
 
         outlinedButtonData?.let { buttonData ->
             BaseDialogButton(
                 buttonData = buttonData,
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ),
                 modifier = buttonsModifier
             )
@@ -75,6 +77,8 @@ private fun BaseDialogButtonsRowPreview(@PreviewParameter(ThemePreviewParameterP
                 text = "Continue",
                 onClick = {},
             ),
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
         )
     }
 }

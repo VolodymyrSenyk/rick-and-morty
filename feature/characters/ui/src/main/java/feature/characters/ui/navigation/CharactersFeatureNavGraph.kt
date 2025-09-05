@@ -17,7 +17,7 @@ import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.ui.screen.CharacterDetailsScreen
-import feature.characters.ui.screen.CharactersListFilterSettingsDialog
+import feature.characters.ui.screen.CharactersListFilterDialog
 import feature.characters.ui.screen.CharactersListScreen
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
@@ -57,7 +57,7 @@ fun NavGraphBuilder.charactersGraph(navController: NavController) {
     }
     dialog<CharactersListFilterDestination> { entry ->
         val args = entry.toRoute<CharactersListFilterDestination>()
-        CharactersListFilterSettingsDialog(
+        CharactersListFilterDialog(
             router = router,
             previouslySelectedStatus = args.status,
             previouslySelectedGender = args.gender,

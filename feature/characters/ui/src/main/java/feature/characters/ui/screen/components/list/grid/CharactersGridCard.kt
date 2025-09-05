@@ -2,6 +2,7 @@ package feature.characters.ui.screen.components.list.grid
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -52,6 +53,11 @@ internal fun CharactersGridCard(
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
                         .background(color = MaterialTheme.colorScheme.surface, shape = shape)
+                        .border(
+                            width = Dimens.Size.Border,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                            shape = shape,
+                        )
                 ) {
                     if (LocalInspectionMode.current) {
                         Spacer(

@@ -2,6 +2,7 @@ package feature.characters.ui.screen.components.search.list
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,7 +58,12 @@ internal fun CharactersSearchListCard(
                             rememberSharedContentState(key = item.uiId + item.id),
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
-                        .background(color = MaterialTheme.colorScheme.surface, shape = shape)
+                        .background(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = shape)
+                        .border(
+                            width = Dimens.Size.Border,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                            shape = shape,
+                        )
                 ) {
                     if (LocalInspectionMode.current) {
                         Spacer(

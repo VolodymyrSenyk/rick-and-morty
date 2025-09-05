@@ -8,7 +8,7 @@ import navigation.compose.NavArg
 
 @Parcelize
 @Serializable
-data class CharactersListFilterSettingsResult(
-    val statusType: StatusType?,
-    val genderType: GenderType?,
+data class CharactersListFilterResult(
+    val status: StatusType?,
+    val gender: GenderType?,
 ) : NavArg

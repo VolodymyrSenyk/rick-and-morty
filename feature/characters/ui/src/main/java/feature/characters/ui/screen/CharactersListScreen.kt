@@ -14,7 +14,7 @@ import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
 import feature.characters.navigation.CharacterDetailsDestination
 import feature.characters.navigation.CharactersListFilterDestination
-import feature.characters.navigation.result.CharactersListFilterSettingsResult
+import feature.characters.navigation.result.CharactersListFilterResult
 import feature.characters.presentation.model.CharactersListFilter
 import feature.characters.presentation.viewmodel.CharactersListViewModel
 import feature.characters.presentation.viewmodel.CharactersSearchViewModel
@@ -95,12 +95,12 @@ private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, ro
                     status = mviNavEvent.filter.statusType,
                     gender = mviNavEvent.filter.genderType,
                 )
-                router.navigateForResult<CharactersListFilterSettingsResult>(destination)?.let { result ->
+                router.navigateForResult<CharactersListFilterResult>(destination)?.let { result ->
                     viewModel.onIntent(
                         CharactersListIntent.OnFilterApplied(
                             charactersListFilter = CharactersListFilter(
-                                statusType = result.statusType,
-                                genderType = result.genderType,
+                                statusType = result.status,
+                                genderType = result.gender,
                             ),
                         )
                     )

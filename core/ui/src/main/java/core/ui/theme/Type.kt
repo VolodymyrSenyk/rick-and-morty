@@ -20,4 +20,8 @@ internal val typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
     ),
+    bodySmall = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+    ),
 )
