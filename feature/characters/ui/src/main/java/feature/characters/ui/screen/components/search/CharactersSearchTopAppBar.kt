@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.theme.RickAndMortyTheme
+import core.ui.theme.colorscheme.onPrimaryHint
 import feature.characters.ui.R
 import kotlinx.coroutines.delay
 import core.ui.R as CoreR
@@ -46,7 +47,7 @@ internal fun CharactersSearchTopAppBar(
     val focusRequester = remember { FocusRequester() }
     val customTextSelectionColors = TextSelectionColors(
         handleColor = LocalTextSelectionColors.current.handleColor,
-        backgroundColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f),
+        backgroundColor = MaterialTheme.colorScheme.onPrimaryHint,
     )
     CompositionLocalProvider(
         LocalTextSelectionColors provides customTextSelectionColors,

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,18 +18,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.senyk.rickandmorty.components.SplashScreen
 import com.senyk.rickandmorty.navigation.RickAndMortyNavHost
 import core.ui.theme.RickAndMortyTheme
+import core.ui.theme.colorscheme.navigationBar
 import core.ui.utils.isUiTestRunning
 import core.ui.utils.setSystemBarsColors
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         setContent {
             MainActivityScreen(splashScreen)
         }
@@ -62,11 +62,13 @@ private fun MainActivityScreen(splashScreen: SplashScreen) {
     themeMode?.let { mode ->
         splashViewModel.requirementDone(SplashViewModel.Requirement.THEME_LOADED)
         RickAndMortyTheme(themeMode = mode) {
-            setSystemBarsColors(isSplashVisible)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                setSystemBarsColors(isSplashVisible)
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(MaterialTheme.colorScheme.navigationBar)
                     .navigationBarsPadding()
             ) {
                 RickAndMortyNavHost(rootNavController = rememberNavController())
@@ -92,7 +94,7 @@ internal fun setSystemBarsColors(isSplashVisible: Boolean) {
     val splashScreenColor = colorResource(R.color.colorSplashScreen)
     setSystemBarsColors(
         statusBarColor = if (isSplashVisible) splashScreenColor else MaterialTheme.colorScheme.primary,
-        navBarColor = if (isSplashVisible) splashScreenColor else Color.Black,
+        navBarColor = if (isSplashVisible) splashScreenColor else MaterialTheme.colorScheme.navigationBar,
         isLight = isSplashVisible,
     )
 }
