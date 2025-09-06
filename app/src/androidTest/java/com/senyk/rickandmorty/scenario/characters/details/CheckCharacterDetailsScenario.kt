@@ -6,6 +6,7 @@ import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.core.utils.findText
+import com.senyk.rickandmorty.core.utils.waitUntilDisplaying
 import com.senyk.rickandmorty.core.utils.waitUntilHiding
 import com.senyk.rickandmorty.screen.characters.CharacterDetailsScreen
 
@@ -20,6 +21,7 @@ class CheckCharacterDetailsScenario<A : ComponentActivity>(
                     waitUntilHiding(progressBar)
                     contentToCheck.forEachIndexed { index, text ->
                         val ordinalNumber = contentToCheck.subList(0, index).count { it == text }
+                        waitUntilDisplaying(findText(text, ordinalNumber))
                         findText(text, ordinalNumber).assertExists()
                     }
                     menuBack.performClick()

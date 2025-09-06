@@ -1,6 +1,7 @@
 package feature.characters.ui.screen.components.list.grid
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
@@ -166,7 +167,7 @@ private fun CardContent(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .sharedElement(
+                        .sharedBounds(
                             rememberSharedContentState(key = item.uiId + item.id),
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
@@ -213,6 +214,7 @@ private fun CardContent(
                                 animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                             )
                             .padding(horizontal = Dimens.Padding.Tiny)
+                            .animateContentSize()
                     )
                     Spacer(Modifier.weight(1f))
                 }

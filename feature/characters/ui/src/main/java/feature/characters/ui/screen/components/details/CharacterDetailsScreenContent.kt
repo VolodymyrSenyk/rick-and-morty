@@ -1,6 +1,7 @@
 package feature.characters.ui.screen.components.details
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +43,7 @@ internal fun CharacterDetailsScreenContent(
                                         rememberSharedContentState(key = character?.uiId + titleText),
                                         animatedVisibilityScope = this,
                                     )
+                                    .animateContentSize()
                             )
                         },
                         onNavigateBackClicked = onBackButtonClicked,
@@ -51,7 +53,7 @@ internal fun CharacterDetailsScreenContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .sharedElement(
+                        .sharedBounds(
                             rememberSharedContentState(key = character?.uiId + viewState.character?.id),
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
