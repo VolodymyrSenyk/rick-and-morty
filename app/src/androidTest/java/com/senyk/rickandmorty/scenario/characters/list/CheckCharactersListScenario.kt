@@ -2,10 +2,12 @@ package com.senyk.rickandmorty.scenario.characters.list
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.onChildren
 import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.core.utils.findListItemByIndex
+import com.senyk.rickandmorty.core.utils.waitUntilDisplaying
 import com.senyk.rickandmorty.core.utils.waitUntilHiding
 import com.senyk.rickandmorty.screen.characters.CharactersListScreen
 
@@ -22,8 +24,9 @@ class CheckCharactersListScenario<A : ComponentActivity>(
                     if (characters.isEmpty()) {
                         textListEmptyState.assertExists()
                     } else {
+                        waitUntilDisplaying(findListItemByIndex(0))
                         characters.forEachIndexed { index, name ->
-                            findListItemByIndex(index).assertTextEquals(name)
+                            findListItemByIndex(index).onChildren()[0].assertTextEquals(name)
                         }
                     }
                 }

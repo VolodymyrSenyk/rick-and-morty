@@ -17,6 +17,7 @@ internal val LightMaterialColorScheme = lightColorScheme(
     onBackground = AppColors.Black900,
 
     surface = AppColors.Grey025, // main screen cards
+    surfaceDim = AppColors.Grey500, // placeholders
     surfaceContainerLowest = AppColors.Grey100, // search results background
     surfaceContainerLow = AppColors.Grey025, // search result card
     surfaceContainerHigh = AppColors.Grey025, // dialogs

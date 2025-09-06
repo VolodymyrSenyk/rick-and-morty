@@ -16,7 +16,7 @@ data class CharactersListViewState(
             charactersList = emptyList(),
             showEmptyState = false,
             showRefreshProgress = false,
-            showBlockingProgress = true,
+            showBlockingProgress = false,
             showPaginationProgress = false,
         )
     }

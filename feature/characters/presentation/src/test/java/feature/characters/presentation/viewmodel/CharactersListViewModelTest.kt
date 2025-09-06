@@ -53,7 +53,7 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
             charactersList = emptyList(),
             showEmptyState = false,
             showRefreshProgress = false,
-            showBlockingProgress = true,
+            showBlockingProgress = false,
             showPaginationProgress = false,
         )
         coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
@@ -153,14 +153,6 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         viewModel.onIntent(CharactersListIntent.OnScrolled(0))
 
         coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
-        assertEquals(expectedViewState, viewModel.uiState.value)
-    }
-
-    @Test
-    fun `characters list scrolled while already is loading`() = runTest {
-        val expectedViewState = CharactersListViewState.INITIAL
-        viewModel.onIntent(CharactersListIntent.OnScrolled(0))
-        coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(expectedViewState, viewModel.uiState.value)
     }
 

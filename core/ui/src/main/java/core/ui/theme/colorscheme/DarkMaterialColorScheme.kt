@@ -17,6 +17,7 @@ internal val DarkMaterialColorScheme = darkColorScheme(
     onBackground = AppColors.Grey300,
 
     surface = AppColors.Grey875, // main screen cards
+    surfaceDim = AppColors.Grey875, // placeholders
     surfaceContainerLowest = AppColors.Grey950, // search results background
     surfaceContainerLow = AppColors.Grey875, // search result card
     surfaceContainerHigh = AppColors.Grey875, // dialogs

@@ -1,12 +1,15 @@
 package com.senyk.rickandmorty.scenario.characters.list
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.performClick
 import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
+import com.senyk.rickandmorty.core.utils.findListItemByText
 import com.senyk.rickandmorty.core.utils.findText
 import com.senyk.rickandmorty.core.utils.waitUntilDisplaying
+import com.senyk.rickandmorty.core.utils.waitUntilHiding
 import com.senyk.rickandmorty.screen.characters.CharactersListScreen
 
 class OpenCharacterDetailsScenario<A : ComponentActivity>(
@@ -18,6 +21,7 @@ class OpenCharacterDetailsScenario<A : ComponentActivity>(
             step("Open 'Character Details' from 'Characters List' for $characterName") {
                 CharactersListScreen(this).apply {
                     waitUntilDisplaying(findText(characterName))
+                    waitUntilHiding(findListItemByText(characterName).onChildren()[1])
                     findText(characterName).performClick()
                 }
             }

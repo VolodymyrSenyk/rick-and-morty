@@ -4,6 +4,8 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.filterToOne
+import androidx.compose.ui.test.hasAnyChild
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
@@ -132,6 +134,20 @@ fun <A : ComponentActivity> ActivityComposeTestRule<A>.findListItemByIndex(
     index: Int,
     listIndex: Int = 0,
 ): SemanticsNodeInteraction = onAllNodes(hasScrollAction(), useUnmergedTree = false)[listIndex].onChildren()[index]
+
+/**
+ * Finds an item by [text] inside a scrollable container identified by [listIndex].
+ *
+ * @param text The exact text to match.
+ * @param listIndex The index of the scrollable container among all containers on screen (default is 0).
+ */
+fun <A : ComponentActivity> ActivityComposeTestRule<A>.findListItemByText(
+    text: String,
+    listIndex: Int = 0,
+): SemanticsNodeInteraction =
+    onAllNodes(hasScrollAction(), useUnmergedTree = false)[listIndex]
+        .onChildren()
+        .filterToOne(hasAnyChild(hasText(text)))
 
 /**
  * Finds a progress bar with the given [rangeInfo].
