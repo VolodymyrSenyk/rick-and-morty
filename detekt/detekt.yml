@@ -610,6 +610,7 @@ style:
   MagicNumber:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**' ]
+    ignoreAnnotated: [ 'Composable' ]
     ignoreNumbers:
       - '-1'
       - '0'

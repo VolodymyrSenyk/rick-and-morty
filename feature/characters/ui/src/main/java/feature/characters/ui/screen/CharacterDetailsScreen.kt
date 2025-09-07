@@ -1,53 +1,58 @@
 package feature.characters.ui.screen
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import core.ui.R
-import core.ui.components.scaffold.CustomScaffold
-import core.ui.preview.ThemePreviewParameterProvider
-import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.NavEventHandler
-import domain.settings.model.ThemeMode
-import feature.characters.navigation.CharacterDetailsDestination
+import core.ui.utils.SideEffectHandler
+import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
-import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsViewState
+import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsSideEffect
+import feature.characters.ui.R
 import feature.characters.ui.screen.components.details.CharacterDetailsScreenContent
-import feature.characters.ui.screen.components.details.CharacterDetailsTopAppBar
-import feature.characters.ui.screen.preview.CharactersPreviewMocks
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
 @Composable
 internal fun CharacterDetailsScreen(
+    character: CharacterUi,
     viewModel: CharacterDetailsViewModel,
     settingsViewModel: SettingsViewModel,
     router: Router,
-    args: CharacterDetailsDestination,
 ) {
+    CharacterDetailsSideEffectHandler(viewModel = viewModel)
+
     CharacterDetailsNavEventHandler(viewModel = viewModel, router = router)
 
-    LaunchedEffect(args) {
-        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterId = args.characterId))
+    LaunchedEffect(viewModel) {
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(character))
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    CustomScaffold(
-        topAppBar = {
-            CharacterDetailsTopAppBar(
-                titleText = viewState.character?.name ?: stringResource(R.string.app_name),
-                onNavigateBackClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
-                onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
-            )
+    viewState.character?.let {
+        CharacterDetailsScreenContent(
+            viewState = viewState,
+            onThemeSelected = { settingsViewModel.onThemeSelected(it) },
+            onBackButtonClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
+        )
+    }
+}
+
+@Composable
+private fun CharacterDetailsSideEffectHandler(viewModel: CharacterDetailsViewModel) {
+    val context = LocalContext.current
+    SideEffectHandler(viewModel) { mviEffect ->
+        when (mviEffect) {
+            is CharacterDetailsSideEffect.ShowErrorMessage -> {
+                val message = context.getString(R.string.message_empty_state_character_details)
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
         }
-    ) {
-        CharacterDetailsScreenContent(viewState = viewState)
     }
 }
 
@@ -56,26 +61,6 @@ private fun CharacterDetailsNavEventHandler(viewModel: CharacterDetailsViewModel
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
             is CharacterDetailsNavEvent.NavigateBack -> router.back()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CharacterDetailsScreenPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) theme: ThemeMode) {
-    RickAndMortyTheme(themeMode = theme) {
-        CustomScaffold(
-            topAppBar = {
-                CharacterDetailsTopAppBar(
-                    titleText = CharactersPreviewMocks.characterDetails.name,
-                    onNavigateBackClicked = {},
-                    onThemeSelected = {},
-                )
-            }
-        ) {
-            CharacterDetailsScreenContent(
-                viewState = CharacterDetailsViewState(character = CharactersPreviewMocks.characterDetails),
-            )
         }
     }
 }

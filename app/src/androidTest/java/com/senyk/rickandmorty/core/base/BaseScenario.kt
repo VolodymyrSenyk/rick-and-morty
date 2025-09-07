@@ -14,14 +14,14 @@ abstract class BaseScenario<A : ComponentActivity> {
     /**
      * Compose test steps to execute in this scenario.
      */
-    protected abstract val steps: AndroidComposeTestRule<ActivityScenarioRule<A>, A>.() -> Unit
+    protected abstract val steps: ActivityComposeTestRule<A>.() -> Unit
 
     /**
      * Invokes the defined [steps] with the given [composeTestRule].
      *
      * @param composeTestRule The Compose test rule used to execute the scenario.
      */
-    operator fun invoke(composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<A>, A>) {
+    operator fun invoke(composeTestRule: ActivityComposeTestRule<A>) {
         composeTestRule.waitForIdle()
         steps.invoke(composeTestRule)
     }
@@ -29,5 +29,10 @@ abstract class BaseScenario<A : ComponentActivity> {
     /**
      * Executes the provided [scenario] within the current [AndroidComposeTestRule] context.
      */
-    fun AndroidComposeTestRule<ActivityScenarioRule<A>, A>.scenario(scenario: BaseScenario<A>) = scenario.invoke(this)
+    fun ActivityComposeTestRule<A>.scenario(scenario: BaseScenario<A>) = scenario.invoke(this)
 }
+
+/**
+ * Shortcut for [AndroidComposeTestRule] with [ActivityScenarioRule] for easier test rule declaration.
+ */
+typealias ActivityComposeTestRule<A> = AndroidComposeTestRule<ActivityScenarioRule<A>, A>

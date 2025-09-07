@@ -1,12 +1,16 @@
 package feature.characters.presentation.viewmodel
 
-import domain.characters.CharacterRepository
-import domain.characters.model.CharacterDto
-import domain.characters.usecase.GetCharactersUseCase
-import feature.characters.presentation.model.CharacterUi
+import arch.util.PaginationHelper
+import domain.characters.CharactersRepository
+import domain.characters.model.GenderType
+import domain.characters.model.StatusType
+import domain.characters.usecase.GetCharactersByFilterUseCase
+import feature.characters.presentation.model.CharactersListFilter
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListSideEffect
+import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
+import feature.characters.presentation.viewmodel.utlis.CharacterListTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
@@ -16,6 +20,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertInstanceOf
 import org.junit.jupiter.api.extension.ExtendWith
 import testutil.BaseCoroutinesTest
 
@@ -26,148 +31,186 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
     private lateinit var viewModel: CharactersListViewModel
 
     @MockK
-    lateinit var characterRepository: CharacterRepository
+    lateinit var charactersRepository: CharactersRepository
+
+    private val paginationHelper = PaginationHelper(
+        dataSetSize = DATA_PAGE_SIZE,
+        loadMoreTriggerDataSetSize = DATA_PAGE_SIZE / 2,
+    )
 
     @BeforeEach
     override fun setUp() {
         super.setUp()
         viewModel = CharactersListViewModel(
-            getCharactersUseCase = GetCharactersUseCase(characterRepository),
+            getCharactersByFilterUseCase = GetCharactersByFilterUseCase(charactersRepository),
+            paginationHelper = paginationHelper,
         )
     }
 
     @Test
     fun `characters list initial state`() = runTest {
-        coVerify(exactly = 0) { characterRepository.getCharacters(any()) }
-        with(viewModel.uiState.value) {
-            assertEquals(emptyList<CharacterUi>(), this.charactersList)
-            assertEquals(true, this.showProgress)
-            assertEquals(false, this.isRefreshing)
-            assertEquals(false, this.loadingNextDataSet)
-        }
+        val expectedViewState = CharactersListViewState(
+            charactersList = emptyList(),
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
+        )
+        coVerify(exactly = 0) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
     @Test
     fun `characters list opened`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0)
+        val testData = createTestData(startIndex = 0)
+        val expectedViewState = CharactersListViewState(
+            charactersList = testData.charactersUiList,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
+        )
 
-        coEvery { characterRepository.getCharacters(1) } returns testData.charactersList
+        mockGetListRequest(page = 1, testData = testData)
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
 
-        coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
-        with(viewModel.uiState.value) {
-            assertEquals(testData.charactersUiList, this.charactersList)
-            assertEquals(false, this.showProgress)
-            assertEquals(false, this.isRefreshing)
-            assertEquals(true, this.loadingNextDataSet)
-        }
+        coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
+    }
+
+    @Test
+    fun `characters list loaded empty data set`() = runTest {
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize, pageSize = 0)
+        val expectedViewState = CharactersListViewState(
+            charactersList = testDataFirstPage.charactersUiList,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = false,
+        )
+
+        mockGetListRequest(page = 1, testData = testDataFirstPage)
+        mockGetListRequest(page = 2, testData = testDataSecondPage)
+
+        viewModel.onIntent(CharactersListIntent.OnViewStarted)
+        viewModel.onIntent(CharactersListIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
+
+        coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
     @Test
     fun `characters list error while data set loading`() = runTest {
-        coEvery { characterRepository.getCharacters(1) } throws IllegalStateException("")
+        val expectedViewState = CharactersListViewState.INITIAL.copy(showBlockingProgress = false)
+
+        mockGetListRequestWithError(page = 1)
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
 
-        coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
+        coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
         assertEquals(CharactersListSideEffect.ShowErrorMessage, viewModel.sideEffect.value)
-        with(viewModel.uiState.value) {
-            assertEquals(emptyList<CharacterUi>(), this.charactersList)
-            assertEquals(false, this.showProgress)
-            assertEquals(false, this.isRefreshing)
-            assertEquals(false, this.loadingNextDataSet)
-        }
+        assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
     @Test
     fun `characters list scrolled`() = runTest {
-        val testDataFirstPage = CharacterListTestData(startIndex = 0)
-        val testDataSecondPage = CharacterListTestData(startIndex = CharacterListTestData.PAGE_SIZE + 1)
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize)
+        val expectedViewState = CharactersListViewState(
+            charactersList = testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
+        )
 
-        coEvery { characterRepository.getCharacters(1) } returns testDataFirstPage.charactersList
-        coEvery { characterRepository.getCharacters(2) } returns testDataSecondPage.charactersList
+        mockGetListRequest(page = 1, testData = testDataFirstPage)
+        mockGetListRequest(page = 2, testData = testDataSecondPage)
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
-        viewModel.onIntent(CharactersListIntent.OnScrolled(lastVisibleItemPosition = CharacterListTestData.PAGE_SIZE))
+        viewModel.onIntent(CharactersListIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
 
-        coVerify(exactly = 2) { characterRepository.getCharacters(any()) }
-        with(viewModel.uiState.value) {
-            assertEquals(testDataFirstPage.charactersUiList + testDataSecondPage.charactersUiList, this.charactersList)
-            assertEquals(false, this.showProgress)
-            assertEquals(false, this.isRefreshing)
-            assertEquals(true, this.loadingNextDataSet)
-        }
+        coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
+    }
+
+    @Test
+    fun `characters list scrolled to top`() = runTest {
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val expectedViewState = CharactersListViewState(
+            charactersList = testDataFirstPage.charactersUiList,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
+        )
+
+        mockGetListRequest(page = 1, testData = testDataFirstPage)
+
+        viewModel.onIntent(CharactersListIntent.OnViewStarted)
+        viewModel.onIntent(CharactersListIntent.OnScrolled(0))
+
+        coVerify(exactly = 1) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
     @Test
     fun `characters list refreshed`() = runTest {
-        val testDataFirstPage = CharacterListTestData(startIndex = 0)
-        val testDataSecondPage = CharacterListTestData(startIndex = CharacterListTestData.PAGE_SIZE + 1)
+        val testDataFirstPage = createTestData(startIndex = 0)
+        val testDataSecondPage = createTestData(startIndex = testDataFirstPage.pageSize)
+        val expectedViewState = CharactersListViewState(
+            charactersList = testDataFirstPage.charactersUiList,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
+        )
 
-        coEvery { characterRepository.getCharacters(1) } returns testDataFirstPage.charactersList
-        coEvery { characterRepository.getCharacters(2) } returns testDataSecondPage.charactersList
+        mockGetListRequest(page = 1, testData = testDataFirstPage)
+        mockGetListRequest(page = 2, testData = testDataSecondPage)
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
-        viewModel.onIntent(CharactersListIntent.OnScrolled(lastVisibleItemPosition = CharacterListTestData.PAGE_SIZE))
+        viewModel.onIntent(CharactersListIntent.OnScrolled(testDataFirstPage.charactersUiList.size))
         viewModel.onIntent(CharactersListIntent.OnRefreshed)
 
-        coVerify(exactly = 3) { characterRepository.getCharacters(any()) }
-        with(viewModel.uiState.value) {
-            assertEquals(testDataFirstPage.charactersUiList, this.charactersList)
-            assertEquals(false, this.showProgress)
-            assertEquals(false, this.isRefreshing)
-            assertEquals(true, this.loadingNextDataSet)
-        }
+        coVerify(exactly = 3) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
     @Test
-    fun `characters list sorted`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0)
-        val charactersList = listOf(
-            testData.characterDto.copy(id = "1", name = "C"),
-            testData.characterDto.copy(id = "2", name = "A"),
-            testData.characterDto.copy(id = "3", name = "D"),
-            testData.characterDto.copy(id = "4", name = "B"),
-        )
-        val charactersUiList = listOf(
-            testData.characterUi.copy(id = "1", name = "C"),
-            testData.characterUi.copy(id = "2", name = "A"),
-            testData.characterUi.copy(id = "3", name = "D"),
-            testData.characterUi.copy(id = "4", name = "B"),
-        )
-        val charactersUiListSortedAscending = listOf(
-            testData.characterUi.copy(id = "2", name = "A"),
-            testData.characterUi.copy(id = "4", name = "B"),
-            testData.characterUi.copy(id = "1", name = "C"),
-            testData.characterUi.copy(id = "3", name = "D"),
-        )
-        val charactersUiListSortedDescending = listOf(
-            testData.characterUi.copy(id = "3", name = "D"),
-            testData.characterUi.copy(id = "1", name = "C"),
-            testData.characterUi.copy(id = "4", name = "B"),
-            testData.characterUi.copy(id = "2", name = "A"),
+    fun `characters list filter applied`() = runTest {
+        val testData = createTestData(startIndex = 0)
+        val filter = CharactersListFilter(statusType = StatusType.ALIVE)
+        val expectedViewState = CharactersListViewState(
+            charactersList = testData.charactersUiList,
+            showEmptyState = false,
+            showRefreshProgress = false,
+            showBlockingProgress = false,
+            showPaginationProgress = true,
         )
 
-        coEvery { characterRepository.getCharacters(1) } returns charactersList
+        mockGetListRequest(page = 1, testData = testData)
+        mockGetListRequest(page = 1, statusType = StatusType.ALIVE, testData = testData)
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
-        assertEquals(charactersUiList, viewModel.uiState.value.charactersList)
+        viewModel.onIntent(CharactersListIntent.OnFilterClicked)
 
-        viewModel.onIntent(CharactersListIntent.OnSortClicked)
-        assertEquals(charactersUiListSortedAscending, viewModel.uiState.value.charactersList)
+        assertInstanceOf<CharactersListNavEvent.NavigateToCharactersListFilter>(viewModel.navEvent.value)
 
-        viewModel.onIntent(CharactersListIntent.OnSortClicked)
-        coVerify(exactly = 1) { characterRepository.getCharacters(any()) }
-        assertEquals(charactersUiListSortedDescending, viewModel.uiState.value.charactersList)
+        viewModel.onIntent(CharactersListIntent.OnFilterApplied(filter))
+
+        coVerify(exactly = 2) { charactersRepository.getCharactersByFilter(any(), any(), any(), any()) }
+        assertEquals(expectedViewState, viewModel.uiState.value)
     }
 
     @Test
     fun `on character clicked`() = runTest {
-        val testData = CharacterListTestData(startIndex = 0)
-        val characterToNavigate = testData.charactersUiList[4]
+        val testData = createTestData(startIndex = 0)
+        val characterToNavigate = testData.charactersUiList.first()
 
-        coEvery { characterRepository.getCharacters(1) } returns testData.charactersList
+        mockGetListRequest(page = 1, testData = testData)
 
         viewModel.onIntent(CharactersListIntent.OnViewStarted)
         viewModel.onIntent(CharactersListIntent.OnCharacterClicked(characterToNavigate))
@@ -181,36 +224,45 @@ class CharactersListViewModelTest : BaseCoroutinesTest() {
         assertEquals(CharactersListNavEvent.NavigateBack, viewModel.navEvent.value)
     }
 
-    class CharacterListTestData(val startIndex: Int) {
+    private fun mockGetListRequest(
+        page: Int,
+        statusType: StatusType? = null,
+        genderType: GenderType? = null,
+        testData: CharacterListTestData,
+    ) {
+        coEvery {
+            charactersRepository.getCharactersByFilter(
+                page = page,
+                name = null,
+                status = statusType,
+                gender = genderType,
+            )
+        } returns testData.charactersList
+    }
 
-        val characterDto = CharacterDto(
-            id = "1",
-            name = "Rick Sanchez",
-            status = "Alive",
-            species = "Human",
-            type = "",
-            gender = "Male",
-            origin = "Earth (C-137)",
-            location = "Citadel of Ricks",
-            imageUrl = "someUrl",
+    private fun mockGetListRequestWithError(
+        page: Int,
+        statusType: StatusType? = null,
+        genderType: GenderType? = null,
+    ) {
+        coEvery {
+            charactersRepository.getCharactersByFilter(
+                page = page,
+                name = null,
+                status = statusType,
+                gender = genderType,
+            )
+        } throws IllegalStateException("")
+    }
+
+    private fun createTestData(startIndex: Int, pageSize: Int = DATA_PAGE_SIZE): CharacterListTestData =
+        CharacterListTestData(
+            startIndex = startIndex,
+            pageSize = pageSize,
+            idPrefix = viewModel.javaClass.simpleName,
         )
 
-        val characterUi = CharacterUi(
-            id = "1",
-            name = "Rick Sanchez",
-            imageUrl = "someUrl",
-        )
-
-        val charactersList = List(PAGE_SIZE) { characterDto }.mapIndexed { index, model ->
-            model.copy(id = (index + startIndex).toString())
-        }
-
-        val charactersUiList = List(PAGE_SIZE) { characterUi }.mapIndexed { index, model ->
-            model.copy(id = (index + startIndex).toString())
-        }
-
-        companion object {
-            const val PAGE_SIZE = 20
-        }
+    companion object {
+        private const val DATA_PAGE_SIZE = 2
     }
 }

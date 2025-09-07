@@ -1,81 +1,94 @@
 package feature.characters.ui.screen.components.list
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import core.ui.components.emptystate.SimpleEmptyState
-import core.ui.components.progress.SimpleCircularProgress
+import core.ui.animation.visibility.SlideTopToBottomAnimatedVisibility
+import core.ui.components.scaffold.CustomScaffold
 import core.ui.theme.RickAndMortyTheme
+import domain.settings.model.ThemeMode
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
-import feature.characters.ui.R
-import feature.characters.ui.screen.components.list.grid.CharactersGrid
-import feature.characters.ui.screen.preview.CharactersListViewStatePreviewParameterProvider
+import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchViewState
+import feature.characters.ui.screen.components.search.CharactersSearchSection
+import feature.characters.ui.screen.components.search.CharactersSearchTopAppBar
+import feature.characters.ui.screen.preview.CharactersListPreviewParameterProvider
 
 @Composable
 internal fun CharactersListScreenContent(
-    modifier: Modifier = Modifier,
     viewState: CharactersListViewState,
+    searchViewState: CharactersSearchViewState,
     gridState: LazyGridState,
-    onItemClicked: (item: CharacterUi) -> Unit,
+    onSearchClicked: () -> Unit,
+    onSearchQueryChanged: (searchQuery: String) -> Unit,
+    onFilterClicked: () -> Unit,
+    onThemeSelected: (newThemeMode: ThemeMode) -> Unit,
+    onCharacterClicked: (item: CharacterUi) -> Unit,
     onRefreshed: () -> Unit,
-    onScrolled: (lastVisibleItem: Int) -> Unit,
+    onCharactersGridScrolled: (lastVisibleItem: Int) -> Unit,
+    onSearchResultsScrolled: (lastVisibleItem: Int) -> Unit,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
+    val searchEnterAnimMillis = 400
+    CustomScaffold(
+        topAppBar = {
+            if (searchViewState.isSearching) {
+                CharactersSearchTopAppBar(
+                    searchQuery = searchViewState.searchQuery,
+                    onSearchQueryChange = onSearchQueryChanged,
+                    onSearchToggle = onSearchClicked,
+                    enterAnimMillis = searchEnterAnimMillis.toLong(),
+                )
+            } else {
+                CharactersListTopAppBar(
+                    onThemeSelected = onThemeSelected,
+                    onSearchClicked = onSearchClicked,
+                    onFilterClicked = onFilterClicked,
+                )
+            }
+        }
     ) {
-        AnimatedVisibility(
-            visible = viewState.charactersList.isNotEmpty(),
-            enter = fadeIn(),
-            exit = fadeOut()
+        CharactersListSection(
+            gridState = gridState,
+            viewState = viewState,
+            onItemClicked = onCharacterClicked,
+            onRefreshed = onRefreshed,
+            onScrolled = onCharactersGridScrolled,
+        )
+        SlideTopToBottomAnimatedVisibility(
+            visible = searchViewState.isSearching,
+            durationMillis = searchEnterAnimMillis,
         ) {
-            CharactersGrid(
-                gridState = gridState,
-                loadingNextDataSet = viewState.loadingNextDataSet,
-                isRefreshing = viewState.isRefreshing,
-                items = viewState.charactersList,
-                onItemClicked = onItemClicked,
-                onRefreshed = onRefreshed,
-                onScrolled = onScrolled,
+            CharactersSearchSection(
+                listState = rememberLazyListState(),
+                viewState = searchViewState,
+                onItemClicked = onCharacterClicked,
+                onScrolled = onSearchResultsScrolled,
             )
         }
-        SimpleEmptyState(
-            visible = viewState.charactersList.isEmpty() && !viewState.showProgress,
-            textMessage = stringResource(R.string.message_characters_empty_list),
-        )
-        SimpleCircularProgress(
-            visible = viewState.showProgress,
-            modifier = Modifier.background(color = Color.Black.copy(alpha = 0.5f))
-        )
     }
 }
 
 @Preview
 @Composable
 private fun CharactersListScreenContentPreview(
-    @PreviewParameter(CharactersListViewStatePreviewParameterProvider::class) viewState: CharactersListViewState
+    @PreviewParameter(CharactersListPreviewParameterProvider::class) viewState: CharactersListViewState
 ) {
     RickAndMortyTheme {
         CharactersListScreenContent(
             viewState = viewState,
+            searchViewState = CharactersSearchViewState.INITIAL,
             gridState = rememberLazyGridState(),
-            onItemClicked = {},
+            onSearchClicked = {},
+            onSearchQueryChanged = {},
+            onFilterClicked = {},
+            onThemeSelected = {},
+            onCharacterClicked = {},
             onRefreshed = {},
-            onScrolled = {},
+            onCharactersGridScrolled = {},
+            onSearchResultsScrolled = {},
         )
     }
 }

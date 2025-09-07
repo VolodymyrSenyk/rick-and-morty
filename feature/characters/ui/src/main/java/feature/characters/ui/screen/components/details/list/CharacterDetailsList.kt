@@ -17,31 +17,31 @@ internal fun CharacterDetailsList(
 ) {
     Column(modifier = modifier) {
         CharacterDetailsItem(
-            label = stringResource(R.string.character_name),
+            label = stringResource(R.string.label_character_name),
             data = character.name,
         )
         CharacterDetailsItem(
-            label = stringResource(R.string.character_status),
+            label = stringResource(R.string.label_character_status),
             data = character.status,
         )
         CharacterDetailsItem(
-            label = stringResource(R.string.character_species),
+            label = stringResource(R.string.label_character_species),
             data = character.species,
         )
         CharacterDetailsItem(
-            label = stringResource(R.string.character_type),
+            label = stringResource(R.string.label_character_type),
             data = character.type,
         )
         CharacterDetailsItem(
-            label = stringResource(R.string.character_gender),
+            label = stringResource(R.string.label_character_gender),
             data = character.gender,
         )
         CharacterDetailsItem(
-            label = stringResource(R.string.character_origin),
+            label = stringResource(R.string.label_character_origin),
             data = character.origin,
         )
         CharacterDetailsItem(
-            label = stringResource(R.string.character_location),
+            label = stringResource(R.string.label_character_location),
             data = character.location,
         )
     }

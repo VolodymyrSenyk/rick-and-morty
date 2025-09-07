@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gender_all">All genders</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_genderless">Genderless</string>
+    <string name="gender_unknown">Unknown</string>
+</resources>

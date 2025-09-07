@@ -3,10 +3,9 @@ package feature.characters.presentation.viewmodel
 import arch.android.BaseSimpleMviViewModel
 import arch.util.PaginationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import domain.characters.model.CharacterDto
-import domain.characters.usecase.GetCharactersUseCase
-import feature.characters.presentation.model.AlphaSortType
+import domain.characters.usecase.GetCharactersByFilterUseCase
 import feature.characters.presentation.model.CharacterUi
+import feature.characters.presentation.model.CharactersListFilter
 import feature.characters.presentation.model.toCharacterUi
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
@@ -16,23 +15,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharactersListViewModel @Inject constructor(
-    private val getCharactersUseCase: GetCharactersUseCase,
+    private val getCharactersByFilterUseCase: GetCharactersByFilterUseCase,
+    private val paginationHelper: PaginationHelper,
 ) : BaseSimpleMviViewModel<CharactersListViewState, CharactersListIntent, CharactersListSideEffect, CharactersListNavEvent>(
-    initialState = CharactersListViewState(),
+    initialState = CharactersListViewState.INITIAL,
 ) {
 
-    private val paginationHelper = PaginationHelper()
-
-    private var sortType = AlphaSortType.NOT_SORTED
+    private var charactersListFilter = CharactersListFilter()
 
     override val tag: String = this.javaClass.simpleName
 
     override suspend fun executeIntent(mviIntent: CharactersListIntent) = when (mviIntent) {
         is CharactersListIntent.OnViewStarted -> onViewStarted()
-        is CharactersListIntent.OnScrolled -> onScrolled(lastVisibleItemPosition = mviIntent.lastVisibleItemPosition)
+        is CharactersListIntent.OnScrolled -> onScrolled(mviIntent.lastVisibleItemPosition)
         is CharactersListIntent.OnRefreshed -> onRefreshed()
-        is CharactersListIntent.OnCharacterClicked -> onCharacterClicked(character = mviIntent.character)
-        is CharactersListIntent.OnSortClicked -> onSortClicked()
+        is CharactersListIntent.OnCharacterClicked -> onCharacterClicked(mviIntent.character)
+        is CharactersListIntent.OnFilterClicked -> onFilterClicked()
+        is CharactersListIntent.OnFilterApplied -> onFilterApplied(mviIntent.charactersListFilter)
         is CharactersListIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
@@ -42,7 +41,7 @@ class CharactersListViewModel @Inject constructor(
 
     private suspend fun onScrolled(lastVisibleItemPosition: Int) {
         val isNextDataSetNeeded = paginationHelper.isNextDataSetNeeded(lastVisibleItemPosition)
-        val isLoading = currentState.isRefreshing || currentState.showProgress
+        val isLoading = currentState.showRefreshProgress || currentState.showBlockingProgress
         if (isNextDataSetNeeded && !isLoading) {
             loadCharacters()
         }
@@ -50,11 +49,11 @@ class CharactersListViewModel @Inject constructor(
 
     private suspend fun onRefreshed() {
         updateUiState { oldState ->
-            oldState.copy(isRefreshing = true)
+            oldState.copy(showRefreshProgress = true)
         }
+        charactersListFilter = CharactersListFilter()
         paginationHelper.resetPagination()
-        val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
-        setData(data = characters)
+        loadCharacters()
         sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
@@ -62,31 +61,17 @@ class CharactersListViewModel @Inject constructor(
         sendNavEvent(CharactersListNavEvent.NavigateToCharacterDetails(character = character))
     }
 
-    private suspend fun onSortClicked() {
-        val characters = currentState.charactersList
+    private suspend fun onFilterClicked() {
+        sendNavEvent(CharactersListNavEvent.NavigateToCharactersListFilter(charactersListFilter))
+    }
 
+    private suspend fun onFilterApplied(filter: CharactersListFilter) {
+        charactersListFilter = filter
         updateUiState { oldState ->
-            oldState.copy(showProgress = true)
+            oldState.copy(showBlockingProgress = true)
         }
-
-        val sortedCharacters = when (sortType) {
-            AlphaSortType.NOT_SORTED, AlphaSortType.DESCENDING -> {
-                sortType = AlphaSortType.ASCENDING
-                characters.sortedBy { it.name }
-            }
-
-            AlphaSortType.ASCENDING -> {
-                sortType = AlphaSortType.DESCENDING
-                characters.sortedByDescending { it.name }
-            }
-        }
-
-        updateUiState { oldState ->
-            oldState.copy(
-                charactersList = sortedCharacters,
-                showProgress = false,
-            )
-        }
+        paginationHelper.resetPagination()
+        loadCharacters()
         sendSideEffect(CharactersListSideEffect.ScrollToTop)
     }
 
@@ -97,8 +82,9 @@ class CharactersListViewModel @Inject constructor(
     override suspend fun onError(throwable: Throwable) {
         updateUiState { oldState ->
             oldState.copy(
-                isRefreshing = false,
-                showProgress = false,
+                showRefreshProgress = false,
+                showBlockingProgress = false,
+                showPaginationProgress = false,
             )
         }
         sendSideEffect(CharactersListSideEffect.ShowErrorMessage)
@@ -106,28 +92,27 @@ class CharactersListViewModel @Inject constructor(
     }
 
     private suspend fun loadCharacters() {
-        val characters = getCharactersUseCase(page = paginationHelper.getPageForNewDataSet())
-        setData(data = characters)
-    }
-
-    private fun setData(data: List<CharacterDto>) {
-        val dataList = if (paginationHelper.isCurrentDataSetEmpty()) {
+        val loadedDataList = getCharactersByFilterUseCase(
+            page = paginationHelper.getPageForNewDataSet(),
+            status = charactersListFilter.statusType,
+            gender = charactersListFilter.genderType,
+        )
+        val resultDataList = if (paginationHelper.isCurrentDataSetEmpty()) {
             mutableListOf()
         } else {
             currentState.charactersList.toMutableList()
         }
 
-        if (data.isNotEmpty()) {
-            dataList.addAll(data.map { it.toCharacterUi() })
-            paginationHelper.onDataSetLoaded(data.size)
-        }
+        resultDataList.addAll(loadedDataList.map { it.toCharacterUi(tag) })
+        paginationHelper.onDataSetLoaded(loadedDataList.size)
 
         updateUiState { oldState ->
             oldState.copy(
-                charactersList = dataList,
-                isRefreshing = false,
-                showProgress = false,
-                loadingNextDataSet = paginationHelper.hasMoreData(),
+                charactersList = resultDataList,
+                showEmptyState = resultDataList.isEmpty(),
+                showRefreshProgress = false,
+                showBlockingProgress = false,
+                showPaginationProgress = paginationHelper.hasMoreData(),
             )
         }
     }

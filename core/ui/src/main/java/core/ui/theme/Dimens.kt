@@ -20,11 +20,13 @@ object Dimens {
 
     object CardSize {
         val Medium: Dp = 120.dp
+        val Small: Dp = 60.dp
     }
 
     object ImageSize {
-        val Big: Dp = 160.dp
+        val Big: Dp = 180.dp
         val Medium: Dp = 100.dp
+        val Small: Dp = 36.dp
     }
 
     object IconSize {

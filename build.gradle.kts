@@ -150,8 +150,7 @@ tasks.register<Detekt>("detektAll") {
 
     setSource(files(projectDir))
     include("**/*.kt", "**/*.kts")
-    exclude("**/resources/**", "**/build/**", "**/test/**", "**/androidTest/**")
-    exclude("**/jacoco.gradle.kts")
+    exclude("**/build/**")
     reports {
         html.required.set(true)
         xml.required.set(true)
@@ -188,7 +187,6 @@ sonarqube {
 
         property("sonar.sourceEncoding", "UTF-8")
         property("sonar.verbose", true)
-        property("sonar.exclusions", "**/*Test*/**,*.json,**/*test*/**,**/.gradle/**,**/R.class,**/R$*.class")
 
         property("detekt.sonar.kotlin.config.path", "$rootDir/detekt/detekt.yml")
         property("sonar.kotlin.detekt.reportPaths", "$rootDir/build/reports/detekt/detekt.xml")
@@ -207,5 +205,15 @@ tasks.named<SonarTask>("sonar") {
     dependsOn("codeCoverageReport", "detektAll")
 }
 
-@Suppress("UNCHECKED_CAST")
-val testCoverageExclusions = rootProject.extra["testCoverageExclusions"] as List<String>
+// Exclusions to check code coverage only for ViewModel classes
+val testCoverageExclusions = listOf(
+    "**/*App.kt",
+    "**/*Activity.kt",
+    "**/core/**",
+    "**/di/**",
+    "**/data/**",
+    "**/domain/**",
+    "**/navigation/**",
+    "**/components/**",
+    "**/ui/**",
+)

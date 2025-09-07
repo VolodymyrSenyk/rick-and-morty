@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.zIndex
 import core.ui.theme.RickAndMortyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +25,6 @@ fun SimpleTopAppBar(
     menu: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
-        modifier = modifier.fillMaxWidth(),
         navigationIcon = {
             if (onNavigateBackClicked == null) {
                 navigationIcon()
@@ -40,6 +40,9 @@ fun SimpleTopAppBar(
             actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         scrollBehavior = null,
+        modifier = modifier
+            .fillMaxWidth()
+            .zIndex(2f)
     )
 }
 

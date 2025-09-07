@@ -10,6 +10,7 @@ android {
 
 dependencies {
     api(project(":core:arch-android"))
+
     implementation(project(":domain:settings"))
 
     implementation(Config.Libs.hilt)

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.tooling.preview.Preview
 import core.ui.components.progress.SimpleCircularProgress
 import core.ui.theme.Dimens
@@ -59,7 +60,10 @@ internal fun CharactersGrid(
             contentPadding = PaddingValues(horizontal = Dimens.Padding.Medium, vertical = Dimens.Padding.Medium),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(items = items, key = { item -> item.id }) { listItem ->
+            items(
+                items = items,
+                key = { item -> item.id },
+            ) { listItem ->
                 CharactersGridCard(
                     item = listItem,
                     onItemClicked = onItemClicked,
@@ -68,7 +72,7 @@ internal fun CharactersGrid(
             }
             if (loadingNextDataSet) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    SimpleCircularProgress(visible = true, blocking = false)
+                    SimpleCircularProgress(modifier = Modifier.scale(0.6f))
                 }
             }
         }

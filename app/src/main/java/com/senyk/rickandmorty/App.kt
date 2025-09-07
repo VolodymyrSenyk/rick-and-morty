@@ -37,7 +37,7 @@ class App : Application() {
         Kermit.setUp(
             config = StaticConfig(
                 minSeverity = if (BuildConfig.DEBUG || isUiTestRunning()) Severity.Verbose else Severity.Warn,
-                logWriterList = listOf(platformLogWriter())
+                logWriterList = listOf(platformLogWriter()),
             ),
         )
     }

@@ -6,5 +6,6 @@
         <ID>TooGenericExceptionCaught:BaseSimpleMviViewModel.kt$BaseSimpleMviViewModel$throwable: Throwable</ID>
         <ID>TooGenericExceptionCaught:BaseCoroutinesViewModel.kt$BaseCoroutinesViewModel$throwable: Throwable</ID>
         <ID>ThrowingExceptionsWithoutMessageOrCause:Kermit.kt$Kermit$Throwable()</ID>
+        <ID>NestedBlockDepth:StepsLogger.kt$StepsLogger$fun step(text: String, actions: () -> Unit)</ID>
     </ManuallySuppressedIssues>
 </SmellBaseline>

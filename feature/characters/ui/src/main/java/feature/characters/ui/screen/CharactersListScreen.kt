@@ -1,38 +1,40 @@
 package feature.characters.ui.screen
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import core.ui.components.scaffold.CustomScaffold
-import core.ui.preview.ThemePreviewParameterProvider
-import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
-import domain.settings.model.ThemeMode
 import feature.characters.navigation.CharacterDetailsDestination
+import feature.characters.navigation.CharactersListFilterDestination
+import feature.characters.navigation.result.CharactersListFilterResult
+import feature.characters.presentation.model.CharactersListFilter
 import feature.characters.presentation.viewmodel.CharactersListViewModel
+import feature.characters.presentation.viewmodel.CharactersSearchViewModel
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListIntent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListNavEvent
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListSideEffect
-import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
+import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchIntent
 import feature.characters.ui.R
+import feature.characters.ui.navigation.toCharacterNavArg
 import feature.characters.ui.screen.components.list.CharactersListScreenContent
-import feature.characters.ui.screen.components.list.CharactersListTopAppBar
-import feature.characters.ui.screen.preview.CharactersPreviewMocks
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
 import navigation.compose.router.Router
+import navigation.compose.utils.navigateForResult
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CharactersListScreen(
     viewModel: CharactersListViewModel,
+    searchViewModel: CharactersSearchViewModel,
     settingsViewModel: SettingsViewModel,
     splashViewModel: SplashViewModel,
     router: Router,
@@ -48,22 +50,24 @@ internal fun CharactersListScreen(
     }
 
     val viewState by viewModel.uiState.collectAsStateWithLifecycle()
-    if (!viewState.showProgress) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
-    CustomScaffold(
-        topAppBar = {
-            CharactersListTopAppBar(
-                onThemeSelected = { newThemeMode -> settingsViewModel.onThemeSelected(newThemeMode) },
-                onSortClicked = { viewModel.onIntent(CharactersListIntent.OnSortClicked) },
-            )
-        }
-    ) {
-        CharactersListScreenContent(
-            gridState = gridState,
-            viewState = viewState,
-            onItemClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
-            onRefreshed = { viewModel.onIntent(CharactersListIntent.OnRefreshed) },
-            onScrolled = { viewModel.onIntent(CharactersListIntent.OnScrolled(it)) },
-        )
+    if (!viewState.showBlockingProgress) splashViewModel.requirementDone(SplashViewModel.Requirement.START_SCREEN_DATA_SET_LOADED)
+    val searchViewState by searchViewModel.uiState.collectAsStateWithLifecycle()
+    CharactersListScreenContent(
+        gridState = gridState,
+        viewState = viewState,
+        searchViewState = searchViewState,
+        onSearchClicked = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle) },
+        onSearchQueryChanged = { searchViewModel.onIntent(CharactersSearchIntent.OnSearchQueryChanged(it)) },
+        onFilterClicked = { viewModel.onIntent(CharactersListIntent.OnFilterClicked) },
+        onThemeSelected = { settingsViewModel.onThemeSelected(it) },
+        onCharacterClicked = { viewModel.onIntent(CharactersListIntent.OnCharacterClicked(it)) },
+        onRefreshed = { viewModel.onIntent(CharactersListIntent.OnRefreshed) },
+        onCharactersGridScrolled = { viewModel.onIntent(CharactersListIntent.OnScrolled(it)) },
+        onSearchResultsScrolled = { searchViewModel.onIntent(CharactersSearchIntent.OnScrolled(it)) },
+    )
+
+    BackHandler(searchViewState.isSearching) {
+        searchViewModel.onIntent(CharactersSearchIntent.OnSearchToggle)
     }
 }
 
@@ -73,7 +77,7 @@ private fun CharactersListSideEffectHandler(viewModel: CharactersListViewModel, 
     SideEffectHandler(viewModel) { mviEffect ->
         when (mviEffect) {
             is CharactersListSideEffect.ShowErrorMessage -> {
-                val message = context.getString(R.string.error_unknown)
+                val message = context.getString(R.string.message_error_unknown)
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
 
@@ -86,38 +90,28 @@ private fun CharactersListSideEffectHandler(viewModel: CharactersListViewModel, 
 private fun CharactersListNavEventHandler(viewModel: CharactersListViewModel, router: Router) {
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
+            is CharactersListNavEvent.NavigateToCharactersListFilter -> {
+                val destination = CharactersListFilterDestination(
+                    status = mviNavEvent.filter.statusType,
+                    gender = mviNavEvent.filter.genderType,
+                )
+                router.navigateForResult<CharactersListFilterResult>(destination)?.let { result ->
+                    viewModel.onIntent(
+                        CharactersListIntent.OnFilterApplied(
+                            charactersListFilter = CharactersListFilter(
+                                statusType = result.status,
+                                genderType = result.gender,
+                            ),
+                        )
+                    )
+                }
+            }
+
             is CharactersListNavEvent.NavigateToCharacterDetails -> {
-                router.navigateTo(CharacterDetailsDestination(mviNavEvent.character.id))
+                router.navigateTo(CharacterDetailsDestination(mviNavEvent.character.toCharacterNavArg()))
             }
 
             is CharactersListNavEvent.NavigateBack -> router.back()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CharactersListScreenPreview(@PreviewParameter(provider = ThemePreviewParameterProvider::class) theme: ThemeMode) {
-    RickAndMortyTheme(themeMode = theme) {
-        CustomScaffold(
-            topAppBar = {
-                CharactersListTopAppBar(
-                    onThemeSelected = {},
-                    onSortClicked = {},
-                )
-            }
-        ) {
-            CharactersListScreenContent(
-                viewState = CharactersListViewState(
-                    charactersList = CharactersPreviewMocks.charactersList,
-                    isRefreshing = false,
-                    showProgress = false,
-                ),
-                gridState = rememberLazyGridState(),
-                onItemClicked = {},
-                onRefreshed = {},
-                onScrolled = {},
-            )
         }
     }
 }

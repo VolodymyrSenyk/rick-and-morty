@@ -2,42 +2,65 @@ package com.senyk.rickandmorty.testcase
 
 import com.senyk.rickandmorty.core.base.BaseTestCase
 import com.senyk.rickandmorty.core.base.StepsLogger.step
-import com.senyk.rickandmorty.scenario.characters.CheckCharacterFromListScenario
-import com.senyk.rickandmorty.scenario.characters.CheckCharactersListScenario
-import com.senyk.rickandmorty.scenario.characters.SortCharactersListScenario
+import com.senyk.rickandmorty.scenario.characters.details.CheckCharacterDetailsScenario
+import com.senyk.rickandmorty.scenario.characters.filter.ApplyCharactersListFilterScenario
+import com.senyk.rickandmorty.scenario.characters.filter.CancelCharactersListFilterScenario
+import com.senyk.rickandmorty.scenario.characters.list.CheckCharactersListScenario
+import com.senyk.rickandmorty.scenario.characters.list.OpenCharacterDetailsScenario
+import com.senyk.rickandmorty.scenario.characters.list.OpenCharactersListFilterScenario
+import com.senyk.rickandmorty.scenario.characters.list.OpenCharactersSearchScenario
+import com.senyk.rickandmorty.scenario.characters.search.CheckCharactersListSearchClearingScenario
+import com.senyk.rickandmorty.scenario.characters.search.CheckCharactersListSearchScenario
+import com.senyk.rickandmorty.scenario.characters.search.CloseCharactersListSearchScenario
+import com.senyk.rickandmorty.scenario.system.WaitUntilStartScenario
+import domain.characters.model.GenderType
+import domain.characters.model.StatusType
 import org.junit.Test
 
 class CharactersFeatureTestCase : BaseTestCase() {
 
     @Test
     fun charactersNavigation() {
-        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith", "Abadango Cluster Princess")
+        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith")
         val rickDetails = listOf("Rick Sanchez", "Alive", "Human", "Male", "Earth (C-137)", "Citadel of Ricks")
         val abadangoDetails = listOf("Abadango Cluster Princess", "Alive", "Alien", "Female", "Abadango")
-        step("Check characters list and details navigation") {
+        scenario(WaitUntilStartScenario())
+        step("Check 'Characters List' and 'Character Details' content and navigation") {
             scenario(CheckCharactersListScenario(defaultList))
-            scenario(CheckCharacterFromListScenario(name = rickDetails.first(), content = rickDetails, navigateBackWithSystemButton = true))
-            scenario(CheckCharacterFromListScenario(name = abadangoDetails.first(), content = abadangoDetails))
+            scenario(OpenCharacterDetailsScenario("Rick Sanchez"))
+            scenario(CheckCharacterDetailsScenario(rickDetails))
+            scenario(OpenCharacterDetailsScenario("Abadango Cluster Princess"))
+            scenario(CheckCharacterDetailsScenario(abadangoDetails))
         }
     }
 
     @Test
-    fun charactersSorting() {
-        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith", "Abadango Cluster Princess")
-        val ascendingList = listOf("Abadango Cluster Princess", "Abradolf Lincler", "Adjudicator Rick", "Agency Director")
-        val descendingList = listOf("Summer Smith", "Rick Sanchez", "Morty Smith", "Jerry Smith")
-        step("Check characters list sorting") {
-            step("Check default list without sorting") {
-                scenario(CheckCharactersListScenario(defaultList))
-            }
-            step("Check ascending characters list sorting") {
-                scenario(SortCharactersListScenario())
-                scenario(CheckCharactersListScenario(ascendingList))
-            }
-            step("Check descending characters list sorting") {
-                scenario(SortCharactersListScenario())
-                scenario(CheckCharactersListScenario(descendingList))
-            }
+    fun charactersListSearch() {
+        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith")
+        val searchResultList = listOf("Tickets Please Guy", "Ticktock", "Sticky")
+        scenario(WaitUntilStartScenario())
+        step("Check characters list searching feature") {
+            scenario(OpenCharactersSearchScenario())
+            scenario(CheckCharactersListSearchScenario())
+            scenario(CheckCharactersListSearchScenario("Tick", searchResultList))
+            scenario(CheckCharactersListSearchClearingScenario())
+            scenario(CloseCharactersListSearchScenario())
+            scenario(CheckCharactersListScenario(defaultList))
+        }
+    }
+
+    @Test
+    fun charactersListFiltration() {
+        val defaultList = listOf("Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith")
+        val filteredList = listOf("Summer Smith", "Beth Smith", "Abadango Cluster Princess", "Annie")
+        scenario(WaitUntilStartScenario())
+        step("Check characters list filtration") {
+            scenario(CheckCharactersListScenario(defaultList))
+            scenario(OpenCharactersListFilterScenario())
+            scenario(CancelCharactersListFilterScenario())
+            scenario(OpenCharactersListFilterScenario())
+            scenario(ApplyCharactersListFilterScenario(gender = GenderType.FEMALE, status = StatusType.ALIVE))
+            scenario(CheckCharactersListScenario(filteredList))
         }
     }
 }

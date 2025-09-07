@@ -6,7 +6,7 @@ object Config {
 
         const val applicationId = "com.senyk.rickandmorty"
 
-        const val versionName = "2.0.0"
+        const val versionName = "2.1.0"
         val versionCode = calculateVersionName()
 
         const val minSdkVersion = 26
@@ -21,7 +21,6 @@ object Config {
         const val kotlinComposeCompilerExtension = "1.5.15"
         const val serialization = "1.9.0"
         const val annotation = "1.9.1"
-        const val ktx = "1.17.0"
         const val ksp = "2.2.10-2.0.2"
 
         // Arch components
@@ -79,7 +78,6 @@ object Config {
         const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinLanguage}"
         const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
         const val annotation = "androidx.annotation:annotation:${Versions.annotation}"
-        const val ktx = "androidx.core:core-ktx:${Versions.ktx}"
         const val lifecycle = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
 
         // UI

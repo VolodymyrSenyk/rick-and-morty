@@ -1,37 +1,36 @@
 package com.senyk.rickandmorty
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.senyk.rickandmorty.components.SplashScreen
 import com.senyk.rickandmorty.navigation.RickAndMortyNavHost
 import core.ui.theme.RickAndMortyTheme
+import core.ui.theme.colorscheme.navigationBar
 import core.ui.utils.isUiTestRunning
+import core.ui.utils.setSystemBarsColors
 import dagger.hilt.android.AndroidEntryPoint
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import feature.splash.presentation.viewmodel.SplashViewModel
@@ -41,7 +40,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         setContent {
             MainActivityScreen(splashScreen)
         }
@@ -51,30 +50,25 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MainActivityScreen(splashScreen: SplashScreen) {
     val splashViewModel: SplashViewModel = hiltViewModel()
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
-    val themeMode by settingsViewModel.themeModeFlow.collectAsState()
-    val context = LocalContext.current
-    val isSplashVisible by if (context.isUiTestRunning()) {
-        remember { mutableStateOf(false) }
-    } else {
-        splashViewModel.show.collectAsStateWithLifecycle()
-    }
+    val isSplashVisible by rememberSplashState(splashViewModel)
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
         splashScreen.setKeepOnScreenCondition { isSplashVisible }
     } else if (isSplashVisible) {
         SplashScreen()
     }
 
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
+    val themeMode by settingsViewModel.themeModeFlow.collectAsState()
     themeMode?.let { mode ->
         splashViewModel.requirementDone(SplashViewModel.Requirement.THEME_LOADED)
         RickAndMortyTheme(themeMode = mode) {
-            val statusBarColor = if (isSplashVisible) colorResource(R.color.colorSplashScreen) else MaterialTheme.colorScheme.primary
-            val navigationBarColor = if (isSplashVisible) colorResource(R.color.colorSplashScreen) else Color.Black
-            setSystemBarsColors(statusBarColor = statusBarColor, navBarColor = navigationBarColor, isLight = isSplashVisible)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                setSystemBarsColors(isSplashVisible)
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(statusBarColor)
+                    .background(MaterialTheme.colorScheme.navigationBar)
                     .navigationBarsPadding()
             ) {
                 RickAndMortyNavHost(rootNavController = rememberNavController())
@@ -83,22 +77,24 @@ private fun MainActivityScreen(splashScreen: SplashScreen) {
     }
 }
 
+@Composable
+private fun rememberSplashState(splashViewModel: SplashViewModel): State<Boolean> {
+    val context = LocalContext.current
+    return if (context.isUiTestRunning()) {
+        remember { mutableStateOf(false) }
+    } else {
+        splashViewModel.show.collectAsStateWithLifecycle()
+    }
+}
+
 @SuppressLint("ComposableNaming")
 @Suppress("DEPRECATION")
 @Composable
-internal fun setSystemBarsColors(
-    statusBarColor: Color,
-    navBarColor: Color,
-    isLight: Boolean,
-) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-        (LocalView.current.context as? Activity)?.window?.let { window ->
-            window.statusBarColor = statusBarColor.toArgb()
-            window.navigationBarColor = navBarColor.toArgb()
-            WindowCompat.getInsetsController(window, LocalView.current).apply {
-                isAppearanceLightStatusBars = isLight
-                isAppearanceLightNavigationBars = isLight
-            }
-        }
-    }
+internal fun setSystemBarsColors(isSplashVisible: Boolean) {
+    val splashScreenColor = colorResource(R.color.colorSplashScreen)
+    setSystemBarsColors(
+        statusBarColor = if (isSplashVisible) splashScreenColor else MaterialTheme.colorScheme.primary,
+        navBarColor = if (isSplashVisible) splashScreenColor else MaterialTheme.colorScheme.navigationBar,
+        isLight = isSplashVisible,
+    )
 }

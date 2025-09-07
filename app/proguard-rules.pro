@@ -8,5 +8,4 @@
 ### Safe args arguments
 #####################
 -keepnames class * extends android.os.Parcelable
--keep class kotlinx.serialization.** { *; }
 -keep enum * { *; }

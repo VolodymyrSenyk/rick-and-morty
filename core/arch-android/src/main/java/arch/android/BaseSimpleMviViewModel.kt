@@ -3,16 +3,22 @@ package arch.android
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arch.log.Kermit
+import arch.mvi.DebounceableIntent
 import arch.mvi.MviIntent
 import arch.mvi.MviNavEvent
 import arch.mvi.MviSideEffect
 import arch.mvi.ViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -36,10 +42,12 @@ import kotlinx.coroutines.launch
  * @param I The type representing the [MviIntent]
  * @param E The type representing the [MviSideEffect]
  * @param N The type representing the [MviNavEvent]
+ * @property debounceTimeoutMillis The debounce interval in milliseconds for [DebounceableIntent]s
  * @property initialState The initial UI state of the ViewModel
  * @property flowsBufferCapacity The number of additional intents that can be buffered
  */
 abstract class BaseSimpleMviViewModel<S : ViewState, I : MviIntent, E : MviSideEffect, N : MviNavEvent>(
+    private val debounceTimeoutMillis: Long = DEFAULT_DEBOUNCE_TIMEOUT_MILLIS,
     initialState: S,
     flowsBufferCapacity: Int = DEFAULT_FLOW_BUFFER_CAPACITY,
 ) : ViewModel() {
@@ -91,12 +99,27 @@ abstract class BaseSimpleMviViewModel<S : ViewState, I : MviIntent, E : MviSideE
      * If not provided, a new scope with [Dispatchers.IO] is used.
      * @param coroutineScope The scope in which intents will be collected and executed.
      */
+    @OptIn(FlowPreview::class)
     fun setCoroutineScope(coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)) {
         this.coroutineScope = coroutineScope
         intentFlow
+            .filter { it !is DebounceableIntent }
             .onEach { intent ->
                 try {
                     executeIntent(intent)
+                } catch (throwable: Throwable) {
+                    onError(throwable)
+                }
+            }
+            .launchIn(coroutineScope)
+        intentFlow
+            .filterIsInstance<DebounceableIntent>()
+            .debounce(debounceTimeoutMillis)
+            .distinctUntilChanged()
+            .onEach { intent ->
+                try {
+                    @Suppress("UNCHECKED_CAST")
+                    executeIntent(intent as I)
                 } catch (throwable: Throwable) {
                     onError(throwable)
                 }
@@ -188,5 +211,6 @@ abstract class BaseSimpleMviViewModel<S : ViewState, I : MviIntent, E : MviSideE
 
     companion object {
         private const val DEFAULT_FLOW_BUFFER_CAPACITY = 64
+        private const val DEFAULT_DEBOUNCE_TIMEOUT_MILLIS: Long = 1_500
     }
 }

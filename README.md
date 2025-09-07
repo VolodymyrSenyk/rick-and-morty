@@ -14,7 +14,7 @@ multiple screens with paginated data and detailed content views.
 The project serves as a practical example for building Android applications using
 **Jetpack Compose** and **MVI** architecture. It demonstrates how to structure a multimodular
 codebase, apply **Clean Architecture**, integrate with a public API, handle pagination and maintain
-code quality with static analysis, testing and **CI** tools. Feel free to explore and use!
+code quality with static analysis, testing and **CI** tools.
 
 ## Features
 
@@ -25,19 +25,43 @@ code quality with static analysis, testing and **CI** tools. Feel free to explor
 - [Hilt](https://dagger.dev/hilt/)
 - Kotlin Coroutines
 - [Retrofit](https://github.com/square/retrofit) + [OkHttp](https://github.com/square/okhttp)
-- Material Design 3
-- Day/Night theme
-- Android 12+ SplashScreen
-- Portrait/Landscape orientation
 - Jetpack Compose
-- Single-activity architecture + Jetpack Compose Navigation
+- Jetpack Compose Navigation + Single Activity Architecture
+- Material Design 3
+- Shared Element Transitions
 - [Coil](https://github.com/coil-kt/coil)
 - [Kermit](https://github.com/touchlab/Kermit)
-- [Detekt](https://github.com/detekt/detekt), [Gradle Doctor](https://github.com/runningcode/gradle-doctor), [StrictMode](https://developer.android.com/reference/android/os/StrictMode), [LeakCanary](https://square.github.io/leakcanary/), [JaCoCo](https://www.eclemma.org/jacoco/)
+- [StrictMode](https://developer.android.com/reference/android/os/StrictMode)
+- [LeakCanary](https://square.github.io/leakcanary/)
+- [Detekt](https://github.com/detekt/detekt)
+- [Gradle Doctor](https://github.com/runningcode/gradle-doctor)
+- [JaCoCo](https://www.eclemma.org/jacoco/)
 - [SonarQube](https://www.sonarsource.com/products/sonarqube/)
 - [GitHub Actions CI](https://github.com/features/actions)
-- JUnit 5 + [MockK](https://mockk.io/)
-- Jetpack Compose e2e UI Testing
+- [JUnit 5](https://junit.org/) + [MockK](https://mockk.io/)
+- Jetpack Compose Testing + Robot Pattern
+
+## Demo
+
+### App core functionality
+
+<img src="/gifs/core.gif" width="25%" alt="Core Demo"/>
+
+### Dynamic theme changing
+
+<img src="/gifs/theme.gif" width="25%" alt="Theme Demo"/>
+
+### Filter
+
+<img src="/gifs/filter.gif"  width="25%" alt="Filter Demo"/>
+
+### Search
+
+<img src="/gifs/search.gif" width="25%" alt="Search Demo"/>
+
+## Download APK
+
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://github.com/VolodymyrSenyk/rick-and-morty/releases/latest)
 
 ## Usage
 

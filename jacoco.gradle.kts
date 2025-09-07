@@ -1,59 +1,3 @@
-val testCoverageExclusions = listOf(
-    "**/AndroidManifest.xml",
-    "**/R.class",
-    "**/R\$*.class",
-    "**/BR.class",
-    "**/BuildConfig.class",
-    "**/DataBindingTriggerClass.class",
-    "**/*Kt.class",
-    "**/*Kt\$*.class",
-    "**/*Impl.class",
-    "**/*Impl\$*.class",
-    "**/*Test.class",
-    "**/*Test\$*.class",
-    "**/*TestSource.class",
-
-    "**/*App.*",
-    "**/*Activity.*",
-    "**/*Activity\$*.*",
-
-    "**/hilt*/**",
-    "**/*Hilt*",
-    "**/*_Factory*",
-
-    "**/di/**",
-    "**/data/**",
-    "**/datasource/**",
-    "**/repository/**",
-    "**/usecase/**",
-    "**/arch/**",
-    "**/core/**",
-    "**/base/**",
-    "**/extension*/**",
-    "**/util/**",
-    "**/utils/**",
-    "**/handler*/**",
-    "**/navigation/**",
-    "**/entity/**",
-    "**/model/**",
-    "**/mvi/**",
-
-    "**/composable/**",
-    "**/component*/**",
-    "**/preview/**",
-    "**/theme/**",
-    "**/theme/icons/**",
-
-    "**/*Screen.kt",
-    "**/*Dialog.kt",
-    "**/*UseCase.kt",
-    "**/*Repository.kt",
-    "**/*Dao.kt",
-    "**/*Api.kt",
-)
-
-extra["testCoverageExclusions"] = testCoverageExclusions
-
 tasks.register("codeCoverageTests") {
     group = "reporting"
     description = "Run unit tests for JaCoCo code coverage report creating."
@@ -77,7 +21,7 @@ tasks.register("codeCoverageReport") {
 
 tasks.register<JacocoReport>("mergeJacocoReports") {
     group = "reporting"
-    description = "Merge JaCoCo code coverage reports."
+    description = "Merge JaCoCo code coverage reports for ViewModel classes."
 
     reports {
         xml.required.set(true)
@@ -86,13 +30,23 @@ tasks.register<JacocoReport>("mergeJacocoReports") {
         html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/aggregate/html"))
     }
     sourceDirectories.setFrom(subprojects.flatMap { listOf(it.layout.projectDirectory.dir("src/main")) })
-    classDirectories.setFrom(files(subprojects.flatMap {
-        listOf(
-            fileTree(it.layout.buildDirectory.dir("intermediates/javac")) { exclude(testCoverageExclusions) },
-            fileTree(it.layout.buildDirectory.dir("/tmp/kotlin-classes")) { exclude(testCoverageExclusions) }
+    classDirectories.setFrom(
+        files(
+            subprojects.flatMap {
+                listOf(
+                    fileTree(it.layout.buildDirectory.dir("intermediates/javac")) {
+                        include("**/*ViewModel.class")
+                        exclude("**/Base*.class")
+                    },
+                    fileTree(it.layout.buildDirectory.dir("/tmp/kotlin-classes")) {
+                        include("**/*ViewModel.class")
+                        exclude("**/Base*.class")
+                    }
+                )
+            }
         )
-    }))
-    executionData.setFrom(files(subprojects.flatMap {
-        listOf(fileTree(it.layout.buildDirectory) { include("**/*.exec") })
-    }))
+    )
+    executionData.setFrom(
+        files(subprojects.flatMap { listOf(fileTree(it.layout.buildDirectory) { include("**/*.exec") }) })
+    )
 }

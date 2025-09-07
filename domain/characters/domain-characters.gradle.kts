@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
+    api(project(":domain:characters:api"))
     implementation(Config.Libs.inject)
 }

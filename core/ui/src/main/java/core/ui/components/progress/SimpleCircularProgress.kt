@@ -1,51 +1,64 @@
 package core.ui.components.progress
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
+import core.ui.preview.TrueFalsePreviewParameterProvider
+import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun SimpleCircularProgress(
     modifier: Modifier = Modifier,
-    visible: Boolean,
-    blocking: Boolean = true,
-    indicatorColor: Color = MaterialTheme.colorScheme.onPrimary,
+    blocking: Boolean = false,
+    backgroundColor: Color = if (blocking) Color.Black.copy(alpha = 0.3f) else Color.Transparent,
+    indicatorColor: Color = MaterialTheme.colorScheme.secondary,
+    indicatorAlignment: Alignment = Alignment.Center,
+    indicatorPadding: Dp = Dimens.Padding.Big,
 ) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn() + scaleIn(initialScale = 0.95f),
-        exit = fadeOut() + scaleOut(targetScale = 0.95f)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = backgroundColor)
+            .clickable(enabled = blocking, onClick = {})
+            .zIndex(3f),
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = modifier
-                .fillMaxSize()
-                .clickable(enabled = blocking, onClick = {})
-                .zIndex(1f),
-        ) {
-            CircularProgressIndicator(color = indicatorColor)
+        val progressModifier = Modifier
+            .align(indicatorAlignment)
+            .padding(indicatorPadding)
+        if (LocalInspectionMode.current) {
+            CircularProgressIndicator(
+                color = indicatorColor,
+                progress = { 0.5f },
+                modifier = progressModifier
+            )
+        } else {
+            CircularProgressIndicator(
+                color = indicatorColor,
+                modifier = progressModifier
+            )
         }
     }
 }
 
 @Preview
 @Composable
-private fun SimpleCircularProgressPreview() {
+private fun SimpleCircularProgressPreview(@PreviewParameter(TrueFalsePreviewParameterProvider::class) blocking: Boolean) {
     RickAndMortyTheme {
-        SimpleCircularProgress(visible = true)
+        SimpleCircularProgress(blocking = blocking)
     }
 }
