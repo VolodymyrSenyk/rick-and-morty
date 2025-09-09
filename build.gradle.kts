@@ -49,6 +49,12 @@ buildscript {
 subprojects {
     project.plugins.configure(project)
     apply(plugin = "jacoco")
+    plugins.withId("com.android.library") {
+        apply(plugin = "maven-publish")
+    }
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        apply(plugin = "maven-publish")
+    }
 
     buildscript {
         apply(from = rootProject.file("repositories.gradle.kts"))
@@ -76,6 +82,7 @@ fun PluginContainer.configure(project: Project) {
         when (this) {
             is AppPlugin -> project.extensions.getByType<AppExtension>().applyCommons()
             is LibraryPlugin -> project.extensions.getByType<LibraryExtension>().applyCommons()
+            is MavenPublishPlugin -> project.configurePublishing()
         }
     }
 }
@@ -100,6 +107,7 @@ fun AppExtension.applyCommons() {
         compose = true
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = Config.Versions.kotlinComposeCompilerExtension
     }
@@ -124,6 +132,41 @@ fun LibraryExtension.applyCommons() {
 
     buildFeatures.apply {
         buildConfig = true
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
+
+fun Project.configurePublishing() {
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/VolodymyrSenyk/rick-and-morty")
+                credentials {
+                    username = project.findProperty("gpr.user") as? String ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as? String ?: System.getenv("TOKEN")
+                }
+            }
+        }
+        publications {
+            register<MavenPublication>("gpr") {
+                groupId = "com.github.VolodymyrSenyk"
+                artifactId = project.path.removePrefix(":").replace(":", "-")
+                version = Config.Android.versionName
+                afterEvaluate {
+                    if (project.plugins.hasPlugin("com.android.library")) {
+                        from(components["release"])
+                    } else {
+                        from(components["java"])
+                    }
+                }
+            }
+        }
     }
 }
 
