@@ -192,3 +192,9 @@ jobs:
           files: app/build/outputs/apk/prod/release/${{ env.RELEASE_FILE_NAME }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Artifacts to GitHub Packages
+        run: ./gradlew publish
+        env:
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}

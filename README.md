@@ -65,10 +65,107 @@ code quality with static analysis, testing and **CI** tools.
 
 ## Usage
 
-Clone this repository
+## Clone and Explore
 
-```
+1. Clone this repository
+
+```bash
 git clone https://github.com/VolodymyrSenyk/rick-and-morty.git
+```
+
+2. Add your `keystore` files
+3. Create a `Secret.kt` file and place it next to `Config.kt`
+
+```kotlin
+object Secret {
+
+    object SignIn {
+
+        const val debugKeyStoreFile = "../YOUR_DEBUG_KEYSTORE_FILE"
+        const val debugKeyStorePassword = "YOUR_DEBUG_KEYSTORE_PASSWORD"
+        const val debugKeyAlias = "YOUR_DEBUG_KEY_ALIAS"
+        const val debugKeyPassword = "YOUR_DEBUG_KEY_PASSWORD"
+
+        const val releaseKeyStoreFile = "../YOUR_RELEASE_KEYSTORE_FILE"
+        const val releaseKeyStorePassword = "YOUR_RELEASE_KEYSTORE_PASSWORD"
+        const val releaseKeyAlias = "YOUR_RELEASE_KEY_ALIAS"
+        const val releaseKeyPassword = "YOUR_RELEASE_KEY_PASSWORD"
+    }
+
+    object SonarQube {
+        const val token = "YOUR_SONAR_QUBE_TOKEN_FOR_CURRENT_PROJECT" // if you want to use SonarQube
+    }
+}
+```
+
+### Use as Template
+
+1. Click [![Use this template](https://img.shields.io/badge/-Use%20this%20template-brightgreen)](https://github.com/VolodymyrSenyk/rick-and-morty/generate)
+2. Replace `applicationId` and `versionName` in `Config.kt` with your values
+3. Add your `keystore` files
+4. Create a `Secret.kt` file and place it next to `Config.kt`
+
+```kotlin
+object Secret {
+
+    object SignIn {
+
+        const val debugKeyStoreFile = "../YOUR_DEBUG_KEYSTORE_FILE"
+        const val debugKeyStorePassword = "YOUR_DEBUG_KEYSTORE_PASSWORD"
+        const val debugKeyAlias = "YOUR_DEBUG_KEY_ALIAS"
+        const val debugKeyPassword = "YOUR_DEBUG_KEY_PASSWORD"
+
+        const val releaseKeyStoreFile = "../YOUR_RELEASE_KEYSTORE_FILE"
+        const val releaseKeyStorePassword = "YOUR_RELEASE_KEYSTORE_PASSWORD"
+        const val releaseKeyAlias = "YOUR_RELEASE_KEY_ALIAS"
+        const val releaseKeyPassword = "YOUR_RELEASE_KEY_PASSWORD"
+    }
+
+    object SonarQube {
+        const val token = "YOUR_SONAR_QUBE_TOKEN_FOR_CURRENT_PROJECT" // if you want to use SonarQube
+    }
+}
+```
+
+## Use as Library (via GitHub Packages)
+
+You can import all modules except `app` module into your project.
+**Note:** this project uses concise, non-branded package namespaces (e.g. `core-arch`, `core.ui`,
+`feature.settings.presentation`).
+
+1. Add the following code to your `settings.gradle.kts`
+
+```kotlin
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/VolodymyrSenyk/rick-and-morty")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+```
+
+2. Add your credentials to the global `gradle.properties` file
+
+```txt
+gpr.user=YOUR_USERNAME
+gpr.key=YOUR_PERSONAL_ACCESS_TOKEN_WITH_PACKAGES_READ_PERMISSION
+```
+
+3. Import the required modules, for example:
+
+```kotlin
+val senykLibraryVersion = "2.1.1" // check latest version in Releases
+
+dependencies {
+    implementation("com.github.VolodymyrSenyk:core-arch:$senykLibraryVersion")
+    implementation("com.github.VolodymyrSenyk:core-arch-android:$senykLibraryVersion")
+    implementation("com.github.VolodymyrSenyk:domain-settings-api:$senykLibraryVersion")
+    implementation("com.github.VolodymyrSenyk:domain-settings:$senykLibraryVersion")
+    implementation("com.github.VolodymyrSenyk:feature-settings-presentation:$senykLibraryVersion")
+}
 ```
 
 ## License
