@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import core.ui.components.dialog.model.DialogButtonData
+import core.ui.model.DialogButtonData
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme

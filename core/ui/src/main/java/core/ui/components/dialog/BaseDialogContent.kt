@@ -19,10 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import core.ui.components.dialog.model.DialogButtonData
 import core.ui.components.dialog.parts.BaseDialogButtonsRow
 import core.ui.components.dialog.parts.BaseDialogMessage
 import core.ui.components.dialog.parts.BaseDialogTitle
+import core.ui.model.DialogButtonData
 import core.ui.preview.ThemePreviewParameterProvider
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme

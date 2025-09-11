@@ -1,4 +1,4 @@
-package core.ui.components.dialog.model
+package core.ui.model
 
 import androidx.compose.runtime.Immutable
 

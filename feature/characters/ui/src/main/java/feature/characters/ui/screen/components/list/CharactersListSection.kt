@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.senyk.rickandmorty.feature.characters.ui.R
-import core.ui.animation.visibility.FadeAnimatedVisibility
-import core.ui.animation.visibility.ScaleAnimatedVisibility
+import core.ui.animations.visibility.FadeAnimatedVisibility
+import core.ui.animations.visibility.ScaleAnimatedVisibility
 import core.ui.components.emptystate.SimpleEmptyState
 import core.ui.components.progress.SimpleCircularProgress
 import core.ui.theme.RickAndMortyTheme

@@ -1,4 +1,4 @@
-package core.ui.animation.visibility
+package core.ui.animations.visibility
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope

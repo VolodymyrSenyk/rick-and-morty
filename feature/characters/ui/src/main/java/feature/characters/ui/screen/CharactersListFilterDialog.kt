@@ -11,9 +11,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.components.dialog.BaseDialogContent
-import core.ui.components.dialog.model.DialogButtonData
 import core.ui.components.dialog.parts.BaseDialogButtonsRow
 import core.ui.components.dropdown.SimpleDropdown
+import core.ui.model.DialogButtonData
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 import domain.characters.model.GenderType
