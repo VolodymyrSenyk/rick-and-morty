@@ -6,7 +6,7 @@ object Config {
 
         const val applicationId = "com.senyk.rickandmorty"
 
-        const val versionName = "2.1.1"
+        const val versionName = "2.2.0"
         val versionCode = calculateVersionName()
 
         const val minSdkVersion = 26
