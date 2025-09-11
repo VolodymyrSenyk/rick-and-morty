@@ -2,7 +2,7 @@
 
 object Config {
 
-    object Android {
+    object General {
 
         const val applicationId = "com.senyk.rickandmorty"
 
@@ -145,7 +145,7 @@ object Config {
     }
 
     private fun calculateVersionName(): Int {
-        val parts = Android.versionName.split(".")
+        val parts = General.versionName.split(".")
         val v1 = Integer.parseInt(parts[0])
         val v2 = Integer.parseInt(parts[1])
         val v3 = Integer.parseInt(parts[2])

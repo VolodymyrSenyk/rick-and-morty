@@ -5,8 +5,8 @@ import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.utils.findIconButton
 import com.senyk.rickandmorty.core.utils.findProgressBar
 import com.senyk.rickandmorty.core.utils.findText
-import feature.characters.ui.R
-import core.ui.R as CoreR
+import com.senyk.rickandmorty.feature.characters.ui.R
+import com.senyk.rickandmorty.core.ui.R as CoreR
 
 class CharactersListScreen<A : ComponentActivity>(composeTestRule: ActivityComposeTestRule<A>) {
 

@@ -7,10 +7,10 @@ plugins {
 }
 
 android {
-    namespace = Config.Android.applicationId
+    namespace = Config.General.applicationId
 
     defaultConfig {
-        applicationId = Config.Android.applicationId
+        applicationId = Config.General.applicationId
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
         testBuildType = "uitest"

@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.utils.NavEventHandler
 import core.ui.utils.SideEffectHandler
 import feature.characters.presentation.model.CharacterUi
@@ -13,7 +14,6 @@ import feature.characters.presentation.viewmodel.CharacterDetailsViewModel
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsIntent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsSideEffect
-import feature.characters.ui.R
 import feature.characters.ui.screen.components.details.CharacterDetailsScreenContent
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import navigation.compose.router.Router

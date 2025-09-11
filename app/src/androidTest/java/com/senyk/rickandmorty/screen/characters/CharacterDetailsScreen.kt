@@ -4,7 +4,7 @@ import androidx.activity.ComponentActivity
 import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.utils.findIconButton
 import com.senyk.rickandmorty.core.utils.findProgressBar
-import core.ui.R
+import com.senyk.rickandmorty.core.ui.R
 
 class CharacterDetailsScreen<A : ComponentActivity>(composeTestRule: ActivityComposeTestRule<A>) {
 

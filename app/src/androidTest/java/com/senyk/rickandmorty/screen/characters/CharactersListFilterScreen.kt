@@ -4,8 +4,8 @@ import androidx.activity.ComponentActivity
 import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.utils.findText
 import com.senyk.rickandmorty.core.utils.findTextButton
-import feature.characters.ui.R
-import core.ui.R as CoreR
+import com.senyk.rickandmorty.feature.characters.ui.R
+import com.senyk.rickandmorty.core.ui.R as CoreR
 
 class CharactersListFilterScreen<A : ComponentActivity>(composeTestRule: ActivityComposeTestRule<A>) {
 

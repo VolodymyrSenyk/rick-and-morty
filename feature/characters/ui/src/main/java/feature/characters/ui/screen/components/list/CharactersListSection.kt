@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.animation.visibility.FadeAnimatedVisibility
 import core.ui.animation.visibility.ScaleAnimatedVisibility
 import core.ui.components.emptystate.SimpleEmptyState
@@ -21,7 +22,6 @@ import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.widthWithCoef
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.list.CharactersListViewState
-import feature.characters.ui.R
 import feature.characters.ui.screen.components.list.grid.CharactersGrid
 import feature.characters.ui.screen.preview.CharactersListPreviewParameterProvider
 

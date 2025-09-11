@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "data.network"
+    namespace = Config.General.applicationId + ".data.network"
 }
 
 dependencies {

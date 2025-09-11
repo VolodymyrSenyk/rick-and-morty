@@ -88,13 +88,13 @@ fun PluginContainer.configure(project: Project) {
 }
 
 fun AppExtension.applyCommons() {
-    compileSdkVersion(Config.Android.targetSdkVersion)
+    compileSdkVersion(Config.General.targetSdkVersion)
 
     defaultConfig.apply {
-        minSdk = Config.Android.minSdkVersion
-        targetSdk = Config.Android.targetSdkVersion
-        versionCode = Config.Android.versionCode
-        versionName = Config.Android.versionName
+        minSdk = Config.General.minSdkVersion
+        targetSdk = Config.General.targetSdkVersion
+        versionCode = Config.General.versionCode
+        versionName = Config.General.versionName
     }
 
     compileOptions.apply {
@@ -114,13 +114,13 @@ fun AppExtension.applyCommons() {
 }
 
 fun LibraryExtension.applyCommons() {
-    compileSdk = Config.Android.targetSdkVersion
+    compileSdk = Config.General.targetSdkVersion
 
     defaultConfig.apply {
-        minSdk = Config.Android.minSdkVersion
-        targetSdk = Config.Android.targetSdkVersion
-        versionCode = Config.Android.versionCode
-        versionName = Config.Android.versionName
+        minSdk = Config.General.minSdkVersion
+        targetSdk = Config.General.targetSdkVersion
+        versionCode = Config.General.versionCode
+        versionName = Config.General.versionName
 
         consumerProguardFiles("proguard-rules.pro")
     }
@@ -157,7 +157,7 @@ fun Project.configurePublishing() {
             register<MavenPublication>("gpr") {
                 groupId = "com.github.VolodymyrSenyk"
                 artifactId = project.path.removePrefix(":").replace(":", "-")
-                version = Config.Android.versionName
+                version = Config.General.versionName
                 afterEvaluate {
                     if (project.plugins.hasPlugin("com.android.library")) {
                         from(components["release"])
@@ -224,7 +224,7 @@ sonarqube {
     properties {
         property("sonar.projectName", "RickAndMorty")
         property("sonar.projectKey", "RickAndMorty")
-        property("sonar.projectVersion", Config.Android.versionName)
+        property("sonar.projectVersion", Config.General.versionName)
         property("sonar.host.url", "http://localhost:9000")
         property("sonar.token", Secret.SonarQube.token)
 

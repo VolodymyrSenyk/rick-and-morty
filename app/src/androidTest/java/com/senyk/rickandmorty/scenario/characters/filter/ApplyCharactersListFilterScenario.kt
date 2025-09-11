@@ -6,10 +6,10 @@ import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.core.utils.findText
+import com.senyk.rickandmorty.feature.characters.ui.R
 import com.senyk.rickandmorty.screen.characters.CharactersListFilterScreen
 import domain.characters.model.GenderType
 import domain.characters.model.StatusType
-import feature.characters.ui.R
 
 class ApplyCharactersListFilterScenario<A : ComponentActivity>(
     private val status: StatusType? = null,

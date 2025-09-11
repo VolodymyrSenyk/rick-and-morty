@@ -11,8 +11,8 @@ import com.senyk.rickandmorty.core.utils.findListItemByIndex
 import com.senyk.rickandmorty.core.utils.findText
 import com.senyk.rickandmorty.core.utils.waitUntilDisplaying
 import com.senyk.rickandmorty.core.utils.waitUntilHiding
+import com.senyk.rickandmorty.feature.characters.ui.R
 import com.senyk.rickandmorty.screen.characters.CharactersListSearchScreen
-import feature.characters.ui.R
 
 class CheckCharactersListSearchScenario<A : ComponentActivity>(
     private val searchQuery: String = "",

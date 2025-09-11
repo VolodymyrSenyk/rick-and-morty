@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.components.dialog.BaseDialogContent
 import core.ui.components.dialog.model.DialogButtonData
 import core.ui.components.dialog.parts.BaseDialogButtonsRow
@@ -18,10 +19,9 @@ import core.ui.theme.RickAndMortyTheme
 import domain.characters.model.GenderType
 import domain.characters.model.StatusType
 import feature.characters.navigation.result.CharactersListFilterResult
-import feature.characters.ui.R
 import navigation.compose.router.Router
 import navigation.compose.router.RouterStub
-import core.ui.R as CoreR
+import com.senyk.rickandmorty.core.ui.R as CoreR
 
 @Composable
 internal fun CharactersListFilterDialog(

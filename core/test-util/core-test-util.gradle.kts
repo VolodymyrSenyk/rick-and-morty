@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "testutil"
+    namespace = Config.General.applicationId + ".testutil"
 }
 
 dependencies {

@@ -6,8 +6,8 @@ import com.senyk.rickandmorty.core.base.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.base.BaseScenario
 import com.senyk.rickandmorty.core.base.StepsLogger.step
 import com.senyk.rickandmorty.core.utils.findText
+import com.senyk.rickandmorty.feature.characters.ui.R
 import com.senyk.rickandmorty.screen.characters.CharactersListFilterScreen
-import feature.characters.ui.R
 
 class CancelCharactersListFilterScenario<A : ComponentActivity> : BaseScenario<A>() {
 

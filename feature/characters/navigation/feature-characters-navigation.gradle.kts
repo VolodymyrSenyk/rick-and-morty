@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "feature.characters.navigation"
+    namespace = Config.General.applicationId + ".feature.characters.navigation"
 }
 
 dependencies {

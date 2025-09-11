@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "arch.android"
+    namespace = Config.General.applicationId + ".arch.android"
 }
 
 dependencies {
