@@ -2,13 +2,13 @@ package app.scenario.characters.details
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.performClick
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.findText
-import app.core.utils.waitUntilDisplaying
-import app.core.utils.waitUntilHiding
 import app.screen.characters.CharacterDetailsScreen
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.findText
+import uitestutil.compose.scenario.ActivityComposeTestRule
+import uitestutil.compose.scenario.BaseScenario
+import uitestutil.compose.waitUntilDisplaying
+import uitestutil.compose.waitUntilHiding
 
 class CheckCharacterDetailsScenario<A : ComponentActivity>(
     private val contentToCheck: List<String>,

@@ -1,11 +1,11 @@
 package app.screen.characters
 
 import androidx.activity.ComponentActivity
-import app.core.base.ActivityComposeTestRule
-import app.core.utils.findIconButton
-import app.core.utils.findProgressBar
-import app.core.utils.findText
 import com.senyk.rickandmorty.feature.characters.ui.R
+import uitestutil.compose.findIconButton
+import uitestutil.compose.findProgressBar
+import uitestutil.compose.findText
+import uitestutil.compose.scenario.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.ui.R as CoreR
 
 class CharactersListSearchScreen<A : ComponentActivity>(composeTestRule: ActivityComposeTestRule<A>) {

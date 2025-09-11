@@ -3,14 +3,14 @@ package app.scenario.characters.list
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.performClick
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.findListItemByText
-import app.core.utils.findText
-import app.core.utils.waitUntilDisplaying
-import app.core.utils.waitUntilHiding
 import app.screen.characters.CharactersListScreen
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.findListItemByText
+import uitestutil.compose.findText
+import uitestutil.compose.scenario.ActivityComposeTestRule
+import uitestutil.compose.scenario.BaseScenario
+import uitestutil.compose.waitUntilDisplaying
+import uitestutil.compose.waitUntilHiding
 
 class OpenCharacterDetailsScenario<A : ComponentActivity>(
     private val characterName: String,

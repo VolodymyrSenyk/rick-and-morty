@@ -1,10 +1,8 @@
-package app.scenario.system
+package uitestutil.compose.scenario
 
 import androidx.activity.ComponentActivity
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.pressDeviceBackButton
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.pressDeviceBackButton
 
 class PressDeviceBackButtonScenario<A : ComponentActivity> : BaseScenario<A>() {
 

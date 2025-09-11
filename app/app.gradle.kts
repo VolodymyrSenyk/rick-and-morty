@@ -114,10 +114,7 @@ dependencies {
 
     debugImplementation(Config.Libs.leakCanary)
 
-    androidTestImplementation(Config.Libs.uiautomator)
-    androidTestImplementation(platform(Config.Libs.composeBom))
-    androidTestImplementation(Config.Libs.composeUiTest)
-    androidTestImplementation(Config.Libs.composeUiTestJUnit)
+    androidTestImplementation(project(":core:ui-test-util-compose"))
     debugImplementation(Config.Libs.composeUiTestManifest)
     androidTestUtil(Config.Libs.testOrchestrator)
 }

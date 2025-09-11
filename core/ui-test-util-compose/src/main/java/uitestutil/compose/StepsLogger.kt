@@ -1,8 +1,7 @@
-package app.core.base
+package uitestutil.compose
 
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.printToLog
-import app.core.utils.currentSemanticsTree
 import arch.log.Kermit
 import java.util.Stack
 

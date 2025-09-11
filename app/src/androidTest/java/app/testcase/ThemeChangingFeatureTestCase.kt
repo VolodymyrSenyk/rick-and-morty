@@ -1,14 +1,13 @@
 package app.testcase
 
-import app.core.base.BaseTestCase
-import app.core.base.StepsLogger.step
-import app.scenario.system.ReopenAppScenario
-import app.scenario.system.WaitUntilStartScenario
+import app.scenario.characters.list.WaitUntilStartScenario
 import app.scenario.theme.change.ChangeThemeOnCharacterDetailsScenario
 import app.scenario.theme.change.ChangeThemeOnCharactersListScenario
 import app.scenario.theme.check.CheckThemeOnCharacterDetailsScenario
 import app.scenario.theme.check.CheckThemeOnCharactersListScenario
 import org.junit.Test
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.scenario.ReopenAppScenario
 
 class ThemeChangingFeatureTestCase : BaseTestCase() {
 

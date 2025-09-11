@@ -1,11 +1,11 @@
-package app.scenario.system
+package app.scenario.characters.list
 
 import androidx.activity.ComponentActivity
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.waitUntilDisplaying
 import app.screen.characters.CharactersListScreen
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.scenario.ActivityComposeTestRule
+import uitestutil.compose.scenario.BaseScenario
+import uitestutil.compose.waitUntilDisplaying
 
 class WaitUntilStartScenario<A : ComponentActivity> : BaseScenario<A>() {
 

@@ -7,5 +7,7 @@
         <ID>TooGenericExceptionCaught:BaseCoroutinesViewModel.kt$BaseCoroutinesViewModel$throwable: Throwable</ID>
         <ID>ThrowingExceptionsWithoutMessageOrCause:Kermit.kt$Kermit$Throwable()</ID>
         <ID>NestedBlockDepth:StepsLogger.kt$StepsLogger$fun step(text: String, actions: () -> Unit)</ID>
+		<ID>TooGenericExceptionCaught:StepsLogger.kt$StepsLogger$error: Throwable</ID>
+        <ID>TooGenericExceptionCaught:StepsLogger.kt$StepsLogger$treeError: Throwable</ID>
     </ManuallySuppressedIssues>
 </SmellBaseline>

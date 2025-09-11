@@ -1,10 +1,10 @@
 package app.screen.characters
 
 import androidx.activity.ComponentActivity
-import app.core.base.ActivityComposeTestRule
-import app.core.utils.findText
-import app.core.utils.findTextButton
 import com.senyk.rickandmorty.feature.characters.ui.R
+import uitestutil.compose.findText
+import uitestutil.compose.findTextButton
+import uitestutil.compose.scenario.ActivityComposeTestRule
 import com.senyk.rickandmorty.core.ui.R as CoreR
 
 class CharactersListFilterScreen<A : ComponentActivity>(composeTestRule: ActivityComposeTestRule<A>) {

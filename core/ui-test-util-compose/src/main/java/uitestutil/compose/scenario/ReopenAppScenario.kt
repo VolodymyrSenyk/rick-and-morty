@@ -1,14 +1,12 @@
-package app.scenario.system
+package uitestutil.compose.scenario
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.getTargetContext
-import app.core.utils.getUiDevice
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.getTargetContext
+import uitestutil.compose.getUiDevice
 
 class ReopenAppScenario<A : ComponentActivity> : BaseScenario<A>() {
 

@@ -2,10 +2,10 @@ package app.scenario.characters.list
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.performClick
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
 import app.screen.characters.CharactersListScreen
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.scenario.ActivityComposeTestRule
+import uitestutil.compose.scenario.BaseScenario
 
 class OpenCharactersSearchScenario<A : ComponentActivity> : BaseScenario<A>() {
 

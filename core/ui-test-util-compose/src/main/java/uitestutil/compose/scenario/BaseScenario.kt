@@ -1,4 +1,4 @@
-package app.core.base
+package uitestutil.compose.scenario
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule

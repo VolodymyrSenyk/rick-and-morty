@@ -1,4 +1,4 @@
-package app.core.utils
+package uitestutil.compose
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasAnyChild
@@ -35,10 +35,10 @@ fun ComposeTestRule.currentSemanticsTree(): SemanticsNodeInteraction = dialog() 
  * Waits until the given [node] is no longer displayed on the screen.
  *
  * @param node The node to wait for hiding.
- * @throws AssertionError if the node is still visible after the timeout (5 seconds).
+ * @throws AssertionError if the node is still visible after the timeout.
  */
 fun ComposeTestRule.waitUntilHiding(node: SemanticsNodeInteraction) {
-    waitUntil(5_000L) {
+    waitUntil(WAIT_TIME_MILLIS) {
         node.isNotDisplayed()
     }
 }
@@ -47,10 +47,19 @@ fun ComposeTestRule.waitUntilHiding(node: SemanticsNodeInteraction) {
  * Waits until the given [node] is displayed on the screen.
  *
  * @param node The node to wait for displaying.
- * @throws AssertionError if the node is still not visible after the timeout (10 seconds).
+ * @throws AssertionError if the node is still not visible after the timeout.
  */
 fun ComposeTestRule.waitUntilDisplaying(node: SemanticsNodeInteraction) {
-    waitUntil(10_000L) {
+    waitUntil(WAIT_TIME_MILLIS) {
         node.isDisplayed()
     }
 }
+
+/**
+ * Timeout in milliseconds used for waiting in UI tests.
+ *
+ * A large value is chosen to ensure stability in CI environments,
+ * where tests may run slower. For local test runs, this value can
+ * be reduced to speed up execution.
+ */
+private val WAIT_TIME_MILLIS = if (System.getenv("CI") == "true") 60_000L else 5_000L

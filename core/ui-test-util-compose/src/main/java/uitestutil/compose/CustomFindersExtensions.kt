@@ -1,4 +1,4 @@
-package app.core.utils
+package uitestutil.compose
 
 import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
@@ -16,7 +16,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEditable
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onChildren
-import app.core.base.ActivityComposeTestRule
+import uitestutil.compose.scenario.ActivityComposeTestRule
 
 /**
  * Returns a localized string from the activity under test.

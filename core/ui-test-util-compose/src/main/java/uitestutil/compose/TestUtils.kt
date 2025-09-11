@@ -1,4 +1,4 @@
-package app.core.utils
+package uitestutil.compose
 
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry

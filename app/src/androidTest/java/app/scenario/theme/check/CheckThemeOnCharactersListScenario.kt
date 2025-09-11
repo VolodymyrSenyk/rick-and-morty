@@ -1,11 +1,11 @@
 package app.scenario.theme.check
 
 import androidx.activity.ComponentActivity
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.waitUntilDisplaying
 import app.screen.characters.CharactersListScreen
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.scenario.ActivityComposeTestRule
+import uitestutil.compose.scenario.BaseScenario
+import uitestutil.compose.waitUntilDisplaying
 
 class CheckThemeOnCharactersListScenario<A : ComponentActivity>(
     private val isDayTheme: Boolean,

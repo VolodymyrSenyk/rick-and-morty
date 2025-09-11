@@ -1,7 +1,5 @@
 package app.testcase
 
-import app.core.base.BaseTestCase
-import app.core.base.StepsLogger.step
 import app.scenario.characters.details.CheckCharacterDetailsScenario
 import app.scenario.characters.filter.ApplyCharactersListFilterScenario
 import app.scenario.characters.filter.CancelCharactersListFilterScenario
@@ -9,13 +7,14 @@ import app.scenario.characters.list.CheckCharactersListScenario
 import app.scenario.characters.list.OpenCharacterDetailsScenario
 import app.scenario.characters.list.OpenCharactersListFilterScenario
 import app.scenario.characters.list.OpenCharactersSearchScenario
+import app.scenario.characters.list.WaitUntilStartScenario
 import app.scenario.characters.search.CheckCharactersListSearchClearingScenario
 import app.scenario.characters.search.CheckCharactersListSearchScenario
 import app.scenario.characters.search.CloseCharactersListSearchScenario
-import app.scenario.system.WaitUntilStartScenario
 import domain.characters.model.GenderType
 import domain.characters.model.StatusType
 import org.junit.Test
+import uitestutil.compose.StepsLogger.step
 
 class CharactersFeatureTestCase : BaseTestCase() {
 

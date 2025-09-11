@@ -2,12 +2,12 @@ package app.scenario.characters.filter
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.performClick
-import app.core.base.ActivityComposeTestRule
-import app.core.base.BaseScenario
-import app.core.base.StepsLogger.step
-import app.core.utils.findText
 import app.screen.characters.CharactersListFilterScreen
 import com.senyk.rickandmorty.feature.characters.ui.R
+import uitestutil.compose.StepsLogger.step
+import uitestutil.compose.findText
+import uitestutil.compose.scenario.ActivityComposeTestRule
+import uitestutil.compose.scenario.BaseScenario
 
 class CancelCharactersListFilterScenario<A : ComponentActivity> : BaseScenario<A>() {
 

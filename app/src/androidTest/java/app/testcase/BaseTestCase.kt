@@ -1,9 +1,11 @@
-package app.core.base
+package app.testcase
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import app.MainActivity
 import org.junit.Before
 import org.junit.Rule
+import uitestutil.compose.StepsLogger
+import uitestutil.compose.scenario.BaseScenario
 
 /**
  * Base class for Compose UI tests that provides rule setup and scenario support.
