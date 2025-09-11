@@ -3,6 +3,7 @@ import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
@@ -16,6 +17,7 @@ plugins {
     id("com.osacky.doctor") version Config.Versions.gradleDoctor
     id("com.github.ben-manes.versions") version Config.Versions.versionsPlugin
     id("org.sonarqube") version Config.Versions.sonarqube
+    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
     jacoco
 }
 
@@ -53,6 +55,7 @@ subprojects {
     }
     plugins.withId("org.jetbrains.kotlin.jvm") {
         apply(plugin = "maven-publish")
+        apply(plugin = "com.github.johnrengelman.shadow")
     }
 
     tasks.withType<KotlinJvmCompile>().configureEach {
@@ -68,6 +71,17 @@ subprojects {
         configure<JacocoTaskExtension> {
             isIncludeNoLocationClasses = false
             excludes = listOf("jdk.internal.*")
+        }
+    }
+
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        tasks.named<ShadowJar>("shadowJar") {
+            archiveClassifier.set("")
+            val applicationIdPrefix = Config.General.applicationId
+            val projectName = project.name
+            val projectGroup = project.group.toString().substringAfter(".")
+            val destination = "$applicationIdPrefix.$projectGroup.$projectName"
+            relocate(projectName, destination)
         }
     }
 }
