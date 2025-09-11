@@ -1,5 +1,7 @@
 rootProject.name = "rick-and-morty"
 
+apply(from = file("repositories.gradle.kts"))
+
 // Add project modules
 include(":app")
 

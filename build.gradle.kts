@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.sonarqube.gradle.SonarTask
 
-apply(from = rootProject.file("repositories.gradle.kts"))
 apply(from = rootProject.file("jacoco.gradle.kts"))
 
 plugins {
@@ -54,10 +53,6 @@ subprojects {
     }
     plugins.withId("org.jetbrains.kotlin.jvm") {
         apply(plugin = "maven-publish")
-    }
-
-    buildscript {
-        apply(from = rootProject.file("repositories.gradle.kts"))
     }
 
     tasks.withType<KotlinJvmCompile>().configureEach {
