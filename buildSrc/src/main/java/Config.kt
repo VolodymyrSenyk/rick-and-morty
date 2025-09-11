@@ -2,11 +2,11 @@
 
 object Config {
 
-    object Android {
+    object General {
 
         const val applicationId = "com.senyk.rickandmorty"
 
-        const val versionName = "2.1.1"
+        const val versionName = "2.2.0"
         val versionCode = calculateVersionName()
 
         const val minSdkVersion = 26
@@ -16,12 +16,12 @@ object Config {
     object Versions {
 
         // Build
-        const val gradlePlugin = "8.12.2"
-        const val kotlinLanguage = "2.2.10"
+        const val gradlePlugin = "8.13.0"
+        const val kotlinLanguage = "2.2.20"
         const val kotlinComposeCompilerExtension = "1.5.15"
         const val serialization = "1.9.0"
         const val annotation = "1.9.1"
-        const val ksp = "2.2.10-2.0.2"
+        const val ksp = "2.2.20-2.0.2"
 
         // Arch components
         const val lifecycle = "2.9.3"
@@ -32,7 +32,7 @@ object Config {
         const val material = "1.12.0"
         const val splashscreen = "1.0.1"
         const val composeConstraintlayout = "1.1.1"
-        const val composeBom = "2025.07.00"
+        const val composeBom = "2025.09.00"
         const val accompanist = "0.36.0"
 
         // Dependency injection
@@ -58,9 +58,9 @@ object Config {
         const val kermit = "2.0.4"
         const val leakCanary = "2.14"
         const val detekt = "1.23.8"
-        const val gradleDoctor = "0.12.0"
+        const val gradleDoctor = "0.12.1"
         const val versionsPlugin = "0.52.0"
-        const val sonarqube = "6.2.0.5505"
+        const val sonarqube = "6.3.1.5724"
 
         // Testing
         const val jUnitBom = "5.13.4"
@@ -145,7 +145,7 @@ object Config {
     }
 
     private fun calculateVersionName(): Int {
-        val parts = Android.versionName.split(".")
+        val parts = General.versionName.split(".")
         val v1 = Integer.parseInt(parts[0])
         val v2 = Integer.parseInt(parts[1])
         val v3 = Integer.parseInt(parts[2])

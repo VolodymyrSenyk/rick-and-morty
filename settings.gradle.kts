@@ -1,13 +1,16 @@
 rootProject.name = "rick-and-morty"
 
+apply(from = file("repositories.gradle.kts"))
+
 // Add project modules
 include(":app")
 
 include(":core:arch")
 include(":core:arch-android")
 include(":core:navigation-compose")
-include(":core:test-util")
 include(":core:ui")
+include(":core:test-util")
+include(":core:ui-test-util-compose")
 
 include(":data:datastore")
 include(":data:network")

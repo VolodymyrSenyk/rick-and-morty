@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "feature.characters.ui"
+    namespace = Config.General.applicationId + ".feature.characters.ui"
 }
 
 dependencies {

@@ -29,12 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.theme.RickAndMortyTheme
 import core.ui.theme.colorscheme.onPrimaryHint
-import feature.characters.ui.R
 import kotlinx.coroutines.delay
-import core.ui.R as CoreR
+import com.senyk.rickandmorty.core.ui.R as CoreR
 
 @Composable
 internal fun CharactersSearchTopAppBar(

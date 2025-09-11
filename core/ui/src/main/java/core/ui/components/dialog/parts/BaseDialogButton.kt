@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import core.ui.components.dialog.model.DialogButtonData
+import core.ui.model.DialogButtonData
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 

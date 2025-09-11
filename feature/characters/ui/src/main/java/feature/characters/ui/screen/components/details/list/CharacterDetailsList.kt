@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.theme.RickAndMortyTheme
 import feature.characters.presentation.model.CharacterDetailsUi
-import feature.characters.ui.R
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
 @Composable

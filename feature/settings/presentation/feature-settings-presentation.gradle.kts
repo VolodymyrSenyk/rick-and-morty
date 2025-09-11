@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "feature.settings.presentation"
+    namespace = Config.General.applicationId + ".feature.settings.presentation"
 }
 
 dependencies {

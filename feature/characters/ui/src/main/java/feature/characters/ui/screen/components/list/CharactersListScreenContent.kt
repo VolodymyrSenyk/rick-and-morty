@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import core.ui.animation.visibility.SlideTopToBottomAnimatedVisibility
+import core.ui.animations.visibility.SlideTopToBottomAnimatedVisibility
 import core.ui.components.scaffold.CustomScaffold
 import core.ui.theme.RickAndMortyTheme
 import domain.settings.model.ThemeMode

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "data.datastore"
+    namespace = Config.General.applicationId + ".data.datastore"
 }
 
 dependencies {

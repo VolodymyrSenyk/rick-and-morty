@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "navigation.compose"
+    namespace = Config.General.applicationId + ".navigation.compose"
 }
 
 dependencies {

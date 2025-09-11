@@ -1,6 +1,6 @@
 # Rick and Morty Wiki – Jetpack Compose MVI Sample
 
-![Language](https://img.shields.io/badge/Kotlin-2.2.10-blue)
+![Language](https://img.shields.io/badge/Kotlin-2.2.20-blue)
 [![CI](https://github.com/VolodymyrSenyk/rick-and-morty/actions/workflows/ci.yml/badge.svg)](https://github.com/VolodymyrSenyk/rick-and-morty/actions/workflows/ci.yml)
 
 ## About
@@ -129,19 +129,19 @@ object Secret {
 
 ## Use as Library (via GitHub Packages)
 
-You can import all modules except `app` module into your project.
-**Note:** this project uses concise, non-branded package namespaces (e.g. `core-arch`, `core.ui`,
-`feature.settings.presentation`).
-
 1. Add the following code to your `settings.gradle.kts`
 
 ```kotlin
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/VolodymyrSenyk/rick-and-morty")
-        credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/VolodymyrSenyk/rick-and-morty")
+            credentials {
+                username = providers.gradleProperty("gpr.user").orNull ?: System.getenv("USERNAME")
+                password = providers.gradleProperty("gpr.key").orNull ?: System.getenv("TOKEN")
+            }
         }
     }
 }
@@ -157,14 +157,17 @@ gpr.key=YOUR_PERSONAL_ACCESS_TOKEN_WITH_PACKAGES_READ_PERMISSION
 3. Import the required modules, for example:
 
 ```kotlin
-val senykLibraryVersion = "2.1.1" // check latest version in Releases
+val senykFoundationVersion = "2.2.0" // check latest version in Releases
 
 dependencies {
-    implementation("com.github.VolodymyrSenyk:core-arch:$senykLibraryVersion")
-    implementation("com.github.VolodymyrSenyk:core-arch-android:$senykLibraryVersion")
-    implementation("com.github.VolodymyrSenyk:domain-settings-api:$senykLibraryVersion")
-    implementation("com.github.VolodymyrSenyk:domain-settings:$senykLibraryVersion")
-    implementation("com.github.VolodymyrSenyk:feature-settings-presentation:$senykLibraryVersion")
+    implementation("com.github.VolodymyrSenyk:core-arch:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:core-arch-android:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:core-navigation-compose:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:core-test-util:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:core-ui-test-util-compose:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:domain-settings:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:domain-settings-api:$senykFoundationVersion")
+    implementation("com.github.VolodymyrSenyk:feature-settings-presentation:$senykFoundationVersion")
 }
 ```
 

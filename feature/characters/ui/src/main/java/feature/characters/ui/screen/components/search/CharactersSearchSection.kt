@@ -16,7 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.zIndex
-import core.ui.animation.visibility.FadeAnimatedVisibility
+import com.senyk.rickandmorty.feature.characters.ui.R
+import core.ui.animations.visibility.FadeAnimatedVisibility
 import core.ui.components.emptystate.SimpleEmptyState
 import core.ui.components.progress.SimpleCircularProgress
 import core.ui.theme.Dimens
@@ -24,7 +25,6 @@ import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.heightWithCoef
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.presentation.viewmodel.mvi.search.CharactersSearchViewState
-import feature.characters.ui.R
 import feature.characters.ui.screen.components.search.list.CharactersSearchList
 import feature.characters.ui.screen.preview.CharactersSearchPreviewParameterProvider
 

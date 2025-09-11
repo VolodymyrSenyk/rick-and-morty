@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.components.topappbar.SimpleTopAppBar
 import core.ui.components.topappbar.menu.ThemeChoosingMenuItem
 import core.ui.theme.RickAndMortyTheme
 import domain.settings.model.ThemeMode
-import feature.characters.ui.R
-import core.ui.R as CoreR
+import com.senyk.rickandmorty.core.ui.R as CoreR
 
 @Composable
 internal fun CharactersListTopAppBar(

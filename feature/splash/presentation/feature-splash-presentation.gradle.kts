@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "feature.splash.presentation"
+    namespace = Config.General.applicationId + ".feature.splash.presentation"
 }
 
 dependencies {
