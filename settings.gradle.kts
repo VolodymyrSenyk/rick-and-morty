@@ -2,7 +2,6 @@ rootProject.name = "rick-and-morty"
 
 apply(from = file("repositories.gradle.kts"))
 
-// Add project modules
 include(":app")
 
 include(":core:arch")
@@ -31,16 +30,3 @@ include(":feature:splash:presentation")
 
 include(":feature:imageviewer:navigation")
 include(":feature:imageviewer:ui")
-
-// Add ability to use a module name as part of a build script name
-fun ProjectDescriptor.applyCustomBuildFileNames(prefix: String = "") {
-    val fileName = if (prefix.isEmpty()) name else "$prefix-$name"
-    buildFileName = "$fileName.gradle.kts"
-    children.forEach { subProject ->
-        subProject.applyCustomBuildFileNames(prefix = fileName)
-    }
-}
-
-rootProject.children.forEach { subProject ->
-    subProject.applyCustomBuildFileNames()
-}
