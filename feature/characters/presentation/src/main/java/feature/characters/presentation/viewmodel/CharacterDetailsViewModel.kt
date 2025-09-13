@@ -22,6 +22,7 @@ class CharacterDetailsViewModel @Inject constructor(
 
     override suspend fun executeIntent(mviIntent: CharacterDetailsIntent) = when (mviIntent) {
         is CharacterDetailsIntent.OnViewStarted -> onViewStarted(mviIntent.character)
+        is CharacterDetailsIntent.OnImageClicked -> onImageClicked(mviIntent.sharedTransitionKey)
         is CharacterDetailsIntent.OnBackButtonClicked -> onBackButtonClicked()
     }
 
@@ -33,6 +34,15 @@ class CharacterDetailsViewModel @Inject constructor(
         updateUiState { oldState ->
             oldState.copy(character = updatedCharacter.toCharacterDetailsUi(uiId = character.uiId))
         }
+    }
+
+    private suspend fun onImageClicked(sharedTransitionKey: String) {
+        val imageUrl = currentState.character?.imageUrl ?: return
+        val event = CharacterDetailsNavEvent.NavigateToImageViewer(
+            sharedTransitionKey = sharedTransitionKey,
+            imageUrl = imageUrl,
+        )
+        sendNavEvent(event)
     }
 
     private suspend fun onBackButtonClicked() {

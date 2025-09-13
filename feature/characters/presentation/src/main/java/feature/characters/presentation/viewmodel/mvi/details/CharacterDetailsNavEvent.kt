@@ -4,5 +4,7 @@ import arch.mvi.MviNavEvent
 
 sealed class CharacterDetailsNavEvent : MviNavEvent {
 
+    data class NavigateToImageViewer(val sharedTransitionKey: String, val imageUrl: String) : CharacterDetailsNavEvent()
+
     data object NavigateBack : CharacterDetailsNavEvent()
 }

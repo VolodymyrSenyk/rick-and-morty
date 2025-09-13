@@ -7,5 +7,7 @@ sealed class CharacterDetailsIntent : MviIntent {
 
     data class OnViewStarted(val character: CharacterUi) : CharacterDetailsIntent()
 
+    data class OnImageClicked(val sharedTransitionKey: String) : CharacterDetailsIntent()
+
     data object OnBackButtonClicked : CharacterDetailsIntent()
 }

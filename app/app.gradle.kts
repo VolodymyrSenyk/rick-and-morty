@@ -97,6 +97,7 @@ dependencies {
     implementation(project(":feature:splash:presentation"))
     implementation(project(":feature:characters:navigation"))
     implementation(project(":feature:characters:ui"))
+    implementation(project(":feature:imageviewer:ui"))
 
     implementation(Config.Libs.material)
     implementation(Config.Libs.splashscreen)

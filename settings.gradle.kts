@@ -29,6 +29,9 @@ include(":feature:settings:presentation")
 
 include(":feature:splash:presentation")
 
+include(":feature:imageviewer:navigation")
+include(":feature:imageviewer:ui")
+
 // Add ability to use a module name as part of a build script name
 fun ProjectDescriptor.applyCustomBuildFileNames(prefix: String = "") {
     val fileName = if (prefix.isEmpty()) name else "$prefix-$name"

@@ -78,6 +78,34 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
     }
 
     @Test
+    fun `on image clicked`() = runTest {
+        val characterId = "1"
+        val character = characterDetailsUi(characterId)
+        val sharedTransitionKey = "someKey"
+
+        coEvery { charactersRepository.getCharacterById(characterId) } returns character(characterId)
+
+        viewModel.onIntent(CharacterDetailsIntent.OnViewStarted(characterUi(characterId)))
+        viewModel.onIntent(CharacterDetailsIntent.OnImageClicked(sharedTransitionKey))
+
+        val event = CharacterDetailsNavEvent.NavigateToImageViewer(
+            sharedTransitionKey = sharedTransitionKey,
+            imageUrl = character.imageUrl,
+        )
+        assertEquals(event, viewModel.navEvent.value)
+    }
+
+    @Test
+    fun `on empty image clicked`() = runTest {
+        val sharedTransitionKey = "someKey"
+
+        viewModel.onIntent(CharacterDetailsIntent.OnImageClicked(sharedTransitionKey))
+
+        coVerify(exactly = 0) { charactersRepository.getCharacterById(any()) }
+        assertEquals(null, viewModel.navEvent.value)
+    }
+
+    @Test
     fun `on back button clicked`() = runTest {
         viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked)
         assertEquals(CharacterDetailsNavEvent.NavigateBack, viewModel.navEvent.value)

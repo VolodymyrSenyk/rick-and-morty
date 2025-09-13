@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
+    <CurrentIssues>
+        <ID>LongMethod:ImageViewerSection.kt$@OptIn(ExperimentalSharedTransitionApi::class) @Composable internal fun ImageViewerSection( modifier: Modifier = Modifier, sharedTransitionKey: String = "", url: String, minScale: Float = 1f, maxScale: Float = 5f, doubleTapScale: Float = 2.5f, contentDescription: String? = null, contentScale: ContentScale = ContentScale.Fit, )</ID>
+    </CurrentIssues>
     <ManuallySuppressedIssues>
         <ID>MagicNumber:Config.kt$Config$1000_000</ID>
         <ID>MagicNumber:Config.kt$Config$1000</ID>
@@ -9,5 +12,7 @@
         <ID>NestedBlockDepth:StepsLogger.kt$StepsLogger$fun step(text: String, actions: () -> Unit)</ID>
 		<ID>TooGenericExceptionCaught:StepsLogger.kt$StepsLogger$error: Throwable</ID>
         <ID>TooGenericExceptionCaught:StepsLogger.kt$StepsLogger$treeError: Throwable</ID>
+        <ID>Filename:ImageViewerFeatureDestinations.kt$feature.imageviewer.navigation.ImageViewerFeatureDestinations.kt</ID>
+        <ID>MatchingDeclarationName:ImageViewerFeatureDestinations.kt$ImageViewerDestinations : Destination</ID>
     </ManuallySuppressedIssues>
 </SmellBaseline>

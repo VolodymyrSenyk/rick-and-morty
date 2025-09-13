@@ -5,6 +5,7 @@ package feature.characters.ui.screen.components.details
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,12 +34,21 @@ import feature.characters.ui.screen.components.details.list.CharacterDetailsList
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
 @Composable
-internal fun CharacterDetailsSection(item: CharacterDetailsUi?) {
+internal fun CharacterDetailsSection(
+    item: CharacterDetailsUi?,
+    onImageClicked: (sharedTransitionKey: String) -> Unit,
+) {
     if (item == null) return
     if (isLandscape()) {
-        CharacterDetailsSectionLandscape(item = item)
+        CharacterDetailsSectionLandscape(
+            item = item,
+            onImageClicked = onImageClicked,
+        )
     } else {
-        CharacterDetailsSectionPortrait(item = item)
+        CharacterDetailsSectionPortrait(
+            item = item,
+            onImageClicked = onImageClicked,
+        )
     }
 }
 
@@ -46,6 +56,7 @@ internal fun CharacterDetailsSection(item: CharacterDetailsUi?) {
 private fun CharacterDetailsSectionPortrait(
     modifier: Modifier = Modifier,
     item: CharacterDetailsUi,
+    onImageClicked: (sharedTransitionKey: String) -> Unit,
 ) {
     WithSharedTransitionScope {
         WithAnimatedVisibilityScope {
@@ -67,12 +78,13 @@ private fun CharacterDetailsSectionPortrait(
                             )
                     )
                 } else {
+                    val sharedTransitionKey = item.uiId + item.imageUrl
                     AsyncImage(
                         model = item.imageUrl,
                         contentDescription = null,
                         modifier = Modifier
                             .sharedElement(
-                                rememberSharedContentState(key = item.uiId + item.imageUrl),
+                                rememberSharedContentState(key = sharedTransitionKey),
                                 animatedVisibilityScope = this@WithAnimatedVisibilityScope
                             )
                             .align(Alignment.CenterHorizontally)
@@ -84,6 +96,7 @@ private fun CharacterDetailsSectionPortrait(
                                 color = MaterialTheme.colorScheme.outline,
                                 shape = imageShape,
                             )
+                            .clickable { onImageClicked(sharedTransitionKey) }
                     )
                 }
                 CharacterDetailsList(character = item)
@@ -96,6 +109,7 @@ private fun CharacterDetailsSectionPortrait(
 private fun CharacterDetailsSectionLandscape(
     modifier: Modifier = Modifier,
     item: CharacterDetailsUi,
+    onImageClicked: (sharedTransitionKey: String) -> Unit,
 ) {
     WithSharedTransitionScope {
         WithAnimatedVisibilityScope {
@@ -108,17 +122,19 @@ private fun CharacterDetailsSectionLandscape(
                             .background(color = Color.Red)
                     )
                 } else {
+                    val sharedTransitionKey = item.uiId + item.imageUrl
                     AsyncImage(
                         model = item.imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .sharedElement(
-                                rememberSharedContentState(key = item.uiId + item.imageUrl),
+                                rememberSharedContentState(key = sharedTransitionKey),
                                 animatedVisibilityScope = this@WithAnimatedVisibilityScope
                             )
                             .fillMaxHeight()
                             .aspectRatio(1f)
+                            .clickable { onImageClicked(sharedTransitionKey) }
                     )
                 }
                 CharacterDetailsList(
@@ -134,7 +150,10 @@ private fun CharacterDetailsSectionLandscape(
 @Composable
 private fun CharacterDetailsSectionPortraitPreview() {
     RickAndMortyTheme {
-        CharacterDetailsSectionPortrait(item = CharactersPreviewMocks.characterDetails)
+        CharacterDetailsSectionPortrait(
+            item = CharactersPreviewMocks.characterDetails,
+            onImageClicked = {},
+        )
     }
 }
 
@@ -142,6 +161,9 @@ private fun CharacterDetailsSectionPortraitPreview() {
 @Composable
 private fun CharacterDetailsSectionPreview() {
     RickAndMortyTheme {
-        CharacterDetailsSectionLandscape(item = CharactersPreviewMocks.characterDetails)
+        CharacterDetailsSectionLandscape(
+            item = CharactersPreviewMocks.characterDetails,
+            onImageClicked = {},
+        )
     }
 }

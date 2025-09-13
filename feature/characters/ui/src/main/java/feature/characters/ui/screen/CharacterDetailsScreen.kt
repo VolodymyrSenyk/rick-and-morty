@@ -15,6 +15,7 @@ import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsInt
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsNavEvent
 import feature.characters.presentation.viewmodel.mvi.details.CharacterDetailsSideEffect
 import feature.characters.ui.screen.components.details.CharacterDetailsScreenContent
+import feature.imageviewer.navigation.ImageViewerDestinations
 import feature.settings.presentation.viewmodel.SettingsViewModel
 import navigation.compose.router.Router
 
@@ -39,6 +40,7 @@ internal fun CharacterDetailsScreen(
             viewState = viewState,
             onThemeSelected = { settingsViewModel.onThemeSelected(it) },
             onBackButtonClicked = { viewModel.onIntent(CharacterDetailsIntent.OnBackButtonClicked) },
+            onImageClicked = { viewModel.onIntent(CharacterDetailsIntent.OnImageClicked(it)) },
         )
     }
 }
@@ -60,6 +62,14 @@ private fun CharacterDetailsSideEffectHandler(viewModel: CharacterDetailsViewMod
 private fun CharacterDetailsNavEventHandler(viewModel: CharacterDetailsViewModel, router: Router) {
     NavEventHandler(viewModel) { mviNavEvent ->
         when (mviNavEvent) {
+            is CharacterDetailsNavEvent.NavigateToImageViewer -> {
+                val destination = ImageViewerDestinations(
+                    imageUrl = mviNavEvent.imageUrl,
+                    sharedTransitionKey = mviNavEvent.sharedTransitionKey,
+                )
+                router.navigateTo(destination)
+            }
+
             is CharacterDetailsNavEvent.NavigateBack -> router.back()
         }
     }

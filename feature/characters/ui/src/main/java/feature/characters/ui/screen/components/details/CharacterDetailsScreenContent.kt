@@ -27,6 +27,7 @@ internal fun CharacterDetailsScreenContent(
     viewState: CharacterDetailsViewState,
     onThemeSelected: (newThemeMode: ThemeMode) -> Unit,
     onBackButtonClicked: () -> Unit,
+    onImageClicked: (sharedTransitionKey: String) -> Unit,
 ) {
     WithSharedTransitionScope {
         WithAnimatedVisibilityScope {
@@ -61,7 +62,10 @@ internal fun CharacterDetailsScreenContent(
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
-                    CharacterDetailsSection(item = viewState.character)
+                    CharacterDetailsSection(
+                        item = viewState.character,
+                        onImageClicked = onImageClicked,
+                    )
                 }
             }
         }
@@ -78,6 +82,7 @@ private fun CharacterDetailsScreenContentPreview(
             viewState = viewState,
             onThemeSelected = {},
             onBackButtonClicked = {},
+            onImageClicked = {},
         )
     }
 }
