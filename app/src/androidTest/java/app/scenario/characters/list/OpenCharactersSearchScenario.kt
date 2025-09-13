@@ -6,6 +6,7 @@ import app.screen.characters.CharactersListScreen
 import uitestutil.compose.StepsLogger.step
 import uitestutil.compose.scenario.ActivityComposeTestRule
 import uitestutil.compose.scenario.BaseScenario
+import uitestutil.compose.waitUntilDisplaying
 
 class OpenCharactersSearchScenario<A : ComponentActivity> : BaseScenario<A>() {
 
@@ -13,6 +14,7 @@ class OpenCharactersSearchScenario<A : ComponentActivity> : BaseScenario<A>() {
         get() = {
             step("Open 'Characters List Search' from 'Characters List'") {
                 CharactersListScreen(this).apply {
+                    waitUntilDisplaying(menuSearch)
                     menuSearch.performClick()
                 }
             }

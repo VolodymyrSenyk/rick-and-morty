@@ -1,6 +1,5 @@
 package app.testcase
 
-import app.scenario.characters.list.WaitUntilStartScenario
 import app.scenario.theme.change.ChangeThemeOnCharacterDetailsScenario
 import app.scenario.theme.change.ChangeThemeOnCharactersListScenario
 import app.scenario.theme.check.CheckThemeOnCharacterDetailsScenario
@@ -13,7 +12,6 @@ class ThemeChangingFeatureTestCase : BaseTestCase() {
 
     @Test
     fun theme() {
-        scenario(WaitUntilStartScenario())
         step("Change app theme") {
             scenario(ChangeThemeOnCharactersListScenario(isDayToNightTheme = true))
         }
