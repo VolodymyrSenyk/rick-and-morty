@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -65,12 +67,17 @@ internal fun CharactersSearchListCard(
                             shape = shape,
                         )
                 ) {
+                    val imageShape = shape.copy(
+                        bottomStart = ZeroCornerSize,
+                        bottomEnd = ZeroCornerSize,
+                    )
                     if (LocalInspectionMode.current) {
                         Spacer(
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .aspectRatio(1f)
                                 .background(color = Color.Red)
+                                .clip(imageShape)
                         )
                     } else {
                         AsyncImage(
@@ -84,6 +91,8 @@ internal fun CharactersSearchListCard(
                                 )
                                 .fillMaxHeight()
                                 .aspectRatio(1f)
+                                .clip(imageShape)
+                                .padding(Dimens.Size.Border)
                         )
                     }
                     Text(
