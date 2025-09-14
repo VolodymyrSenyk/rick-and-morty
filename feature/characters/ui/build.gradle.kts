@@ -12,6 +12,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
 
+    implementation(project(":feature:imageviewer:navigation"))
     implementation(project(":feature:characters:navigation"))
 
     implementation(project(":feature:characters:presentation"))

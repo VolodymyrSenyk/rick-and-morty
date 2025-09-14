@@ -20,6 +20,7 @@ class CheckCharactersListScenario<A : ComponentActivity>(
             step("Check 'Characters List' content") {
                 CharactersListScreen(this).apply {
                     waitUntilHiding(progressBar)
+                    waitUntilDisplaying(textTitle)
                     textTitle.assertExists()
                     if (characters.isEmpty()) {
                         textListEmptyState.assertExists()

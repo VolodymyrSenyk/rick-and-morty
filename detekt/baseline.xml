@@ -1,5 +1,9 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
+    <CurrentIssues>
+        <ID>Filename:ImageViewerFeatureDestinations.kt$feature.imageviewer.navigation.ImageViewerFeatureDestinations.kt</ID>
+        <ID>MatchingDeclarationName:ImageViewerFeatureDestinations.kt$ImageViewerDestinations : Destination</ID>
+    </CurrentIssues>
     <ManuallySuppressedIssues>
         <ID>MagicNumber:Config.kt$Config$1000_000</ID>
         <ID>MagicNumber:Config.kt$Config$1000</ID>

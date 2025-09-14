@@ -29,6 +29,7 @@ code quality with static analysis, testing and **CI** tools.
 - Jetpack Compose Navigation + Single Activity Architecture
 - Material Design 3
 - Shared Element Transitions
+- Pinch-to-Zoom ImageViewer
 - [Coil](https://github.com/coil-kt/coil)
 - [Kermit](https://github.com/touchlab/Kermit)
 - [StrictMode](https://developer.android.com/reference/android/os/StrictMode)
@@ -157,7 +158,7 @@ gpr.key=YOUR_PERSONAL_ACCESS_TOKEN_WITH_PACKAGES_READ_PERMISSION
 3. Import the required modules, for example:
 
 ```kotlin
-val senykFoundationVersion = "2.2.0" // check latest version in Releases
+val senykFoundationVersion = "2.3.0" // check latest version in Releases
 
 dependencies {
     implementation("com.github.VolodymyrSenyk:core-arch:$senykFoundationVersion")

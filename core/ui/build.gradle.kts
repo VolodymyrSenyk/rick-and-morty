@@ -21,6 +21,9 @@ dependencies {
     implementation(Config.Libs.composeExtendedIcons)
     implementation(Config.Libs.composeMaterialWindowSize)
 
+    implementation(Config.Libs.coil)
+    implementation(Config.Libs.coilNetwork)
+
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
 }

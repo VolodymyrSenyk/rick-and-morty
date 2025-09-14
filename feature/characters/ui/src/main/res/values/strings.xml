@@ -6,6 +6,8 @@
 
     <string name="hint_search">Search…</string>
 
+    <string name="content_description_character_image">Character avatar</string>
+
     <string name="label_character_name">Name:</string>
     <string name="label_character_status">Status:</string>
     <string name="label_character_species">Species:</string>
