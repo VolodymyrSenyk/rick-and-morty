@@ -19,9 +19,6 @@ dependencies {
     implementation(Config.Libs.hilt)
     ksp(Config.Libs.hiltCompiler)
 
-    implementation(Config.Libs.coil)
-    implementation(Config.Libs.coilNetwork)
-
     implementation(Config.Libs.composeTooling)
     debugImplementation(Config.Libs.composePreview)
 }

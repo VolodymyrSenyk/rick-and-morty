@@ -1,11 +1,9 @@
 package feature.imageviewer.ui.screen.components
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -16,14 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
-import coil3.compose.AsyncImage
+import core.ui.components.image.PreviewableAsyncImage
 import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.WithAnimatedVisibilityScope
 import core.ui.utils.WithSharedTransitionScope
@@ -104,37 +101,33 @@ internal fun ImageViewerSection(
                 )
             }
 
-        // Image itself
-        if (LocalInspectionMode.current) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.Red)
-                    .aspectRatio(1f)
-            )
-        } else {
-            WithSharedTransitionScope {
-                WithAnimatedVisibilityScope {
-                    AsyncImage(
-                        model = url,
-                        contentDescription = contentDescription,
-                        contentScale = contentScale,
-                        modifier = Modifier
-                            .sharedElement(
-                                rememberSharedContentState(key = sharedTransitionKey),
-                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
-                            )
-                            .fillMaxSize()
-                            .then(gestureModifier)
-                            .graphicsLayer {
-                                // apply scale and translation (in pixels)
-                                scaleX = scale
-                                scaleY = scale
-                                translationX = offset.x
-                                translationY = offset.y
-                            }
-                    )
+        WithSharedTransitionScope {
+            WithAnimatedVisibilityScope {
+                val imageModifier = if (LocalInspectionMode.current) {
+                    Modifier
+                        .fillMaxSize()
+                        .aspectRatio(1f)
+                } else {
+                    Modifier
+                        .sharedElement(
+                            rememberSharedContentState(key = sharedTransitionKey),
+                            animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                        )
+                        .fillMaxSize()
+                        .then(gestureModifier)
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                            translationX = offset.x
+                            translationY = offset.y
+                        }
                 }
+                PreviewableAsyncImage(
+                    imageUrl = url,
+                    contentDescription = contentDescription,
+                    contentScale = contentScale,
+                    modifier = imageModifier
+                )
             }
         }
     }

@@ -6,7 +6,6 @@ import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -30,9 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -42,13 +39,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import coil3.compose.AsyncImage
 import coil3.imageLoader
 import coil3.memory.MemoryCache
+import core.ui.components.image.PreviewableAsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.WithAnimatedVisibilityScope
 import core.ui.utils.WithSharedTransitionScope
+import core.ui.utils.border
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
@@ -169,43 +167,25 @@ private fun CardContent(
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
                         .background(color = MaterialTheme.colorScheme.surface, shape = shape)
-                        .border(
-                            width = Dimens.Size.Border,
-                            color = MaterialTheme.colorScheme.outlineVariant,
-                            shape = shape,
-                        )
+                        .border(shape)
                 ) {
                     val imageShape = shape.copy(
                         bottomStart = ZeroCornerSize,
                         bottomEnd = ZeroCornerSize,
                     )
-                    if (LocalInspectionMode.current) {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f)
-                                .background(color = Color.Red)
-                                .clip(imageShape)
-                        )
-                    } else {
-                        AsyncImage(
-                            model = item.imageUrl,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            onSuccess = {
-                                onImageLoaded()
-                            },
-                            modifier = Modifier
-                                .sharedElement(
-                                    rememberSharedContentState(key = item.uiId + item.imageUrl),
-                                    animatedVisibilityScope = this@WithAnimatedVisibilityScope,
-                                )
-                                .fillMaxWidth()
-                                .aspectRatio(1f)
-                                .clip(imageShape)
-                                .padding(Dimens.Size.Border)
-                        )
-                    }
+                    PreviewableAsyncImage(
+                        imageUrl = item.imageUrl,
+                        onImageLoaded = onImageLoaded,
+                        modifier = Modifier
+                            .sharedElement(
+                                rememberSharedContentState(key = item.uiId + item.imageUrl),
+                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                            )
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .clip(imageShape)
+                            .padding(Dimens.Size.Border)
+                    )
                     Spacer(Modifier.weight(1f))
                     Text(
                         text = item.name,

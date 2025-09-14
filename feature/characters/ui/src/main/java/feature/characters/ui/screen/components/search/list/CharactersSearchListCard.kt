@@ -2,10 +2,8 @@ package feature.characters.ui.screen.components.search.list
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,18 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import coil3.compose.AsyncImage
+import core.ui.components.image.PreviewableAsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
 import core.ui.utils.WithAnimatedVisibilityScope
 import core.ui.utils.WithSharedTransitionScope
+import core.ui.utils.border
 import feature.characters.presentation.model.CharacterUi
 import feature.characters.ui.screen.preview.CharactersPreviewMocks
 
@@ -61,40 +57,24 @@ internal fun CharactersSearchListCard(
                             animatedVisibilityScope = this@WithAnimatedVisibilityScope,
                         )
                         .background(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = shape)
-                        .border(
-                            width = Dimens.Size.Border,
-                            color = MaterialTheme.colorScheme.outlineVariant,
-                            shape = shape,
-                        )
+                        .border(shape)
                 ) {
                     val imageShape = shape.copy(
-                        bottomStart = ZeroCornerSize,
+                        topEnd = ZeroCornerSize,
                         bottomEnd = ZeroCornerSize,
                     )
-                    if (LocalInspectionMode.current) {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .aspectRatio(1f)
-                                .background(color = Color.Red)
-                                .clip(imageShape)
-                        )
-                    } else {
-                        AsyncImage(
-                            model = item.imageUrl,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .sharedElement(
-                                    rememberSharedContentState(key = item.uiId + item.imageUrl),
-                                    animatedVisibilityScope = this@WithAnimatedVisibilityScope,
-                                )
-                                .fillMaxHeight()
-                                .aspectRatio(1f)
-                                .clip(imageShape)
-                                .padding(Dimens.Size.Border)
-                        )
-                    }
+                    PreviewableAsyncImage(
+                        imageUrl = item.imageUrl,
+                        modifier = Modifier
+                            .sharedElement(
+                                rememberSharedContentState(key = item.uiId + item.imageUrl),
+                                animatedVisibilityScope = this@WithAnimatedVisibilityScope,
+                            )
+                            .fillMaxHeight()
+                            .aspectRatio(1f)
+                            .clip(imageShape)
+                            .padding(Dimens.Size.Border)
+                    )
                     Text(
                         text = item.name,
                         textAlign = TextAlign.Start,
