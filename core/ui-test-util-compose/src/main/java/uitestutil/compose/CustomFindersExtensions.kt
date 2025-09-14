@@ -98,6 +98,35 @@ fun <A : ComponentActivity> ActivityComposeTestRule<A>.findIconButton(
     onAllNodes(hasContentDescription(getString(textRes)) and hasParent(hasClickAction()), useUnmergedTree)[index]
 
 /**
+ * Finds a node with the given string resource as contentDescription.
+ *
+ * @param textRes The string resource id.
+ * @param index The index of the matched node (if multiple exist).
+ * @param useUnmergedTree Whether to include merged semantics.
+ * @param args  Optional string format arguments.
+ */
+fun <A : ComponentActivity> ActivityComposeTestRule<A>.findImage(
+    @StringRes textRes: Int,
+    index: Int = 0,
+    useUnmergedTree: Boolean = true,
+    vararg args: String,
+): SemanticsNodeInteraction =
+    onAllNodes(hasContentDescription(getString(resId = textRes, *args)), useUnmergedTree)[index]
+
+/**
+ * Finds a node with the given text as contentDescription.
+ *
+ * @param text The exact text to match.
+ * @param index The index of the matched node (if multiple exist).
+ * @param useUnmergedTree Whether to include merged semantics.
+ */
+fun <A : ComponentActivity> ActivityComposeTestRule<A>.findImage(
+    text: String,
+    index: Int = 0,
+    useUnmergedTree: Boolean = true,
+): SemanticsNodeInteraction = onAllNodes(hasContentDescription(text), useUnmergedTree)[index]
+
+/**
  * Finds an editable field with the given text.
  *
  * @param text The exact text to match.

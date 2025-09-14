@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.senyk.rickandmorty.feature.characters.ui.R
 import core.ui.components.image.PreviewableAsyncImage
 import core.ui.theme.Dimens
 import core.ui.theme.RickAndMortyTheme
@@ -59,6 +61,7 @@ private fun CharacterDetailsSectionPortrait(
                 val sharedTransitionKey = item.uiId + item.imageUrl
                 PreviewableAsyncImage(
                     imageUrl = item.imageUrl,
+                    contentDescription = stringResource(R.string.content_description_character_image),
                     modifier = Modifier
                         .sharedElement(
                             rememberSharedContentState(key = sharedTransitionKey),
@@ -89,6 +92,7 @@ private fun CharacterDetailsSectionLandscape(
                 val sharedTransitionKey = item.uiId + item.imageUrl
                 PreviewableAsyncImage(
                     imageUrl = item.imageUrl,
+                    contentDescription = stringResource(R.string.content_description_character_image),
                     modifier = Modifier
                         .sharedElement(
                             rememberSharedContentState(key = sharedTransitionKey),

@@ -65,6 +65,7 @@ private fun CharacterDetailsNavEventHandler(viewModel: CharacterDetailsViewModel
             is CharacterDetailsNavEvent.NavigateToImageViewer -> {
                 val destination = ImageViewerDestinations(
                     imageUrl = mviNavEvent.imageUrl,
+                    contentDescription = mviNavEvent.characterName,
                     sharedTransitionKey = mviNavEvent.sharedTransitionKey,
                 )
                 router.navigateTo(destination)

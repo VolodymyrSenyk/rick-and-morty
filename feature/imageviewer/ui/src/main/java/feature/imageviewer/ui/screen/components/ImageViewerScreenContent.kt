@@ -12,6 +12,7 @@ import domain.settings.model.ThemeMode
 internal fun ImageViewerScreenContent(
     sharedTransitionKey: String,
     url: String,
+    contentDescription: String,
     onNavigateBackClicked: () -> Unit,
     onThemeSelected: (ThemeMode) -> Unit,
 ) {
@@ -26,6 +27,7 @@ internal fun ImageViewerScreenContent(
         ImageViewerSection(
             sharedTransitionKey = sharedTransitionKey,
             url = url,
+            contentDescription = contentDescription,
         )
     }
 }
@@ -37,6 +39,7 @@ private fun ImageViewerScreenContentPreview(@PreviewParameter(ThemePreviewParame
         ImageViewerScreenContent(
             sharedTransitionKey = "",
             url = "",
+            contentDescription = "",
             onNavigateBackClicked = {},
             onThemeSelected = {},
         )

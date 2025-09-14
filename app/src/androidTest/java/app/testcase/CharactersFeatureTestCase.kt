@@ -4,6 +4,7 @@ import app.scenario.characters.details.CheckCharacterDetailsScenario
 import app.scenario.characters.filter.ApplyCharactersListFilterScenario
 import app.scenario.characters.filter.CancelCharactersListFilterScenario
 import app.scenario.characters.list.CheckCharactersListScenario
+import app.scenario.characters.list.CheckImageViewerFromListScenario
 import app.scenario.characters.list.OpenCharacterDetailsScenario
 import app.scenario.characters.list.OpenCharactersListFilterScenario
 import app.scenario.characters.list.OpenCharactersSearchScenario
@@ -28,6 +29,7 @@ class CharactersFeatureTestCase : BaseTestCase() {
             scenario(CheckCharacterDetailsScenario(rickDetails))
             scenario(OpenCharacterDetailsScenario("Abadango Cluster Princess"))
             scenario(CheckCharacterDetailsScenario(abadangoDetails))
+            scenario(CheckImageViewerFromListScenario("Morty Smith"))
         }
     }
 

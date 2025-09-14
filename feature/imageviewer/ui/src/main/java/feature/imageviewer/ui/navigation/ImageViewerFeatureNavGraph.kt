@@ -20,6 +20,7 @@ fun NavGraphBuilder.imageViewerGraph(navController: NavController) {
             ImageViewerScreen(
                 sharedTransitionKey = args.sharedTransitionKey,
                 url = args.imageUrl,
+                contentDescription = args.contentDescription,
                 settingsViewModel = settingsViewModel,
                 router = router,
             )

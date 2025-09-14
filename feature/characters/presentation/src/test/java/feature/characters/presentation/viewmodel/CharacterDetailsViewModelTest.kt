@@ -91,6 +91,7 @@ class CharacterDetailsViewModelTest : BaseCoroutinesTest() {
         val event = CharacterDetailsNavEvent.NavigateToImageViewer(
             sharedTransitionKey = sharedTransitionKey,
             imageUrl = character.imageUrl,
+            characterName = character.name,
         )
         assertEquals(event, viewModel.navEvent.value)
     }

@@ -37,10 +37,11 @@ class CharacterDetailsViewModel @Inject constructor(
     }
 
     private suspend fun onImageClicked(sharedTransitionKey: String) {
-        val imageUrl = currentState.character?.imageUrl ?: return
+        val character = currentState.character ?: return
         val event = CharacterDetailsNavEvent.NavigateToImageViewer(
             sharedTransitionKey = sharedTransitionKey,
-            imageUrl = imageUrl,
+            imageUrl = character.imageUrl,
+            characterName = character.name,
         )
         sendNavEvent(event)
     }
